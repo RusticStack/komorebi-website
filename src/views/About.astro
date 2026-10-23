@@ -1,0 +1,55 @@
+---
+import Base from "../layouts/Base.astro";
+import { localePath, ui, type Locale } from "../lib/i18n";
+import { breadcrumbs } from "../lib/seo";
+import { AUTHOR, REPO_URL, RUSTICSTACK_URL } from "../lib/site";
+
+// Facts only from the Komorebi repository: README.md (author, licence, the name) and
+// docs/SCOPE.md (the goals and non-goals that keep it calm).
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui(locale);
+const pt = locale === "pt";
+---
+
+<Base
+  locale={locale}
+  path="/about"
+  title={pt ? "Sobre o Komorebi" : "About Komorebi"}
+  description={pt
+    ? "Quem faz o Komorebi e porque é sossegado: um cliente de email livre para Windows, com um âmbito pequeno de propósito."
+    : "Who makes Komorebi and why it is calm: a free email client for Windows with a small scope, on purpose."}
+  og="about"
+  jsonLd={[breadcrumbs([{ name: "Komorebi", path: localePath(locale, "/") }, { name: t.about, path: localePath(locale, "/about") }])]}
+>
+  <div class="wrap">
+    <article class="page">
+      <h1>{pt ? "Sobre o Komorebi" : "About Komorebi"}</h1>
+      <div class="prose">
+        {
+          pt ? (
+            <>
+              <p>
+                O Komorebi é feito por {AUTHOR}, como um projeto <a href={RUSTICSTACK_URL} rel="noopener">RusticStack</a>. É gratuito e de código aberto, com a licença GPL-3.0-or-later, e o código, os pedidos e todas as versões estão públicos no <a href={REPO_URL} rel="noopener">GitHub</a>. Komorebi é a palavra japonesa para a luz do sol que passa entre as folhas.
+              </p>
+              <p>
+                É sossegado de propósito. A sua função é ler, organizar e enviar correio sem se meter no caminho, e o âmbito fica pequeno por escolha: sem funcionalidades de IA, sem telemetria, sem serviços em segundo plano e nada procurado sem o pedir. As notificações, o ícone na área de notificação e o início com o Windows ficam desligados até os ativar.
+              </p>
+            </>
+          ) : (
+            <>
+              <p>
+                Komorebi is made by {AUTHOR} as a <a href={RUSTICSTACK_URL} rel="noopener">RusticStack</a> project. It is free and open source under GPL-3.0-or-later, and the code, the issues and every release are public on <a href={REPO_URL} rel="noopener">GitHub</a>. Komorebi is Japanese for sunlight filtering through leaves.
+              </p>
+              <p>
+                It is calm on purpose. Its job is to read, organize and send mail without getting in the way, and its scope stays small by choice: no AI features, no telemetry, no background services and nothing looked up unless you ask. Notifications, the tray icon and starting with Windows stay off until you turn them on.
+              </p>
+            </>
+          )
+        }
+      </div>
+    </article>
+  </div>
+</Base>

@@ -1,79 +1,34 @@
-// Copies the brand files and screenshots this site uses out of the Komorebi launch assets
-// folder and writes a 640 px wide WebP beside each 1280 px one. Run by hand when the
-// assets change; the output in public/ is committed, so the build does not need sharp.
+// Encodes the product picture into the AVIF and WebP files the home page uses, at a few widths.
+// The output is committed under public/preview/, so a build needs neither sharp nor the source files.
 //
-//   node scripts/prepare-images.mjs <launch-assets-dir>
+//   node scripts/prepare-images.mjs <folder>
 //
-// sharp is not a dependency of this site. Set KOMOREBI_ASSET_TOOLS to a folder whose
-// node_modules holds sharp (the launch assets README names one).
-import { copyFileSync, existsSync, mkdirSync } from "node:fs";
-import { createRequire } from "node:module";
+// <folder> holds inbox-light-wide.png, inbox-dark-wide.png, inbox-light-compact.png and
+// inbox-dark-compact.png. Today these are the brand mockup renders of the inbox (a design preview,
+// see docs/TODO-SCREENSHOTS.md); replace them with real screenshots of the same names and sizes.
+import { mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
+import sharp from "sharp";
 
-const assets = resolve(process.argv[2] ?? "../komorebi-launch-assets");
-const tools = process.env.KOMOREBI_ASSET_TOOLS;
-if (!tools) throw new Error("Set KOMOREBI_ASSET_TOOLS to a folder with sharp in node_modules");
-const sharp = createRequire(join(resolve(tools), "package.json"))("sharp");
+const source = process.argv[2];
+if (!source) {
+  console.error("usage: node scripts/prepare-images.mjs <folder with inbox-*.png>");
+  process.exit(1);
+}
+const out = resolve(import.meta.dirname, "..", "public", "preview");
+mkdirSync(out, { recursive: true });
 
-const root = resolve(import.meta.dirname, "..");
-const shots = join(root, "public", "shots");
-const brand = join(root, "public", "brand");
-mkdirSync(shots, { recursive: true });
-mkdirSync(brand, { recursive: true });
+export const WIDTHS = { wide: [800, 1312, 1920, 2560], compact: [720, 1440, 1800] };
 
-export const VIEWS = [
-  "inbox",
-  "inbox-personal",
-  "invite",
-  "compose-table",
-  "compose-signature",
-  "recipients",
-  "rules",
-  "rule-edit",
-  "contacts",
-  "contact-edit",
-  "calendar-month",
-  "calendar-week",
-  "calendar-agenda",
-  "calendar-edit",
-  "cert-prompt",
-  "settings-general",
-  "settings-privacy",
-  "onboarding-found",
-  "tabs",
-  "welcome",
-];
-
-let count = 0;
-for (const view of VIEWS) {
-  for (const theme of ["light", "dark"]) {
-    for (const lang of ["en", "pt"]) {
-      const name = `${view}-${theme}-${lang}`;
-      const webp = join(assets, "screenshots", `${name}.webp`);
-      const png = join(assets, "screenshots", `${name}.png`);
-      if (!existsSync(webp) || !existsSync(png)) throw new Error(`missing ${name}`);
-      copyFileSync(webp, join(shots, `${name}.webp`));
-      await sharp(png).resize({ width: 640 }).webp({ quality: 82, effort: 6 }).toFile(join(shots, `${name}-640.webp`));
-      count += 2;
+for (const theme of ["light", "dark"]) {
+  for (const size of ["wide", "compact"]) {
+    const input = join(resolve(source), `inbox-${theme}-${size}.png`);
+    for (const width of WIDTHS[size]) {
+      const base = join(out, `inbox-${theme}-${size}-${width}`);
+      const image = sharp(input).resize({ width, withoutEnlargement: true });
+      await image.clone().avif({ quality: 60, effort: 6 }).toFile(`${base}.avif`);
+      await image.clone().webp({ quality: 82, effort: 6 }).toFile(`${base}.webp`);
+      console.log(`images: ${base}.{avif,webp}`);
     }
   }
 }
-
-for (const file of ["mark.svg", "favicon.svg", "logo.svg", "logo-light.svg", "mark-mono.svg"]) {
-  copyFileSync(join(assets, "brand", file), join(brand, file));
-  count += 1;
-}
-await sharp(join(assets, "brand", "mark-512.png")).resize({ width: 180 }).png({ compressionLevel: 9 }).toFile(join(root, "public", "apple-touch-icon.png"));
-await sharp(join(assets, "brand", "mark-512.png")).resize({ width: 192 }).png({ compressionLevel: 9 }).toFile(join(brand, "mark-192.png"));
-copyFileSync(join(assets, "brand", "mark-512.png"), join(brand, "mark-512.png"));
-copyFileSync(join(assets, "brand", "favicon-32.png"), join(root, "public", "favicon-32.png"));
-count += 4;
-
-// PNG copies of the inbox for the Open Graph cards (scripts/render-og.mjs embeds PNG, not WebP)
-const ogAssets = join(root, "scripts", "og-assets");
-mkdirSync(ogAssets, { recursive: true });
-for (const lang of ["en", "pt"]) {
-  await sharp(join(assets, "screenshots", `inbox-light-${lang}.png`)).resize({ width: 760 }).png({ compressionLevel: 9, palette: false }).toFile(join(ogAssets, `inbox-light-${lang}.png`));
-  count += 1;
-}
-console.log(`prepare-images: wrote ${count} files`);

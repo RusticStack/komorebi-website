@@ -1,0 +1,43 @@
+---
+import { DOC_GROUPS, getDoc } from "../lib/docs";
+import { localePath, ui, type Locale } from "../lib/i18n";
+
+interface Props {
+  locale: Locale;
+  /** The open page's slug, or "index" on the help home. */
+  current: string;
+}
+const { locale, current } = Astro.props;
+const t = ui(locale);
+---
+
+<nav class="side" aria-label={t.docsPages}>
+  <button class="side-search" type="button" data-open-search>
+    {t.searchHelp}
+    <kbd aria-hidden="true">{t.searchHint}</kbd>
+  </button>
+  <ul>
+    <li>
+      <a href={localePath(locale, "/docs")} aria-current={current === "index" ? "page" : undefined}>{locale === "pt" ? "Comece aqui" : "Start here"}</a>
+    </li>
+  </ul>
+  {
+    DOC_GROUPS.map((group) => (
+      <>
+        <h2>{group.title[locale]}</h2>
+        <ul>
+          {group.pages.map((slug) => {
+            const doc = getDoc(locale, slug);
+            return (
+              <li>
+                <a href={doc.path} aria-current={current === slug ? "page" : undefined}>
+                  {doc.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </>
+    ))
+  }
+</nav>

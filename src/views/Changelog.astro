@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import { releases } from "../lib/changelog";
+import { localePath, ui, type Locale } from "../lib/i18n";
+import { breadcrumbs } from "../lib/seo";
+import { REPO_URL } from "../lib/site";
+import { formatDate, getRelease } from "../lib/upstream";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui(locale);
+const pt = locale === "pt";
+const [latest, ...older] = releases();
+const release = getRelease();
+const source = `${REPO_URL}/blob/${release?.tag ?? "main"}/CHANGELOG.md`;
+---
+
+<Base
+  locale={locale}
+  path="/changelog"
+  title={pt ? "Alterações | Komorebi" : "Changelog | Komorebi"}
+  description={pt
+    ? "O que mudou em cada versão do Komorebi, a começar pela mais recente, a partir do CHANGELOG.md do repositório."
+    : "What changed in each Komorebi release, latest first, from the repository's CHANGELOG.md."}
+  og="changelog"
+  jsonLd={[breadcrumbs([{ name: "Komorebi", path: localePath(locale, "/") }, { name: t.changelog, path: localePath(locale, "/changelog") }])]}
+>
+  <div class="wrap">
+    <article class="page">
+      <h1>{t.changelog}</h1>
+      <p class="lede">
+        {pt ? "Cada versão, a mais recente primeiro. O texto vem do " : "Every release, latest first. The text comes from "}
+        <a href={source} rel="noopener">CHANGELOG.md</a>{pt ? " e está em inglês." : "."}
+        {" "}<a href="/releases.xml">RSS</a>.
+      </p>
+      {
+        latest && (
+          <section class="prose" lang="en" aria-labelledby={latest.id}>
+            <div class="release-head">
+              <h2 id={latest.id}>{latest.version}</h2>
+              <time datetime={latest.date}>{formatDate(latest.date, locale)}</time>
+            </div>
+            <Fragment set:html={latest.html} />
+          </section>
+        )
+      }
+      {
+        older.length > 0 && (
+          <section class="prose" aria-labelledby="older">
+            <h2 id="older">{pt ? "Versões anteriores" : "Earlier releases"}</h2>
+            {older.map((entry) => (
+              <details class="older" id={entry.id}>
+                <summary>
+                  {entry.version}
+                  <time datetime={entry.date}>{formatDate(entry.date, locale)}</time>
+                </summary>
+                <div lang="en" set:html={entry.html} />
+              </details>
+            ))}
+          </section>
+        )
+      }
+    </article>
+  </div>
+</Base>

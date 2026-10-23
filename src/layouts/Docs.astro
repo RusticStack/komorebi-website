@@ -1,0 +1,46 @@
+---
+import Base from "./Base.astro";
+import DocsNav from "../components/DocsNav.astro";
+import { ui, type Locale } from "../lib/i18n";
+import type { JsonLd } from "../lib/seo";
+
+interface Props {
+  locale: Locale;
+  path: string;
+  title: string;
+  description: string;
+  current: string;
+  jsonLd: JsonLd[];
+}
+const { locale, path, title, description, current, jsonLd } = Astro.props;
+const t = ui(locale);
+---
+
+<Base locale={locale} path={path} title={title} description={description} og="docs" current="docs" jsonLd={jsonLd} ogType="article">
+  <div class="wrap">
+    <div class="docs">
+      <DocsNav locale={locale} current={current} />
+      <div>
+        <slot />
+        {
+          current !== "index" && (
+            <details class="pages">
+              <summary>{t.allPages}</summary>
+              <DocsNav locale={locale} current={current} />
+            </details>
+          )
+        }
+      </div>
+    </div>
+  </div>
+  <dialog class="dialog" id="search-dialog" aria-label={t.searchLabel} data-index={`/search-${locale}.json`} data-none={t.searchNone} data-count={t.searchCount}>
+    <form method="dialog" role="search">
+      <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="6.75" cy="6.75" r="5" fill="none" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.5 10.5 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      <label class="visually-hidden" for="search-dialog-input">{t.searchLabel}</label>
+      <input id="search-dialog-input" type="search" autocomplete="off" spellcheck="false" placeholder={t.searchHelp} aria-controls="search-dialog-results" />
+      <button class="close" value="close">{t.searchClose}</button>
+    </form>
+    <ul class="results" id="search-dialog-results"></ul>
+    <p class="visually-hidden" aria-live="polite" data-status></p>
+  </dialog>
+</Base>

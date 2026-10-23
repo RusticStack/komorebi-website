@@ -1,0 +1,28 @@
+---
+import Base from "../layouts/Base.astro";
+import { ui } from "../lib/i18n";
+
+// One 404 for both languages: English first, then the same in Portuguese.
+const en = ui("en");
+const pt = ui("pt");
+---
+
+<Base locale="en" path="/"title="Page not found | Komorebi" description={en.notFoundText} og="home" noindex>
+  <div class="wrap">
+    <article class="page lost">
+      <h1>{en.notFoundTitle}</h1>
+      <p class="lede">{en.notFoundText}</p>
+      <div class="cta">
+        <a class="btn" href="/">{en.goHome}</a>
+        <a class="btn soft" href="/docs">{en.readHelp}</a>
+      </div>
+      <div lang="pt-PT">
+        <p class="lede again">{pt.notFoundTitle}. {pt.notFoundText}</p>
+        <div class="cta">
+          <a class="btn soft" href="/pt">{pt.goHome}</a>
+          <a class="btn soft" href="/pt/docs">{pt.readHelp}</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</Base>

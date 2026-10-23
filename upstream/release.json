@@ -8,7 +8,8 @@
     "name": "komorebi-0.7.0-setup.exe",
     "size": 8853160,
     "url": "https://github.com/RusticStack/komorebi/releases/download/v0.7.0/komorebi-0.7.0-setup.exe",
-    "sha256Url": "https://github.com/RusticStack/komorebi/releases/download/v0.7.0/komorebi-0.7.0-setup.exe.sha256"
+    "sha256Url": "https://github.com/RusticStack/komorebi/releases/download/v0.7.0/komorebi-0.7.0-setup.exe.sha256",
+    "sha256": "62aad84058b84aabb78d424ece398207a3c1f9907d3d7b1b190962999c3b3a06"
   },
   "fetchedFrom": "https://github.com/RusticStack/komorebi/tree/v0.7.0"
 }

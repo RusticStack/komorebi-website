@@ -1,0 +1,77 @@
+---
+import Base from "../layouts/Base.astro";
+import { localePath, ui, type Locale } from "../lib/i18n";
+import { renderMarkdown } from "../lib/markdown";
+import { breadcrumbs } from "../lib/seo";
+import { REPO_URL } from "../lib/site";
+import { getRelease, readUpstream } from "../lib/upstream";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui(locale);
+const pt = locale === "pt";
+const release = getRelease();
+// PRIVACY.md at the latest release tag; its own "# Komorebi Privacy Statement" is this page's h1.
+const statement = renderMarkdown(readUpstream("PRIVACY.md").replace(/^# .*\n/, ""));
+const source = `${REPO_URL}/blob/${release?.tag ?? "main"}/PRIVACY.md`;
+
+const summary = pt
+  ? [
+      "O Komorebi não tem telemetria, anúncios nem estatísticas, e não envia relatórios de falhas.",
+      "Não existe nenhum servidor nem conta do Komorebi.",
+      "Liga apenas aos servidores de correio, CardDAV e CalDAV que configurar, sempre com TLS ou STARTTLS.",
+      "Só procura as definições do seu domínio quando o pede, e envia apenas o nome do domínio.",
+      "As imagens remotas de uma mensagem só são transferidas quando escolhe.",
+      "Procurar atualizações é um pedido ao GitHub, quando o pede ou no máximo uma vez por dia se ativar a verificação automática.",
+      "O correio, os contactos, o calendário e as definições ficam em %LOCALAPPDATA%\\komorebi, neste PC.",
+      "As palavras-passe ficam apenas no Gestor de Credenciais do Windows.",
+      "Pode cifrar a cache local com uma chave que só o seu utilizador do Windows desbloqueia.",
+      "Definições > Privacidade > Remover todos os dados apaga tudo o que o Komorebi guardou neste PC.",
+    ]
+  : [
+      "Komorebi has no telemetry, ads or analytics, and uploads no crash reports.",
+      "There is no Komorebi server and no Komorebi account.",
+      "It connects only to the mail, CardDAV and CalDAV servers you set up, always over TLS or STARTTLS.",
+      "It looks up your domain's settings only when you ask, and sends only the domain name.",
+      "Remote images in a message load only when you choose.",
+      "An update check is one request to GitHub, when you ask or at most once a day if you turn on automatic checks.",
+      "Your mail, contacts, calendar and settings stay in %LOCALAPPDATA%\\komorebi on this PC.",
+      "Passwords are kept only in Windows Credential Manager.",
+      "You can encrypt the local cache with a key only your Windows user can unlock.",
+      "Settings > Privacy > Remove all data deletes everything Komorebi stored on this PC.",
+    ];
+---
+
+<Base
+  locale={locale}
+  path="/privacy"
+  title={pt ? "Privacidade | Komorebi" : "Privacy | Komorebi"}
+  description={pt
+    ? "O que o Komorebi guarda no seu PC, a que servidores liga e quando, e como apagar tudo. Um resumo em dez linhas e a declaração completa."
+    : "What Komorebi keeps on your PC, which servers it connects to and when, and how to remove everything. A ten-line summary and the full statement."}
+  og="privacy"
+  current="privacy"
+  jsonLd={[breadcrumbs([{ name: "Komorebi", path: localePath(locale, "/") }, { name: t.privacy, path: localePath(locale, "/privacy") }])]}
+>
+  <div class="wrap">
+    <article class="page">
+      <h1>{t.privacy}</h1>
+      <p class="lede">{pt ? "O resumo, em dez linhas." : "The short version, in ten lines."}</p>
+      <ol class="summary">
+        {summary.map((line) => <li>{line}</li>)}
+      </ol>
+      <div class="prose">
+        <h2 id="statement">{pt ? "A declaração completa" : "The full statement"}</h2>
+        <p>
+          {pt ? "A declaração de privacidade do Komorebi, tal como está no " : "Komorebi's privacy statement, as it stands in the "}
+          <a href={source} rel="noopener">{pt ? "repositório" : "repository"}</a>
+          {release ? (pt ? ` na versão ${release.version}` : ` at version ${release.version}`) : ""}.
+          {pt ? " Está em inglês." : ""}
+        </p>
+      </div>
+      <div class="prose" lang="en" set:html={statement} />
+    </article>
+  </div>
+</Base>

@@ -1,0 +1,124 @@
+---
+import Base from "../layouts/Base.astro";
+import Logo from "../components/Logo.astro";
+import { localePath, ui, type Locale } from "../lib/i18n";
+import { breadcrumbs, softwareApplication } from "../lib/seo";
+import { LATEST_RELEASE_URL } from "../lib/site";
+import { downloadHref, formatDate, getRelease, installerSize } from "../lib/upstream";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui(locale);
+const pt = locale === "pt";
+const p = (path: string) => localePath(locale, path);
+const release = getRelease();
+const installer = release?.installer ?? null;
+const size = installerSize(locale);
+const file = installer?.name ?? "komorebi-<version>-setup.exe";
+const title = pt ? "Transferir o Komorebi para Windows" : "Download Komorebi for Windows";
+const description = pt
+  ? "Transfira o Komorebi para Windows 10 e 11: o instalador, o seu SHA-256, os requisitos e o que esperar do Windows SmartScreen."
+  : "Download Komorebi for Windows 10 and 11: the installer, its SHA-256, the requirements and what to expect from Windows SmartScreen.";
+---
+
+<Base
+  locale={locale}
+  path="/download"
+  title={title}
+  description={description}
+  og="download"
+  current="download"
+  jsonLd={[softwareApplication(locale), breadcrumbs([{ name: "Komorebi", path: p("/") }, { name: t.download, path: p("/download") }])]}
+>
+  <div class="wrap">
+    <section class="dl" aria-labelledby="title">
+      <Logo kind="seal" />
+      <h1 id="title">{pt ? "Transferir o Komorebi" : "Download Komorebi"}</h1>
+      <ul class="meta">
+        {release && <li>{pt ? `Versão ${release.version}` : `Version ${release.version}`}</li>}
+        {size && <li>{size}</li>}
+        <li>{pt ? "Windows 10 e 11, 64 bits" : "Windows 10 and 11, 64-bit"}</li>
+        {release && <li>{pt ? `Publicada a ${formatDate(release.publishedAt, locale)}` : `Released ${formatDate(release.publishedAt, locale)}`}</li>}
+      </ul>
+      <div class="cta">
+        <a class="btn" href={downloadHref()}>{t.downloadForWindows}</a>
+        <p class="fine">
+          {pt ? "Instala-se para o seu utilizador do Windows, sem direitos de administrador." : "Installs for your Windows user, with no administrator rights."}
+        </p>
+      </div>
+    </section>
+
+    <div class="grid2">
+      <section aria-labelledby="smartscreen">
+        <h2 id="smartscreen">{pt ? "Antes de o executar" : "Before you run it"}</h2>
+        <div class="prose">
+          {
+            pt ? (
+              <p>
+                O instalador ainda não tem assinatura Authenticode, por isso o Windows SmartScreen pode mostrar um aviso na primeira vez. Confirme o SHA-256 e escolha <strong>Mais informações</strong> e <strong>Executar mesmo assim</strong>. <a href={p("/code-signing")}>Política de assinatura de código</a>.
+              </p>
+            ) : (
+              <p>
+                The installer is not Authenticode-signed yet, so Windows SmartScreen may warn the first time. Check the SHA-256, then choose <strong>More info</strong> and <strong>Run anyway</strong>. <a href={p("/code-signing")}>Code signing policy</a>.
+              </p>
+            )
+          }
+        </div>
+      </section>
+
+      <section aria-labelledby="check">
+        <h2 id="check">{pt ? "Verificar o ficheiro" : "Check the file"}</h2>
+        <div class="prose">
+          {
+            installer?.sha256 ? (
+              <p>
+                <span class="fine">SHA-256 {pt ? "de" : "of"} {installer.name}</span>
+                <code class="hash">{installer.sha256}</code>
+              </p>
+            ) : (
+              <p>
+                {pt ? "O SHA-256 está no ficheiro .sha256 da " : "The SHA-256 is in the .sha256 file of the "}
+                <a href={release?.htmlUrl ?? LATEST_RELEASE_URL}>{pt ? "versão no GitHub" : "release on GitHub"}</a>.
+              </p>
+            )
+          }
+          <p>{pt ? "No PowerShell, na pasta da transferência:" : "In PowerShell, in the download folder:"}</p>
+          <pre><code>{`(Get-FileHash .\\${file}).Hash.ToLower()`}</code></pre>
+          <p>{pt ? "Os dois valores têm de ser iguais. Se forem diferentes, apague o ficheiro e transfira-o de novo." : "The two must match. If they differ, delete the file and download it again."}</p>
+        </div>
+      </section>
+
+      <section aria-labelledby="needs">
+        <h2 id="needs">{pt ? "Requisitos" : "Requirements"}</h2>
+        <div class="prose">
+          <ul>
+            <li>{pt ? "Windows 10 ou Windows 11, 64 bits (x64)." : "Windows 10 or Windows 11, 64-bit (x64)."}</li>
+            <li>{pt ? "Uma conta de email com IMAP e SMTP e uma palavra-passe ou palavra-passe de aplicação." : "An email account with IMAP and SMTP and a password or app password."}</li>
+            <li>{pt ? "Não há início de sessão OAuth: contas que o exigem, como Gmail e Microsoft 365, não funcionam." : "There is no OAuth sign-in: accounts that require it, such as Gmail and Microsoft 365, do not work."}</li>
+          </ul>
+        </div>
+      </section>
+
+      <section aria-labelledby="updates">
+        <h2 id="updates">{pt ? "Atualizações" : "Updates"}</h2>
+        <div class="prose">
+          <p>
+            {pt
+              ? "O Komorebi procura versões novas no GitHub e só instala uma se o SHA-256 coincidir e a assinatura Ed25519 for válida para a chave incluída na aplicação."
+              : "Komorebi looks for new versions on GitHub and installs one only if its SHA-256 matches and its Ed25519 signature verifies against the key built into the app."}{" "}
+            <a href={p("/docs/updates")}>{pt ? "Como as atualizações são verificadas" : "How updates are verified"}</a>.
+          </p>
+          {
+            release && (
+              <p>
+                <a href={p("/changelog")}>{pt ? `O que mudou na ${release.version}` : `What changed in ${release.version}`}</a>
+              </p>
+            )
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+</Base>

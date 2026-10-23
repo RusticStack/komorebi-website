@@ -1,8 +1,8 @@
 # Komorebi website
 
-The website and documentation for [Komorebi](https://github.com/RusticStack/komorebi), a small, fast, free and open-source email client for Windows 10 and 11. Served at https://komorebi.rusticstack.com, in English and European Portuguese.
+The website and help pages for [Komorebi](https://github.com/RusticStack/komorebi), a small, private email app for Windows 10 and 11. Served at https://komorebi.rusticstack.com, in English and European Portuguese.
 
-Next.js 16 (App Router, static export) with Fumadocs headless (`fumadocs-core`, `fumadocs-mdx`, no `fumadocs-ui`, no Tailwind). The styles are plain CSS in `app/site.css` with the system fonts, in the Fluent 2 look of the app.
+Astro, static output, one hand-written stylesheet (`src/styles/site.css`) and one small script (`public/site.js`, the theme toggle and the help search). Every page reads without JavaScript. The look is the Komorebi brand, website variant B; see [docs/DESIGN.md](docs/DESIGN.md).
 
 ## Develop
 
@@ -13,42 +13,42 @@ pnpm install
 pnpm dev
 ```
 
-Build and preview the static output:
+Build and check the static output in `dist/`:
 
 ```shell
 pnpm build
-pnpm preview       # serves out/ on http://localhost:3000
-pnpm check:links   # every internal link, image and #fragment in out/
-pnpm typecheck
+pnpm preview
+pnpm typecheck     # astro check
+pnpm check:links   # every internal link, image and #fragment
+pnpm check:seo     # title, description, canonical, hreflang and JSON-LD on every page; no title twice
+pnpm words         # help page word counts, now and on origin/main
 ```
 
 ## What comes from the Komorebi repository
 
-`pnpm build` first runs `scripts/upstream.mjs`. It asks the GitHub API for the latest Komorebi release and fetches `CHANGELOG.md`, `PRIVACY.md` and `README.md` at that release's tag into `.generated/` (ignored by git):
+`pnpm build` first runs `scripts/upstream.mjs`. It asks the GitHub API for the latest Komorebi release, reads the installer's SHA-256 from its `.sha256` asset, and fetches `CHANGELOG.md`, `PRIVACY.md` and `README.md` at that release's tag into `.generated/` (ignored by git):
 
-- the download button and the JSON-LD `downloadUrl` point at that release's installer;
-- the Changelog page renders `CHANGELOG.md`, the Privacy page renders `PRIVACY.md`;
-- the Keyboard shortcuts page is generated from the README's "Keyboard" table. Portuguese rows are translated in `lib/shortcuts.ts` by their English text; a row that has no translation yet stays in English and the build prints a warning.
+- the download buttons and the JSON-LD `downloadUrl` point at that release's installer, or at `releases/latest` when there is none;
+- the download page shows the version, size, date and SHA-256;
+- the Changelog page and `/releases.xml` (RSS) render `CHANGELOG.md`; the Privacy page renders `PRIVACY.md` under a ten-line summary.
 
-When GitHub cannot be reached, the build uses the snapshot committed in `upstream/`. Refresh it after a release with `pnpm sync:upstream` and commit the result. A new Komorebi release shows on the site after the next deploy.
+When GitHub cannot be reached, the build uses the snapshot committed in `upstream/` (`KOMOREBI_UPSTREAM_OFFLINE=1` forces it). Refresh it after a release with `pnpm sync:upstream` and commit the result.
 
 ## Content
 
-- Docs: `content/docs/<page>.mdx` (English) and `<page>.pt.mdx` (European Portuguese, never Brazilian). Order comes from `meta.json` and `meta.pt.json`. Every page must exist in both languages.
-- Home page copy: `lib/home-copy.ts`. Interface strings: `lib/i18n.ts`.
-- MDX components: `<Shot name="compose-table" alt="..." lang="pt" />` (a light and dark screenshot), `<Callout title="..." variant="caution">`, `<Shortcuts />`, `<DownloadLink />`.
-
-English pages are at `/...`, Portuguese pages at `/pt/...`. Each language has its own root layout, so `<html lang>` is right in the HTML.
+- Help pages: `src/content/docs/en/<slug>.md` and `src/content/docs/pt/<slug>.md` (European Portuguese, AO90). Front matter: `title`, `lede` (the line under the title) and `description` (the meta description). The groups and order are in `src/lib/docs.ts`. Every page exists in both languages. Keep each page to one screen: numbered steps, keys as `<kbd>`, a tip as a blockquote that starts with a bold line.
+- Other pages: `src/views/*.astro`, routed for both languages by `src/pages/[...path].astro`. Interface strings: `src/lib/i18n.ts`.
+- English pages are at `/...`, Portuguese pages at `/pt/...`.
 
 ## Images
 
-Screenshots and brand files in `public/` come from the Komorebi launch assets, made with the app's offline snapshot tool on a throwaway cache with made-up messages. `scripts/prepare-images.mjs` copies them and writes the 640 px copies; it needs sharp (`KOMOREBI_ASSET_TOOLS`), which is not a dependency of the site.
-
-`scripts/render-og.mjs` renders the Open Graph card of every page, in both languages, with resvg and the Geist font, into `public/og/` at build time.
+- Logo and wordmark: `src/components/Logo.astro` and `public/brand/` (from the brand folder).
+- The product picture on the home page is a design preview until real screenshots of the new app exist: see [docs/TODO-SCREENSHOTS.md](docs/TODO-SCREENSHOTS.md). `pnpm images <folder>` encodes it to AVIF and WebP in `public/preview/`.
+- `pnpm og` renders the Open Graph cards (`public/og/`) and the PNG icons with resvg. The output is committed; run it on Windows, where the line is set in Segoe UI.
 
 ## Deploy
 
-The Vercel project `komorebi-website` is linked to this repository. `vercel.json` sets the framework to none, `pnpm install --frozen-lockfile`, `pnpm build` and the output directory `out`. Pushes to `main` deploy to production; other branches get preview URLs. The domain `komorebi.rusticstack.com` points at Vercel with a DNS record in `rusticstack.com`.
+The Vercel project `komorebi-website` is linked to this repository. `vercel.json` sets the framework to none, `pnpm install --frozen-lockfile`, `pnpm build`, the output directory `dist` and redirects for renamed help pages. Pushes to `main` deploy to production; other branches get preview URLs.
 
 ## License
 

@@ -1,0 +1,32 @@
+---
+// The slot for the launch film (F:\Projects\komorebi-brand\final\LAUNCH.md). It renders nothing
+// until public/media/komorebi-film.webm or .mp4 exists. The film is silent by design; its words
+// ship as a caption track, public/media/komorebi-film.<locale>.vtt, when that file exists.
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import type { Locale } from "../lib/i18n";
+
+interface Props {
+  locale: Locale;
+  label: string;
+}
+const { locale, label } = Astro.props;
+const media = (name: string) => existsSync(join(process.cwd(), "public", "media", name));
+const sources = [
+  { file: "komorebi-film.webm", type: "video/webm" },
+  { file: "komorebi-film.mp4", type: "video/mp4" },
+].filter((s) => media(s.file));
+const captions = media(`komorebi-film.${locale}.vtt`) ? `/media/komorebi-film.${locale}.vtt` : null;
+const poster = media("komorebi-film-poster.webp") ? "/media/komorebi-film-poster.webp" : undefined;
+---
+
+{
+  sources.length > 0 && (
+    <video class="film" controls muted playsinline preload="none" poster={poster} width="1920" height="1080" aria-label={label}>
+      {sources.map((s) => (
+        <source src={`/media/${s.file}`} type={s.type} />
+      ))}
+      {captions && <track kind="captions" src={captions} srclang={locale === "pt" ? "pt-PT" : "en"} default />}
+    </video>
+  )
+}

@@ -36,6 +36,13 @@ async function fetchRelease() {
   const response = await get(`https://api.github.com/repos/${REPO}/releases/latest`, "application/vnd.github+json");
   const data = await response.json();
   const installer = data.assets.find((asset) => /^komorebi-.+-setup\.exe$/.test(asset.name));
+  const sha256Asset = installer ? data.assets.find((asset) => asset.name === `${installer.name}.sha256`) : null;
+  let sha256 = null;
+  if (sha256Asset) {
+    // The .sha256 asset holds the installer's hash, optionally followed by the file name.
+    const text = await (await get(sha256Asset.browser_download_url, "text/plain")).text();
+    sha256 = /\b[0-9a-f]{64}\b/i.exec(text)?.[0].toLowerCase() ?? null;
+  }
   return {
     tag: data.tag_name,
     version: String(data.tag_name).replace(/^v/, ""),
@@ -47,7 +54,8 @@ async function fetchRelease() {
           name: installer.name,
           size: installer.size,
           url: installer.browser_download_url,
-          sha256Url: data.assets.find((asset) => asset.name === `${installer.name}.sha256`)?.browser_download_url ?? null,
+          sha256Url: sha256Asset?.browser_download_url ?? null,
+          sha256,
         }
       : null,
   };

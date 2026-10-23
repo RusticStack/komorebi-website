@@ -1,0 +1,92 @@
+export type Locale = "en" | "pt";
+export const LOCALES: Locale[] = ["en", "pt"];
+
+/** <html lang> and hreflang. The Portuguese is European Portuguese (AO90) only. */
+export const HTML_LANG: Record<Locale, string> = { en: "en", pt: "pt-PT" };
+export const OG_LOCALE: Record<Locale, string> = { en: "en_GB", pt: "pt_PT" };
+
+/** A site path in a locale: "/docs" is "/pt/docs" in Portuguese, "/" is "/pt". */
+export function localePath(locale: Locale, path: string): string {
+  if (locale === "en") return path;
+  return path === "/" ? "/pt" : `/pt${path}`;
+}
+
+const EN = {
+  skip: "Skip to content",
+  home: "Komorebi home",
+  nav: "Main",
+  help: "Help",
+  privacy: "Privacy",
+  source: "Source",
+  download: "Download",
+  downloadForWindows: "Download for Windows",
+  changelog: "Changelog",
+  codeSigning: "Code signing policy",
+  about: "About",
+  siteSource: "Source of this site",
+  language: "Language",
+  themeToggle: "Dark theme",
+  footerFree: "Free and open source. Windows 10 and 11.",
+  footerTracking: "No tracking on this site.",
+  footerLinks: "More",
+  docsPages: "Help pages",
+  allPages: "All help pages",
+  previous: "Previous",
+  next: "Next",
+  pager: "Previous and next page",
+  breadcrumb: "Breadcrumb",
+  searchHelp: "Search help",
+  searchLabel: "Search the help pages",
+  searchNone: "No page matches.",
+  searchCount: "{n} pages found",
+  searchClose: "Close",
+  searchHint: "Ctrl K",
+  minutes: "min",
+  notFoundTitle: "Page not found",
+  notFoundText: "The page you asked for does not exist or has moved.",
+  goHome: "Go to the home page",
+  readHelp: "Read the help",
+};
+
+export type UiStrings = Record<keyof typeof EN, string>;
+
+const PT: UiStrings = {
+  skip: "Saltar para o conteúdo",
+  home: "Página inicial do Komorebi",
+  nav: "Principal",
+  help: "Ajuda",
+  privacy: "Privacidade",
+  source: "Código",
+  download: "Transferir",
+  downloadForWindows: "Transferir para Windows",
+  changelog: "Alterações",
+  codeSigning: "Política de assinatura de código",
+  about: "Sobre",
+  siteSource: "Código deste site",
+  language: "Idioma",
+  themeToggle: "Tema escuro",
+  footerFree: "Gratuito e de código aberto. Windows 10 e 11.",
+  footerTracking: "Este site não segue ninguém.",
+  footerLinks: "Mais",
+  docsPages: "Páginas de ajuda",
+  allPages: "Todas as páginas de ajuda",
+  previous: "Anterior",
+  next: "Seguinte",
+  pager: "Página anterior e seguinte",
+  breadcrumb: "Localização",
+  searchHelp: "Pesquisar na ajuda",
+  searchLabel: "Pesquisar nas páginas de ajuda",
+  searchNone: "Nenhuma página corresponde.",
+  searchCount: "{n} páginas encontradas",
+  searchClose: "Fechar",
+  searchHint: "Ctrl K",
+  minutes: "min",
+  notFoundTitle: "Página não encontrada",
+  notFoundText: "A página que procura não existe ou mudou de sítio.",
+  goHome: "Ir para a página inicial",
+  readHelp: "Ler a ajuda",
+};
+
+export function ui(locale: Locale): UiStrings {
+  return locale === "pt" ? PT : EN;
+}

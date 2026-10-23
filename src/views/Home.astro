@@ -1,0 +1,96 @@
+---
+import Base from "../layouts/Base.astro";
+import Logo from "../components/Logo.astro";
+import ProductPicture from "../components/ProductPicture.astro";
+import Film from "../components/Film.astro";
+import { localePath, ui, type Locale } from "../lib/i18n";
+import { previewPreloads } from "../lib/preview";
+import { softwareApplication, website } from "../lib/seo";
+import { downloadHref, installerSize } from "../lib/upstream";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui(locale);
+const pt = locale === "pt";
+const size = installerSize(locale);
+
+const copy = pt
+  ? {
+      title: "Komorebi: uma pequena aplicação de email privada para Windows",
+      description:
+        "O Komorebi é uma pequena aplicação de email privada para Windows 10 e 11. Lê e envia o seu correio por IMAP e SMTP, sem IA e sem telemetria. Gratuito e de código aberto.",
+      lede: "O Komorebi é uma pequena aplicação de email privada para Windows. Lê e envia o seu correio, e depois deixa-o em paz.",
+      fine: size ? `Gratuito. ${size}. Windows 10 e 11.` : "Gratuito. Windows 10 e 11.",
+      notes: "Antes de instalar",
+      alt: "Caixa de entrada do Komorebi, pré-visualização do design",
+      caption: "Pré-visualização do design da caixa de entrada. O Komorebi segue o tema do Windows, claro ou escuro.",
+      film: "Filme de apresentação do Komorebi, sem som",
+      principles: [
+        ["Pequeno", size ? `Um instalador de ${size}. Abre depressa e fica leve enquanto espera.` : "Abre depressa e fica leve enquanto espera."],
+        ["Privado", "Sem conta connosco, sem rastreio, sem IA. O seu correio vai deste PC para o seu servidor, e volta."],
+        ["Sossegado", "Sem feed e nada a pedir atenção. As notificações ficam desligadas até as ativar."],
+      ],
+    }
+  : {
+      title: "Komorebi: a small, private email app for Windows",
+      description:
+        "Komorebi is a small, private email app for Windows 10 and 11. It reads and sends your mail over IMAP and SMTP, with no AI and no telemetry. Free and open source.",
+      lede: "Komorebi is a small, private email app for Windows. It reads and sends your mail, and then it leaves you alone.",
+      fine: size ? `Free. ${size}. Windows 10 and 11.` : "Free. Windows 10 and 11.",
+      notes: "Before you install",
+      alt: "Komorebi inbox, design preview",
+      caption: "A design preview of the inbox. Komorebi follows the Windows theme, light or dark.",
+      film: "Komorebi launch film, silent",
+      principles: [
+        ["Small", size ? `A ${size} installer. It opens quickly and stays light while it waits.` : "It opens quickly and stays light while it waits."],
+        ["Private", "No account with us, no tracking, no AI. Your mail goes from this PC to your server and back."],
+        ["Quiet", "No feed and nothing asking for attention. Notifications are off until you turn them on."],
+      ],
+    };
+---
+
+<Base
+  locale={locale}
+  path="/"
+  title={copy.title}
+  description={copy.description}
+  og="home"
+  jsonLd={[website(locale), softwareApplication(locale)]}
+  preload={previewPreloads()}
+>
+  <div class="wrap">
+    <section class="hero" aria-labelledby="tagline">
+      <Logo kind="seal" />
+      <h1 id="tagline" set:html={pt ? "Ler. Responder.<br>Descansar." : "Read. Reply.<br>Rest."} />
+      <p class="lede">{copy.lede}</p>
+      <div class="cta">
+        <a class="btn" href={downloadHref()}>{t.downloadForWindows}</a>
+        <p class="fine">{copy.fine} <a href={localePath(locale, "/download")}>{copy.notes}</a></p>
+      </div>
+    </section>
+
+    <figure>
+      <div class="shot">
+        <!-- Placeholder: brand design preview of the inbox, not a screenshot. See docs/TODO-SCREENSHOTS.md. -->
+        <ProductPicture alt={copy.alt} />
+      </div>
+      <figcaption class="cap">{copy.caption}</figcaption>
+    </figure>
+
+    <!-- Launch film slot: renders nothing until public/media/komorebi-film.webm or .mp4 exists. -->
+    <Film locale={locale} label={copy.film} />
+
+    <ul class="principles">
+      {
+        copy.principles.map(([title, text]) => (
+          <li>
+            <h2>{title}</h2>
+            <p>{text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>

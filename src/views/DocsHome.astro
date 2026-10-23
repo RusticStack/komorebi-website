@@ -1,0 +1,66 @@
+---
+import Docs from "../layouts/Docs.astro";
+import { DOC_GROUPS, getDoc } from "../lib/docs";
+import { localePath, ui, type Locale } from "../lib/i18n";
+import { breadcrumbs } from "../lib/seo";
+import { ISSUES_URL } from "../lib/site";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = ui(locale);
+const pt = locale === "pt";
+const title = pt ? "Ajuda do Komorebi" : "Komorebi help";
+const description = pt
+  ? "Respostas curtas sobre o Komorebi: instalar, adicionar uma conta, escrever correio, regras, contactos, calendário, privacidade e atalhos de teclado."
+  : "Short answers about Komorebi: installing, adding an account, writing mail, rules, contacts, calendar, privacy and keyboard shortcuts.";
+---
+
+<Docs
+  locale={locale}
+  path="/docs"
+  title={title}
+  description={description}
+  current="index"
+  jsonLd={[breadcrumbs([{ name: "Komorebi", path: localePath(locale, "/") }, { name: t.help, path: localePath(locale, "/docs") }])]}
+>
+  <h1>{t.help}</h1>
+  <p class="lede">{pt ? "Respostas curtas. Cada uma leva um ou dois minutos." : "Short answers. Each one takes a minute or two."}</p>
+
+  <div class="search" role="search">
+    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="6.75" cy="6.75" r="5" fill="none" stroke="currentColor" stroke-width="1.5"></circle><path d="m10.5 10.5 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+    <label class="visually-hidden" for="search-input">{t.searchLabel}</label>
+    <input id="search-input" type="search" autocomplete="off" spellcheck="false" placeholder={t.searchHelp} aria-controls="search-results" />
+    <kbd aria-hidden="true">{t.searchHint}</kbd>
+  </div>
+  <ul class="results" id="search-results"></ul>
+  <p class="visually-hidden" aria-live="polite" id="search-status"></p>
+
+  <h2 class="want">{pt ? "Quero…" : "I want to…"}</h2>
+  {
+    DOC_GROUPS.map((group) => (
+      <section aria-label={group.title[locale]}>
+        <h3 class="want-group">{group.title[locale]}</h3>
+        <ul class="index">
+          {group.pages.map((slug) => {
+            const doc = getDoc(locale, slug);
+            return (
+              <li>
+                <a href={doc.path}>
+                  {doc.title}
+                  <span>
+                    {doc.minutes} {t.minutes}
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))
+  }
+  <p class="fine still">
+    {pt ? "Ainda com dúvidas? " : "Still stuck? "}<a href={ISSUES_URL} rel="noopener">{pt ? "Abra um pedido no GitHub" : "Open an issue on GitHub"}</a>.
+  </p>
+</Docs>

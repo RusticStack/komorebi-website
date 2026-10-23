@@ -1,11 +1,7 @@
 node_modules/
-.next/
-.source/
+dist/
+.astro/
 .generated/
-out/
-public/og/
-next-env.d.ts
-*.tsbuildinfo
 .vercel
 .env*
 *.log

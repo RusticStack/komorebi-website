@@ -3,21 +3,32 @@
   "framework": null,
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm build",
-  "outputDirectory": "out",
+  "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/docs/contacts-and-calendar", "destination": "/docs/contacts", "permanent": true },
+    { "source": "/pt/docs/contacts-and-calendar", "destination": "/pt/docs/contacts", "permanent": true },
+    { "source": "/docs/certificates-and-encrypted-cache", "destination": "/docs/certificates", "permanent": true },
+    { "source": "/pt/docs/certificates-and-encrypted-cache", "destination": "/pt/docs/certificates", "permanent": true },
+    { "source": "/md/:path*", "destination": "/:path*", "permanent": true }
+  ],
   "headers": [
     {
-      "source": "/shots/(.*)",
+      "source": "/(preview|brand|og)/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, must-revalidate" }]
     },
     {
-      "source": "/(llms.txt|llms-full.txt)",
+      "source": "/(llms.txt|llms-full.txt|robots.txt)",
       "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
     },
     {
-      "source": "/md/(.*)",
-      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+      "source": "/releases.xml",
+      "headers": [{ "key": "Content-Type", "value": "application/rss+xml; charset=utf-8" }]
+    },
+    {
+      "source": "/(.*)manifest.webmanifest",
+      "headers": [{ "key": "Content-Type", "value": "application/manifest+json" }]
     },
     {
       "source": "/(.*)",

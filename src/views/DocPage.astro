@@ -1,0 +1,58 @@
+---
+import Docs from "../layouts/Docs.astro";
+import { getDoc, neighbours } from "../lib/docs";
+import { localePath, ui, type Locale } from "../lib/i18n";
+import { breadcrumbs, faqPage } from "../lib/seo";
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+const { locale, slug } = Astro.props;
+const t = ui(locale);
+const doc = getDoc(locale, slug);
+const { previous, next } = neighbours(locale, slug);
+const help = localePath(locale, "/docs");
+const jsonLd = [
+  breadcrumbs([
+    { name: "Komorebi", path: localePath(locale, "/") },
+    { name: t.help, path: help },
+    { name: doc.title, path: doc.path },
+  ]),
+  ...(doc.faq.length ? [faqPage(doc.faq, locale)] : []),
+];
+---
+
+<Docs
+  locale={locale}
+  path={`/docs/${slug}`}
+  title={`${doc.title} | ${locale === "pt" ? "Ajuda do Komorebi" : "Komorebi help"}`}
+  description={doc.description}
+  current={slug}
+  jsonLd={jsonLd}
+>
+  <article>
+    <nav class="crumb" aria-label={t.breadcrumb}><a href={help}>{t.help}</a></nav>
+    <h1>{doc.title}</h1>
+    <p class="lede">{doc.lede}</p>
+    <div class="prose" set:html={doc.html} />
+  </article>
+  <nav class="pager" aria-label={t.pager}>
+    {
+      previous && (
+        <a href={previous.path} rel="prev">
+          {t.previous}
+          <b>{previous.title}</b>
+        </a>
+      )
+    }
+    {
+      next && (
+        <a class="next" href={next.path} rel="next">
+          {t.next}
+          <b>{next.title}</b>
+        </a>
+      )
+    }
+  </nav>
+</Docs>
