@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.source/
+.generated/
+out/
+public/og/
+next-env.d.ts
+*.tsbuildinfo
+.vercel
+.env*
+*.log
+.DS_Store
+Thumbs.db

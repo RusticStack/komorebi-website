@@ -1,0 +1,49 @@
+---
+title: Regras
+description: Regras locais que arquivam, eliminam ou marcam o correio novo da Caixa de entrada quando chega, o que nunca fazem, e como as copiar como script Sieve.
+---
+
+Definições > **Regras** tem uma lista ordenada de regras simples para cada conta. Atuam sobre o correio novo na Caixa de entrada dessa conta, neste computador, enquanto o Komorebi está aberto.
+
+<Shot name="rules" lang="pt" alt="Definições, Regras: quatro regras de correio da conta, uma em pausa, com a atividade recente" />
+
+## Condições
+
+Uma regra olha para:
+
+- o remetente,
+- Para ou Cc,
+- o assunto,
+- se a mensagem tem anexo.
+
+As condições de texto podem ser **contém**, **não contém**, **é**, **começa por** ou **termina em**, e ignoram maiúsculas e acentos. Uma regra aplica-se quando todas as condições coincidem, ou qualquer uma delas, como preferir.
+
+## Ações
+
+- Mover a mensagem para uma pasta.
+- Eliminá-la (mover para Itens eliminados).
+- Marcá-la como lida.
+- Marcá-la como importante.
+- Parar: nenhuma regra seguinte olha para a mensagem.
+
+<Shot name="rule-edit" lang="pt" alt="Editar uma regra: as condições e as ações" />
+
+## Quando as regras atuam
+
+As regras atuam no processo de sincronização antes de uma mensagem nova ser guardada, por isso uma mensagem que uma regra arquiva nunca aparece na Caixa de entrada nem gera notificação, e uma marcada como lida também não.
+
+Atuam enquanto o Komorebi está aberto. O correio que chegou com o Komorebi fechado é ordenado no arranque seguinte; cada Caixa de entrada guarda uma marca de água, por isso o correio mais antigo nunca é apanhado. Uma regra cuja pasta desapareceu fica em pausa até escolher outra.
+
+## O que as regras nunca fazem
+
+As regras nunca enviam correio: não há reencaminhamento, redirecionamento nem resposta automática. Ficam neste computador, e nada sobre elas é enviado ao servidor além dos movimentos e marcas que fazem lá, na mesma ligação IMAP que o Komorebi já usa.
+
+## Atividade
+
+A página lista o que as execuções automáticas fizeram: a hora, a regra, o remetente e o assunto da mensagem, e o que foi feito. Guarda no máximo 500 linhas por conta, e **Limpar atividade** remove-as.
+
+## Copiar como Sieve
+
+**Copiar como Sieve** põe as suas regras na área de transferência como script Sieve, para colar nos filtros de e-mail do seu fornecedor se quiser que o servidor as aplique com o Komorebi fechado. Nada é enviado; o Komorebi não usa ManageSieve.
+
+Ainda não é possível executar as regras a pedido numa pasta existente.

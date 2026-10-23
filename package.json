@@ -1,0 +1,45 @@
+{
+  "name": "komorebi-website",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Website and documentation for Komorebi, deployed to komorebi.rusticstack.com",
+  "license": "GPL-3.0-or-later",
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "postinstall": "fumadocs-mdx",
+    "prepare:data": "node scripts/upstream.mjs && node scripts/render-og.mjs",
+    "sync:upstream": "node scripts/upstream.mjs --snapshot",
+    "images": "node scripts/prepare-images.mjs ../komorebi-launch-assets",
+    "dev": "pnpm prepare:data && next dev",
+    "build": "pnpm prepare:data && next build && node scripts/flatten-rsc.mjs",
+    "preview": "node scripts/serve.mjs out",
+    "check:links": "node scripts/check-links.mjs out",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "fumadocs-core": "16.17.3",
+    "fumadocs-mdx": "15.4.7",
+    "next": "16.4.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "2.6.2",
+    "@types/mdx": "2.0.14",
+    "@types/node": "^26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "geist": "^1.8.2",
+    "rehype-slug": "^6.0.0",
+    "rehype-stringify": "^10.0.1",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-rehype": "^11.1.2",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,52 @@
+---
+title: FAQ
+description: Short answers about price, providers, SmartScreen, privacy, languages and what Komorebi deliberately does not do.
+---
+
+## Is Komorebi free?
+
+Yes. It is free and open source under GPL-3.0-or-later, with no ads, no paid tier and no account to create.
+
+## Which email providers work?
+
+Any provider that offers IMAP and SMTP with a password or an app password, over TLS or STARTTLS. Purelymail and Postale.io have built-in settings, and any other server can be set up by hand. See [Adding an account](/docs/adding-an-account).
+
+## Does it work with Gmail or Outlook.com?
+
+Komorebi has no OAuth sign-in, and Gmail and Microsoft 365 sign-in are outside the project's scope. Accounts that only allow OAuth for IMAP and SMTP will not work.
+
+## Why does Windows SmartScreen warn about the installer?
+
+The installer is not Authenticode-signed yet, so SmartScreen does not recognise it. Check the SHA-256 published with the release ([how](/docs/getting-started#check-the-download)), then choose More info and Run anyway. An application to SignPath Foundation for free code signing is in progress; see the [code signing policy](/code-signing).
+
+## Does Komorebi send anything to its developers?
+
+No. There is no telemetry, no analytics and no crash upload, and there is no Komorebi server. The only request that is not to a server you set up is the update check to GitHub. See [Privacy and what leaves your computer](/docs/privacy-and-network).
+
+## Where are my passwords?
+
+In Windows Credential Manager, never in Komorebi's files.
+
+## Can I encrypt my mail on disk?
+
+Yes: Settings > Privacy > Encrypt the mail cache on this computer. See [the encrypted cache](/docs/certificates-and-encrypted-cache#encrypted-cache).
+
+## Which languages does it speak?
+
+English and European Portuguese. It follows the Windows display language, and Settings > General > Language can pin one.
+
+## Does it run on Windows on ARM, macOS or Linux?
+
+Releases are built for Windows 10 and 11 on x64. There are no builds for other systems.
+
+## Can Komorebi decrypt S/MIME or PGP mail?
+
+No. Encrypted mail is shown as encrypted, and the encrypted part can be saved as a file for a program that has the key.
+
+## Will it get AI features?
+
+No. AI features and telemetry are explicit non-goals of the project.
+
+## Where do I report a problem?
+
+On [GitHub Issues](https://github.com/RusticStack/komorebi/issues). The opt-in diagnostics log (Settings > Privacy) holds only command names, codes and timings, never mail, so it is safe to look at before you share it.

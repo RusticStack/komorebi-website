@@ -1,0 +1,14 @@
+{
+  "tag": "v0.7.0",
+  "version": "0.7.0",
+  "name": "Komorebi 0.7.0",
+  "publishedAt": "2026-10-23T12:50:40Z",
+  "htmlUrl": "https://github.com/RusticStack/komorebi/releases/tag/v0.7.0",
+  "installer": {
+    "name": "komorebi-0.7.0-setup.exe",
+    "size": 8853160,
+    "url": "https://github.com/RusticStack/komorebi/releases/download/v0.7.0/komorebi-0.7.0-setup.exe",
+    "sha256Url": "https://github.com/RusticStack/komorebi/releases/download/v0.7.0/komorebi-0.7.0-setup.exe.sha256"
+  },
+  "fetchedFrom": "https://github.com/RusticStack/komorebi/tree/v0.7.0"
+}

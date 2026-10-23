@@ -1,0 +1,49 @@
+---
+title: Rules
+description: Local rules that file, delete or mark new Inbox mail as it arrives, what they never do, and how to copy them as a Sieve script.
+---
+
+Settings > **Rules** holds an ordered list of simple rules for each account. They act on new mail in that account's Inbox, on this computer, while Komorebi runs.
+
+<Shot name="rules" alt="Settings, Rules: four mail rules for the account, one paused, with recent activity" />
+
+## Conditions
+
+A rule looks at:
+
+- the sender,
+- To or Cc,
+- the subject,
+- whether the message has an attachment.
+
+Text conditions can be **contains**, **does not contain**, **is**, **starts with** or **ends with**, and ignore case and accents. A rule matches when all of its conditions match, or any of them, as you choose.
+
+## Actions
+
+- Move the message to a folder.
+- Delete it (move it to Trash).
+- Mark it read.
+- Mark it important.
+- Stop: no later rule looks at the message.
+
+<Shot name="rule-edit" alt="Editing a rule: its conditions and actions" />
+
+## When rules run
+
+Rules run in the sync worker before a new message is stored, so a message a rule files away never shows in the Inbox and raises no notification, and one marked read raises none either.
+
+They run while Komorebi is open. Mail that arrived while it was closed is sorted at the next start; each Inbox keeps a watermark, so older mail is never swept up. A rule whose folder is gone is paused until you pick another.
+
+## What rules never do
+
+Rules never send mail: there is no forward, redirect or auto-reply. They stay on this computer, and nothing about them is sent to your server apart from the moves and flags they make there, on the same IMAP connection Komorebi already uses.
+
+## Activity
+
+The page lists what automatic runs did: the time, the rule, the message's sender and subject, and what was done. It keeps at most 500 lines per account, and **Clear activity** removes them.
+
+## Copy as Sieve
+
+**Copy as Sieve** puts your rules on the clipboard as a Sieve script, to paste into your provider's mail filters if you want the server to apply them while Komorebi is closed. Nothing is sent; Komorebi does not use ManageSieve.
+
+Running the rules on demand on an existing folder is not available yet.

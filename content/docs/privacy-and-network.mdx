@@ -1,0 +1,39 @@
+---
+title: Privacy and what leaves your computer
+description: What Komorebi stores on your computer, every connection it makes and when, how remote content is handled, and how to remove everything.
+---
+
+Komorebi has no telemetry, no ads and no analytics, and uploads no crash reports. There is no Komorebi service: the app talks only to servers you set up, and to GitHub when you ask about updates. The full statement is on the [Privacy](/privacy) page.
+
+## What leaves your computer
+
+| To | What | When |
+|---|---|---|
+| Your IMAP server | Sign-in, folder sync, flags, moves, deletes, drafts, Sent copies, the moves and flags of your rules | While Komorebi runs; TLS or STARTTLS only |
+| Your SMTP server | The messages you send, and your answers to invitations | After you press Send and the undo window ends |
+| Your CardDAV and CalDAV servers | Sign-in, contacts and events, and your changes in read and write mode | Only for accounts where you set them up, while Komorebi runs |
+| Your DNS resolver and your domain's web server | Your email domain (never the address or password) | Only when you press Continue or Find settings for a domain without built-in settings, or Find for contacts and calendars |
+| The image hosts of a message | Requests for its images, over HTTPS, with no cookies or Referer | Only after you choose to load that message's images |
+| `api.github.com` and `github.com` | One request for the latest release; the installer download | When you check for updates, or once a day if automatic checks are on; the download only when you press Download and install |
+
+Plaintext connections are refused. With `KOMOREBI_OFFLINE=1` (a development switch) nothing is sent at all.
+
+## Remote content
+
+HTML mail is drawn by Komorebi's own renderer, which has no script engine and no network code. Scripts never run, and remote stylesheets, fonts and tracking pixels never load. Remote images are blocked until you choose: a bar above the message counts them and warns that loading them tells the sender when you opened it and your IP address. **Load images** loads them for that message; **Always load from this sender** adds the sender's exact address to a list you can review in Settings > Privacy.
+
+Links open in your browser only after a prompt that shows the full address. Attachments never open by themselves, programs and scripts are only ever saved, and saved files get Windows' Mark of the Web so SmartScreen and Office treat them with care.
+
+## What stays on your computer
+
+Everything Komorebi keeps is in `%LOCALAPPDATA%\komorebi`, except passwords:
+
+- `cache.sqlite3`: accounts (without passwords), settings, folders, messages and their previews, drafts, the Outbox, contacts, the calendar, rules and their activity. Plaintext unless you turn on the [encrypted cache](/docs/certificates-and-encrypted-cache#encrypted-cache).
+- `cache.drafts` and `cache.open`: copies of draft attachments, and attachments you opened (removed at the next start).
+- `crash.log`: one line per crash (time, version, thread, source line), never mail text.
+- `logs\komorebi.log`: only if you turn on the diagnostics log in Settings > Privacy. Command names, codes and timings, never addresses, subjects, folder names or text.
+- Passwords: only in Windows Credential Manager.
+
+## Removing everything
+
+Settings > Privacy > **Remove all data** asks first, then deletes every account's saved password from Credential Manager, stops all syncing and sending, and deletes the cache and every file above. Mail on your servers is not touched. If a password cannot be deleted, it stops there and no file is removed.

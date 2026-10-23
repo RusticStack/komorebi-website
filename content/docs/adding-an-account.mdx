@@ -1,0 +1,62 @@
+---
+title: Adding an account
+description: Add a Purelymail, Postale.io or any other IMAP and SMTP account in three short steps, and what Komorebi does with your server.
+---
+
+Adding an account takes three short steps, with the steps remaining shown above them. The first start opens them from the welcome screen; later, Settings > Accounts > **Add account** opens the same steps.
+
+<Shot name="onboarding-found" alt="Adding an account: a Purelymail address recognised, with its settings built in" />
+
+## 1. Your email
+
+Type your address and press **Continue**. For `purelymail.com` and `postale.io` addresses the settings are built in. For any other domain, Komorebi looks the settings up from your domain, and only because you pressed Continue (see [Other servers](#other-servers)). Offline, it goes straight to the server settings.
+
+## 2. Sign in
+
+What was found shows above the Password box. Type your password, or an app password if your provider uses two-step sign-in. It is saved in Windows Credential Manager, never in Komorebi's files.
+
+If nothing was found, pick **Purelymail**, **Postale.io** or **Other server**. **Change** opens the server settings: hosts, ports, encryption and user names.
+
+**Sign in** checks each step: connecting securely, checking your password and getting ready to send. A failure says what went wrong in one sentence, with the next step to take (Set username, Review certificate, Try again or Set up manually). **Show details** lists all seven steps and the server names. Back or Esc stop a check that takes too long.
+
+## 3. Make it yours
+
+Optional: your name as people see it, and a signature, with a preview. **Skip** leaves both empty; you can set them later in Settings > Accounts > your account. "You're all set" then shows the first download, newest mail first, until you press **Open your inbox**.
+
+## Purelymail
+
+Addresses at `purelymail.com` have their settings built in. For your own domain hosted at Purelymail, choose **Purelymail** when Komorebi asks for the provider. "Save a copy to Sent" is on for new accounts: Purelymail's documentation does not say whether its server saves sent mail itself, so Komorebi keeps the general default.
+
+## Postale.io
+
+Addresses at `postale.io` have their settings built in; for your own domain at Postale.io, choose **Postale.io**. "Save a copy to Sent" is on, because Postale.io does not save sent mail on the server (known from live tests).
+
+Postale.io's server (Dovecot) reports only flag changes over IDLE, never newly delivered mail, so new mail is found by the regular check (Settings > General: every 1, 2, 5 or 15 minutes). After five delivered messages in a row that a check found while IDLE was connected and silent, Komorebi gives that IDLE connection back for the rest of the session.
+
+## Other servers
+
+For a domain without built-in settings, Continue (or **Find settings** in the manual setup) asks your DNS resolver for the domain's SRV records and, if those find nothing, the domain's own autoconfig page over HTTPS. Only the domain name is sent, never your address or password. The answer only fills empty server fields, and a server on a different domain is shown but not filled in.
+
+In the server settings, each server has its own host, port and **Encrypted (SSL/TLS)** or **Encrypted after connecting (STARTTLS)**. Plaintext connections are refused. The incoming server can have its own user name, and sending can sign in as another. **Test connection** names each step and, when one fails, says what to check; it saves nothing.
+
+<Callout title="A self-signed or private-CA server">
+When a check fails on an untrusted certificate, **Review certificate** shows the server's SHA-256 fingerprint and lets you trust that certificate, its key or its issuing CA, for that server only. See [Certificate pinning](/docs/certificates-and-encrypted-cache).
+</Callout>
+
+### A relay without sign-in
+
+For a relay on your own network, turn on **This server does not need a sign-in for sending**. No password is read or sent for sending, and TLS or STARTTLS is still required.
+
+### Servers that do less
+
+A self-hosted server does not need IDLE (the regular check finds new mail), CONDSTORE, UIDPLUS, MOVE or special-use folders. Sent, Drafts, Trash, Archive and Junk are recognised by their names; where nothing is marked, Settings > Accounts > your account > **Folders** picks the folder for each role. Nothing is created on the server.
+
+<Callout title="Not yet validated against a real self-hosted server" variant="caution">
+Support for your own server follows the IMAP and SMTP standards, but it has not yet been validated against a real self-hosted server. Reports are welcome on [GitHub](https://github.com/RusticStack/komorebi/issues).
+</Callout>
+
+## Several accounts
+
+Each account has its own folders, and **All inboxes** combines their inboxes. Each account is a card in Settings > Accounts that opens its page: Sync this account, name, password (left empty, the saved one stays), signatures, folders, server settings, Download again and Remove. With more than one account, each has a colour dot that marks its rows in All inboxes.
+
+Removing an account asks first. Mail on the server is not affected; drafts and Outbox messages of that account are lost, and the prompt says how many.

@@ -1,0 +1,38 @@
+---
+title: Fixação de certificados e cache cifrada
+description: Confie num servidor de correio autoassinado ou com AC privada pelo certificado, pela chave ou pela AC emissora, e cifre a cache local de correio com uma chave que só o seu utilizador do Windows desbloqueia.
+---
+
+## Certificados
+
+O Komorebi verifica todos os certificados de servidor com o Windows. Uma palavra-passe só é enviada depois de a sessão TLS estar estabelecida e de o certificado ter passado essa verificação, ou ser o que fixou. O STARTTLS nunca é opcional: um servidor que não o ofereça nunca recebe a palavra-passe.
+
+### Fixar o certificado do seu servidor
+
+Num servidor autoassinado ou com AC privada, uma verificação falha no certificado não fidedigno e oferece **Rever certificado**. Este liga ao servidor sem enviar credenciais, só para ler o certificado, e mostra a pergunta **Confiar neste certificado?** com a impressão digital SHA-256 completa e os detalhes do certificado. Compare a impressão digital com a que o seu servidor indica: a primeira decisão de confiança é sua. Nada é guardado até confirmar.
+
+<Shot name="cert-prompt" lang="pt" alt="A pergunta Confiar neste certificado? com a impressão digital SHA-256 e os detalhes do certificado de um servidor fictício" />
+
+A pergunta oferece em que confiar:
+
+- **Este certificado exato**: é revisto de novo quando o servidor o renova.
+- **Esta chave do servidor**: o SHA-256 da chave pública, para que uma renovação que mantém a chave passe.
+- **A AC emissora**: oferecida quando o servidor envia uma cadeia para além do seu próprio certificado. O Windows verifica então cada certificado só contra essa AC, com o nome do anfitrião.
+
+A fixação é guardada por servidor (anfitrião, porta e função) na cache local e usada só para reconhecer esse servidor. Um servidor fixado que apresente outro certificado é recusado antes de qualquer palavra-passe ser enviada, e a linha de estado da conta oferece **Rever certificado**, com a impressão digital guardada ao lado da nova. Uma fixação nunca torna aceitáveis para esse servidor as raízes de confiança do próprio Windows. Alterar o anfitrião, a porta ou a segurança apaga a fixação desse servidor, e **Esquecer certificado** na página da conta remove-a.
+
+## Cache cifrada
+
+Definições > Privacidade > **Cifrar a cache de correio neste computador** está desligado por predefinição. Depois de uma pergunta que explica o risco, o arranque seguinte (ou **Reiniciar agora**) converte a cache. A conversão resiste a falhas, e desligar a opção converte-a de volta da mesma forma.
+
+<Shot name="settings-privacy" lang="pt" alt="Definições, Privacidade: imagens remotas, a cache cifrada e a remoção de dados" />
+
+Com a opção ativa:
+
+- Cada página da cache e do seu registo de escrita antecipada é selada com AES-256-GCM. Uma página alterada, trocada ou apagada é recusada em vez de lida.
+- A chave está em `cache.sqlite3.key`, protegida pelo Windows (DPAPI) para que só o seu utilizador do Windows a possa desbloquear.
+- As cópias dos anexos dos rascunhos (`cache.drafts`) e dos anexos abertos (`cache.open`) não são cifradas, e a opção diz isso. As palavras-passe estão sempre no Gestor de Credenciais do Windows.
+
+<Callout title="Se a chave se perder" variant="caution">
+Outro utilizador do Windows, uma palavra-passe do Windows reposta ou uma pasta de dados copiada para outro computador significam que a chave não pode ser desbloqueada, e a cache também não. O Komorebi oferece então **Começar uma cache nova** (os ficheiros bloqueados são postos de parte com a data, nunca apagados; adiciona as contas de novo e o correio é transferido de novo; os rascunhos por enviar e as mensagens da Caixa de saída que estavam nela perdem-se) ou **Sair**.
+</Callout>

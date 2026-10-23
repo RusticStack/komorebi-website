@@ -1,0 +1,32 @@
+---
+title: Notificações e área de notificação
+description: Notificações opcionais do Windows para correio novo e lembretes de eventos, manter o Komorebi na área de notificação e iniciá-lo com o Windows.
+---
+
+Tudo isto está desligado até o ativar, em Definições > Geral.
+
+<Shot name="settings-general" lang="pt" alt="Definições, Geral: tema, idioma e opções de leitura" />
+
+## Notificações de correio novo
+
+**Notificações de correio novo** mostra uma notificação do Windows quando chega correio novo. A página de cada conta tem também **Notificações desta conta**, para poder deixar uma conta de fora. **Mostrar o remetente e o assunto nas notificações** decide se uma notificação os mostra ou só "Novo correio".
+
+As notificações são feitas neste computador, a partir da sincronização IMAP e da ligação IDLE que o Komorebi já tem: não há serviço push, nem retransmissão na nuvem, nem ligação extra. A primeira transferência de uma conta nova nunca gera notificações, e o correio que uma [regra](/pt/docs/rules) arquiva ou marca como lido também não.
+
+<Callout title="O ecrã de bloqueio">
+O Windows guarda o seu próprio histórico de notificações e mostra-as no ecrã de bloqueio de acordo com as definições do Windows. Se isso lhe importar, desative Mostrar o remetente e o assunto nas notificações.
+</Callout>
+
+Há também uma opção para fazer piscar o botão da barra de tarefas quando chega correio novo com a janela em segundo plano.
+
+## Lembretes de eventos
+
+**Notificações dos lembretes de eventos** mostra uma notificação do Windows quando chega a hora do lembrete de um evento, com o título, a hora de início e o local, nunca as notas. Os lembretes vêm de um único temporizador na aplicação: nada é agendado no Windows, por isso só aparecem enquanto o Komorebi estiver aberto ou na área de notificação. Um lembrete perdido por mais de cinco minutos, porque o Komorebi estava fechado, fica como marca na agenda. Um clique num lembrete abre o Calendário.
+
+## Área de notificação
+
+**Continuar na área de notificação quando a janela fecha** mantém o Komorebi na área de notificação quando fecha a janela, para que o correio continue a chegar. Para sair, use o menu do ícone. **Pausar notificações**, nesse menu, pausa as notificações de correio novo e os lembretes de eventos.
+
+## Iniciar com o Windows
+
+**Iniciar com o Windows** inicia o Komorebi na área de notificação quando entra no Windows. Ativá-lo escreve um valor, `Komorebi`, em `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`, com o caminho do programa e `--minimized`; desativá-lo remove-o. O instalador também o pode ativar por si.

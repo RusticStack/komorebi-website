@@ -1,0 +1,53 @@
+---
+title: Getting started
+description: Download Komorebi, check the installer, install it for your Windows user and add your first account.
+---
+
+## What you need
+
+- Windows 10 or Windows 11, 64-bit (x64).
+- An email account that offers IMAP and SMTP with a password or an app password. Komorebi has no OAuth sign-in, so Gmail and Microsoft 365 accounts that require it are not supported.
+
+## Download
+
+Download <DownloadLink /> from the [latest release on GitHub](https://github.com/RusticStack/komorebi/releases/latest). Next to the installer, the release has two small files with the same name plus `.sha256` (its SHA-256 hash) and `.sig` (the signature the in-app update checks).
+
+## Check the download
+
+The installer is not Authenticode-signed yet (see the [code signing policy](/code-signing)), so check its hash before you run it. In PowerShell, in the folder you downloaded to, with the version you downloaded:
+
+```powershell
+(Get-FileHash .\komorebi-0.7.0-setup.exe -Algorithm SHA256).Hash.ToLower()
+Get-Content .\komorebi-0.7.0-setup.exe.sha256
+```
+
+Both lines must show the same 64 characters. If they differ, delete the file and download it again.
+
+## Install
+
+Run the installer. By default it installs for your Windows user only, with no administrator rights, into `%LOCALAPPDATA%\Programs\Komorebi`. Its first page also offers an install for all users, which asks for administrator rights and installs into `Program Files\Komorebi` (or run it with `/ALLUSERS`).
+
+The installer adds a Start menu shortcut and an uninstall entry, and offers a desktop shortcut and starting with Windows. It also registers Komorebi as a mail app, so you can choose it for email links in Windows Settings > Apps > Default apps. `/SILENT` or `/VERYSILENT` install without questions.
+
+<Callout title="Windows protected your PC">
+Because the installer is not code-signed yet, Windows SmartScreen may show "Windows protected your PC" the first time. After you have checked the hash above, choose **More info**, then **Run anyway**.
+</Callout>
+
+## First start
+
+The first start shows a welcome: "Add your email account", a short line on what Komorebi is, and links to help, the privacy statement, a Language box (it switches at once) and Settings. Continue with [Adding an account](/docs/adding-an-account).
+
+<Shot name="welcome" alt="The first start on a new install: the welcome screen" />
+
+Komorebi follows the Windows display language: any Portuguese except Brazilian is shown in European Portuguese, everything else in English. Settings > General > Language can pin System, English or Português (Portugal), and the window changes at once.
+
+## Where your data lives
+
+- Mail, drafts, the Outbox, contacts, the calendar, rules and settings: a SQLite cache in `%LOCALAPPDATA%\komorebi`. It is plaintext unless you [encrypt it](/docs/certificates-and-encrypted-cache#encrypted-cache).
+- Passwords: Windows Credential Manager only, never Komorebi's files.
+
+[Privacy and what leaves your computer](/docs/privacy-and-network) lists every file and every connection.
+
+## Uninstall
+
+Uninstall from Windows Settings > Apps. The uninstaller asks, with No as the default, whether to delete `%LOCALAPPDATA%\komorebi` too. It never touches Credential Manager: to remove the saved passwords as well, use Settings > Privacy > **Remove all data** in Komorebi before you uninstall.

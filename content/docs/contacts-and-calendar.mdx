@@ -1,0 +1,61 @@
+---
+title: Contacts and calendar
+description: The local address book and calendar, meeting invitations, event reminders, and syncing them with CardDAV and CalDAV.
+---
+
+## Contacts
+
+**Contacts**, above Calendar and Settings in the navigation, is a local address book ("On this computer") with names, email addresses, phone numbers, organization, job title, notes and groups. The view has a list with search and a group filter, the contact's details, an inline editor and **New message** to the contact. Enter in the editor's Name box saves.
+
+<Shot name="contacts" alt="The Contacts view with a contact card open" />
+
+Recipient suggestions in the composer read your contacts first, then groups (a group adds all its members), then addresses seen in your mail.
+
+### CardDAV sync
+
+Each account can sync its CardDAV address books (Contacts > Sync). Sync is off until you turn it on, and is either **Read only** (nothing is ever written to the server) or **Read and write** (contacts you add, change or delete are sent).
+
+1. **Find** looks the server up for your mail domain: your DNS resolver for `_carddavs._tcp`, then `https://<your domain>/.well-known/carddav`, both without credentials. Or type the server address yourself.
+2. **Find address books** is the first request that signs in. By default it uses your mail address and mail password; turn off **Same as the mail password** to use a separate one, also kept in Windows Credential Manager.
+
+Sync runs when Contacts opens, on **Sync now**, after an edit, and at most every 30 minutes with the mail check, only while Komorebi is open. It uses HTTPS only, signs in only to that address's server and never follows a redirect to another server with your credentials. When the same field changed on both sides, the server's value is kept and yours is held until you choose. Turning sync off never changes the server.
+
+## Calendar
+
+**Calendar**, above Settings, opens the calendar over the mail, in the view you chose last:
+
+- **Month** (the default): six weeks, each day with the events that fit and "+N more", and the selected day's agenda beside it.
+- **Week** and **Day**: a time grid with an all-day strip, overlapping events side by side and a line at the current time.
+- **Agenda**: the next 30 days, with a mark for repeating events and for events with a reminder.
+
+Today, Previous and Next (Page Up, Page Down; Home for today) move by the period shown; the arrow keys move the selected day in Month.
+
+<Shot name="calendar-week" alt="The calendar week view with sample events in their time slots" />
+
+### Events
+
+**New event**, or a click on an event, opens the editor: title, calendar, all day, start and end (typed, or picked from a month flyout; Up and Down step a time by 15 minutes), repeat (every day, week, month on the day or on the weekday, or year), reminder, place and notes. A repeat rule set in another app is kept and shown as it is. For a repeating event you choose **Only this event** or **The whole series**. An event someone else organized is read only, apart from **Remove from calendar**.
+
+Events of the local calendar, "On this PC", live only in the cache on this computer. Repeating events are expanded on this computer.
+
+<Shot name="calendar-edit" alt="The event editor open on a sample event" />
+
+### Meeting invitations
+
+A message with a calendar invitation shows a card above the body: the title, when (in your time zone), the organizer, where, how it repeats and whether it was cancelled or updated. **Join** opens the meeting link through the usual link prompt, and **Save .ics** saves the calendar file.
+
+A request you can answer offers **Accept**, **Tentative** and **Decline**. A prompt names the one recipient first: the reply goes only to the organizer, never to Cc or the other attendees, and **Don't send a reply** keeps your answer on this computer. Accept and Tentative add the event to the local calendar, Decline removes it, and a cancelled event offers Remove from calendar.
+
+<Shot name="invite" alt="A meeting invitation open, with its Accept, Tentative and Decline card" />
+
+### CalDAV calendars
+
+**Calendars** on the Calendar page's command bar lists each account's CalDAV calendars. Komorebi looks for them only when you press **Find calendars**. With the server address empty, it first looks the server up from your mail address (DNS SRV `_caldavs._tcp` and `/.well-known/caldav`, without credentials); a server outside your mail domain is shown first and used only when you press Find calendars again. It then signs in with the user name and password set in Contacts > Sync.
+
+Task lists are left out, and each calendar can be turned off. Calendars sync when the page opens, on **Sync now**, and at most every 15 minutes while one is on and Komorebi is open.
+
+Changes to your events show at once and are sent on the next sync, each only over the version you changed. When the event changed on another device in the meantime, the server's version stays and a bar offers **Apply my changes again** or **Discard**. A calendar that refuses changes becomes read only.
+
+### Reminders
+
+The agenda marks an event under way ("Now") and one whose reminder is due ("In 10 minutes"). With Settings > General > **Notifications for event reminders** on (it is off by default), Windows also shows a notification with the event's title, start time and place, never its notes. See [Notifications and tray](/docs/notifications-and-tray#event-reminders).
