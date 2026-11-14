@@ -140,6 +140,42 @@ if (guards.length) {
   dark.addEventListener("change", sync);
 }
 
+// ---------- motion: scroll reveals and the hero's light ----------
+// Content below the first screen fades and rises as it comes into view (site.css, .reveal). Only
+// what is below the fold when the script runs is hidden, so nothing that is already on screen
+// flickers, and without the script nothing is hidden at all. Items in one [data-reveal-group]
+// follow each other by 70 ms. With reduced motion there is no reveal.
+const still = matchMedia("(prefers-reduced-motion: reduce)");
+if (!still.matches && "IntersectionObserver" in window) {
+  const reveal = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add("in");
+        reveal.unobserve(entry.target);
+      }
+    },
+    { rootMargin: "0px 0px -8% 0px" },
+  );
+  const fold = window.innerHeight;
+  for (const element of document.querySelectorAll<HTMLElement>("[data-reveal], [data-reveal-group] > *")) {
+    if (element.getBoundingClientRect().top < fold) continue;
+    const group = element.parentElement?.closest("[data-reveal-group]");
+    if (group && element.parentElement === group) {
+      const index = [...group.children].indexOf(element);
+      element.style.transitionDelay = `${(index % 4) * 70}ms`;
+    }
+    element.classList.add("reveal");
+    reveal.observe(element);
+  }
+
+  // the fall's slow drift pauses while the hero is off screen
+  const hero = document.querySelector(".hero");
+  if (hero) {
+    new IntersectionObserver(([entry]) => hero.classList.toggle("away", !entry.isIntersecting)).observe(hero);
+  }
+}
+
 // ---------- the web manifest ----------
 // It only matters for installing the site as an app, and the browser fetches it at high priority
 // as soon as it sees the link, in the middle of the first load. So the link is added once the page

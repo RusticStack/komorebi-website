@@ -1662,6 +1662,92 @@ details.older > div > * + * {
   }
 }
 
+/* ---------- motion (BRAND.md Motion: enter cubic-bezier(0, 0, 0, 1), exit linear, calm) ----------
+   Everything here is opacity and transform only, so it runs on the compositor, and all of it is
+   off with prefers-reduced-motion. Nothing is hidden without the script: the entrance ends where
+   the page already is, and the scroll reveal only ever hides what src/scripts/site.ts marks
+   .reveal, which it does for content below the first screen, under the .js class. */
+@media (prefers-reduced-motion: no-preference) {
+  /* the hero: the copy fades in, the fall fades and drifts in from the right, the window rises */
+  :root.js .hero-copy {
+    animation: fade-in 600ms var(--enter) both;
+  }
+  :root.js .hero-fall {
+    animation: fall-in 1600ms var(--enter) 100ms both;
+  }
+  :root.js .hero-window {
+    animation: rise 900ms var(--enter) 150ms both;
+  }
+  /* light through the leaves: once it is in, the fall breathes and shifts very slowly. It pauses
+     while the hero is off screen (.away, set by the script). */
+  :root.js .hero-fall .fall {
+    animation: leaves 18s ease-in-out 1.8s infinite alternate;
+  }
+  :root.js .hero.away .hero-fall .fall {
+    animation-play-state: paused;
+  }
+
+  /* sections below the first screen fade and rise as they come into view */
+  :root.js .reveal {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  :root.js .reveal.in {
+    opacity: 1;
+    transform: none;
+    transition: opacity 700ms var(--enter), transform 900ms var(--enter);
+  }
+
+  /* the 400 ms page cross-fade, from one page to the next of this site (CSS view transitions;
+     browsers without them simply load the page). The header is its own layer, so it holds still. */
+  @view-transition {
+    navigation: auto;
+  }
+  .top {
+    view-transition-name: top;
+  }
+  ::view-transition-old(root) {
+    animation: 400ms linear both fade-out;
+  }
+  ::view-transition-new(root) {
+    animation: 400ms var(--enter) both fade-in;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fall-in {
+  from {
+    opacity: 0;
+    transform: translateX(3%);
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(1.5rem);
+  }
+}
+@keyframes leaves {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 0.78;
+  }
+  100% {
+    opacity: 0.92;
+    transform: translate(-0.8%, 0.6%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

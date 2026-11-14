@@ -114,7 +114,7 @@ const copy = pt
     <!-- Launch film slot: renders nothing until public/media/komorebi-film.webm or .mp4 exists. -->
     <Film locale={locale} label={copy.film} />
 
-    <ul class="principles">
+    <ul class="principles" data-reveal-group>
       {
         copy.principles.map(([title, text]) => (
           <li>

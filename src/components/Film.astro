@@ -22,7 +22,7 @@ const poster = media("komorebi-film-poster.webp") ? "/media/komorebi-film-poster
 
 {
   sources.length > 0 && (
-    <video class="film" controls muted playsinline preload="none" poster={poster} width="1920" height="1080" aria-label={label}>
+    <video class="film" data-reveal controls muted playsinline preload="none" poster={poster} width="1920" height="1080" aria-label={label}>
       {sources.map((s) => (
         <source src={`/media/${s.file}`} type={s.type} />
       ))}
