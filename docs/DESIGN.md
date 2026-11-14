@@ -1,6 +1,8 @@
 # Site design
 
-The site follows the Komorebi brand, website variant B (`F:\Projects\komorebi-brand\final`: `BRAND.md`, the mockups in `site\site.html` and `site\png`). This page records how the brand maps to this code.
+The site follows the Komorebi brand (`D:\Projects\komorebi-brand\final`: `BRAND.md`, the mockups in `site\site.html` and `site\png`). This page records how the brand maps to this code.
+
+**Variant A.** The brand board drew two website heroes: A, the very large fall (the K's light, in the fall tone) at the right of the hero, and B, a plain 44 px seal. The site was first built on B; at the owner's request it now uses **A** (November 2026), because B left out the brand's one image. The fall is the seal's K alone, drawn inline from `logo/fall.svg`'s path (`src/components/Logo.astro`, kind `fall`) in `--fall`. It stands at the right of the home hero and runs off the page; the hero clips it sideways (`overflow-x: clip`, so no horizontal scroll and no scroll container). It never sits behind reading text: wider than a phone the copy is kept narrower than the room the fall leaves (`min(36rem, 54vw)`), and on a phone, as in `a-home-*-390.png`, the fall stands at the top right and the copy starts under it. The product window sits in front of the fall's foot. The persimmon seal stays above the headline, as on the app's welcome screen.
 
 ## Rules
 
@@ -20,6 +22,7 @@ All in `src/styles/site.css` as custom properties on `:root`.
 | `--paper` | `#FFFFFF` | `#141414` | page ground |
 | `--canvas` | `#F6F6F4` | `#1B1B1B` | search field, tip boxes, code, picture frame |
 | `--wash` | `#EEEEEB` | `#262626` | current page in the help list, secondary button |
+| `--fall` | `#F3F3F0` | `#1D1D1D` | the fall only (BRAND.md site values) |
 | `--line` | `#E2E2DE` | `#2C2C2C` | the 1 px edge |
 | `--ink` | `#171717` | `#F2F2F0` | text, primary button, focus ring |
 | `--ink-2` | `#555552` | `#B0B0AC` | secondary text |

@@ -4,9 +4,9 @@ import Logo from "../components/Logo.astro";
 import ProductPicture from "../components/ProductPicture.astro";
 import Film from "../components/Film.astro";
 import { localePath, ui, type Locale } from "../lib/i18n";
-import { previewPreloads } from "../lib/preview";
+import { heroPreloads } from "../lib/shots";
 import { softwareApplication, website } from "../lib/seo";
-import { downloadHref, installerSize } from "../lib/upstream";
+import { downloadHref, getRelease, installerSize } from "../lib/upstream";
 
 interface Props {
   locale: Locale;
@@ -15,6 +15,7 @@ const { locale } = Astro.props;
 const t = ui(locale);
 const pt = locale === "pt";
 const size = installerSize(locale);
+const release = getRelease();
 
 const copy = pt
   ? {
@@ -24,8 +25,8 @@ const copy = pt
       lede: "O Komorebi é uma pequena aplicação de email privada para Windows. Lê e envia o seu correio, e depois deixa-o em paz.",
       fine: size ? `Gratuito. ${size}. Windows 10 e 11.` : "Gratuito. Windows 10 e 11.",
       notes: "Antes de instalar",
-      alt: "Caixa de entrada do Komorebi",
-      caption: "A caixa de entrada. O Komorebi segue o tema do Windows, claro ou escuro.",
+      alt: "O Komorebi com a caixa de entrada e uma newsletter aberta no painel de leitura",
+      caption: "Uma newsletter, desenhada pelo próprio Komorebi. Segue o tema do Windows, claro ou escuro.",
       film: "Filme de apresentação do Komorebi, sem som",
       principles: [
         ["Pequeno", size ? `Um instalador de ${size}. A janela abre em menos de 200 ms, e nada é redesenhado enquanto espera.` : "A janela abre em menos de 200 ms, e nada é redesenhado enquanto espera."],
@@ -40,8 +41,8 @@ const copy = pt
       lede: "Komorebi is a small, private email app for Windows. It reads and sends your mail, and then it leaves you alone.",
       fine: size ? `Free. ${size}. Windows 10 and 11.` : "Free. Windows 10 and 11.",
       notes: "Before you install",
-      alt: "Komorebi inbox",
-      caption: "The inbox. Komorebi follows the Windows theme, light or dark.",
+      alt: "Komorebi with the inbox and a newsletter open in the reading pane",
+      caption: "A newsletter, drawn by Komorebi itself. It follows the Windows theme, light or dark.",
       film: "Komorebi launch film, silent",
       principles: [
         ["Small", size ? `A ${size} installer. Its window is up in under 200 ms, and nothing is redrawn while it waits.` : "Its window is up in under 200 ms, and nothing is redrawn while it waits."],
@@ -58,31 +59,46 @@ const copy = pt
   description={copy.description}
   og="home"
   jsonLd={[website(locale), softwareApplication(locale)]}
-  preload={previewPreloads()}
+  preload={heroPreloads()}
 >
+  <!-- The hero, brand variant A: the fall (the K's light, very large, in the fall tone) at the right,
+       clipped by the hero, never behind the copy; the window sits in front of it. -->
+  <section class="hero" aria-labelledby="tagline">
+    <div class="hero-fall"><Logo kind="fall" /></div>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <div class="hero-mark">
+          <Logo kind="seal" />
+          {release && (
+            <a class="pill" href={localePath(locale, "/changelog")}>
+              {pt ? `Versão ${release.version}` : `Version ${release.version}`}
+              <span>{pt ? "O que mudou" : "What changed"}</span>
+            </a>
+          )}
+        </div>
+        <h1 id="tagline" set:html={pt ? "Ler. Responder.<br>Descansar." : "Read. Reply.<br>Rest."} />
+        <p class="lede">{copy.lede}</p>
+        <div class="cta">
+          <a class="btn" href={downloadHref()}>{t.downloadForWindows}</a>
+          <p class="fine">{copy.fine} <a href={localePath(locale, "/download")}>{copy.notes}</a></p>
+        </div>
+      </div>
+
+      <figure class="hero-shot">
+        <div class="window hero-window">
+          <ProductPicture alt={copy.alt} />
+          <button class="shot-zoom" type="button" data-lightbox="shot-dialog" aria-haspopup="dialog" aria-label={t.viewLarger}>
+            <span class="shot-zoom-pill">
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9 7M2.5 13.5 7 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </span>
+          </button>
+        </div>
+        <figcaption class="cap">{copy.caption}</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <div class="wrap">
-    <section class="hero" aria-labelledby="tagline">
-      <Logo kind="seal" />
-      <h1 id="tagline" set:html={pt ? "Ler. Responder.<br>Descansar." : "Read. Reply.<br>Rest."} />
-      <p class="lede">{copy.lede}</p>
-      <div class="cta">
-        <a class="btn" href={downloadHref()}>{t.downloadForWindows}</a>
-        <p class="fine">{copy.fine} <a href={localePath(locale, "/download")}>{copy.notes}</a></p>
-      </div>
-    </section>
-
-    <figure>
-      <div class="shot">
-        <ProductPicture alt={copy.alt} />
-        <button class="shot-zoom" type="button" data-lightbox="shot-dialog" aria-haspopup="dialog" aria-label={t.viewLarger}>
-          <span class="shot-zoom-pill">
-            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9 7M2.5 13.5 7 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          </span>
-        </button>
-      </div>
-      <figcaption class="cap">{copy.caption}</figcaption>
-    </figure>
-
     <!-- The picture, larger: a UI SDK dialog, loaded on the first hover, focus or press. -->
     <ui-dialog id="shot-dialog" class="lightbox">
       <ui-dialog-backdrop hidden></ui-dialog-backdrop>

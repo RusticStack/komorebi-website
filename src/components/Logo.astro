@@ -1,9 +1,11 @@
 ---
-// The one place the brand marks are drawn. Paths from F:\Projects\komorebi-brand\final\logo
-// (wordmark.svg and mark.svg, also served from public/brand/). The wordmark takes the ink colour
-// of the theme; the seal is always persimmon #B3503A and is the only colour on the site.
+// The one place the brand marks are drawn. Paths from the brand folder's logo/ (wordmark.svg,
+// mark.svg and fall.svg, also served from public/brand/). The wordmark takes the ink colour of the
+// theme; the seal is always persimmon #B3503A and is the only colour on the site. The fall is the
+// light through the seal's carving: the K alone, very large, in the fall tone (BRAND.md). It is
+// always decorative and never sits behind reading text.
 interface Props {
-  kind: "wordmark" | "seal";
+  kind: "wordmark" | "seal" | "fall";
   class?: string;
   /** An accessible name. Without one the mark is decorative. */
   label?: string;
@@ -14,6 +16,9 @@ const WORDMARK =
   "M0 28h8v72h-8zM24.1 52L33.9 52L11.9 83L2.1 83zM2.05 80L13.95 80L35.95 100L24.05 100zM37 76a24 24 0 1 1 48 0a24 24 0 1 1 -48 0z M45 76a16 16 0 1 0 32 0a16 16 0 1 0 -32 0zM93 100V67A15 15 0 0 1 123 67V100h-8V67A7 7 0 0 0 101 67V100zM115 100V67A15 15 0 0 1 145 67V100h-8V67A7 7 0 0 0 123 67V100zM153 76a24 24 0 1 1 48 0a24 24 0 1 1 -48 0z M161 76a16 16 0 1 0 32 0a16 16 0 1 0 -32 0zM209 52h8v48h-8zM209 72A20 20 0 0 1 236.49 53.46L233.5 60.87A12 12 0 0 0 217 72zM282.91 90.78A24 24 0 1 1 288 76L280 76A16 16 0 1 0 276.61 85.85zM241 72h47v8h-47zM296 28h8v72h-8zM296 76a24 24 0 1 1 48 0a24 24 0 1 1 -48 0z M304 76a16 16 0 1 0 32 0a16 16 0 1 0 -32 0zM354 52h8v48h-8zM353 37a5 5 0 1 1 10 0a5 5 0 1 1 -10 0z";
 const SEAL =
   "M57.28 24H198.72A33.28 33.28 0 0 1 232 57.28V198.72A33.28 33.28 0 0 1 198.72 232H57.28A33.28 33.28 0 0 1 24 198.72V57.28A33.28 33.28 0 0 1 57.28 24ZM91 64H91A15 15 0 0 1 106 79V177A15 15 0 0 1 91 192H91A15 15 0 0 1 76 177V79A15 15 0 0 1 91 64ZM120 132A86.78 86.78 0 0 1 192 62A86.78 86.78 0 0 1 120 132ZM135.22 156.43L165.22 187.43A15 15 0 0 0 186.78 166.57L156.78 135.57A15 15 0 0 0 135.22 156.43Z";
+// the K carved through the seal: its stem and leg are pills, its arm is a leaf
+const FALL =
+  "M91 64H91A15 15 0 0 1 106 79V177A15 15 0 0 1 91 192H91A15 15 0 0 1 76 177V79A15 15 0 0 1 91 64ZM120 132A86.78 86.78 0 0 1 192 62A86.78 86.78 0 0 1 120 132ZM135.22 156.43L165.22 187.43A15 15 0 0 0 186.78 166.57L156.78 135.57A15 15 0 0 0 135.22 156.43Z";
 const a11y = label ? { role: "img" as const, "aria-label": label } : { "aria-hidden": "true" as const };
 ---
 
@@ -21,6 +26,10 @@ const a11y = label ? { role: "img" as const, "aria-label": label } : { "aria-hid
   kind === "wordmark" ? (
     <svg class:list={["wordmark", className]} viewBox="0 24 362 76" width="95" height="20" focusable="false" {...a11y}>
       <path d={WORDMARK} />
+    </svg>
+  ) : kind === "fall" ? (
+    <svg class:list={["fall", className]} viewBox="70 56 130 144" width="130" height="144" focusable="false" aria-hidden="true">
+      <path fill-rule="evenodd" d={FALL} />
     </svg>
   ) : (
     <svg class:list={["seal", className]} viewBox="0 0 256 256" width="44" height="44" focusable="false" {...a11y}>

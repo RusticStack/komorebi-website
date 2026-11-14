@@ -2,7 +2,7 @@
 
 The website and help pages for [Komorebi](https://github.com/RusticStack/komorebi), a small, private email app for Windows 10 and 11. Served at https://komorebi.rusticstack.com, in English and European Portuguese.
 
-Astro, static output, one hand-written stylesheet (`src/styles/site.css`) and a few scripts: the interactive parts are [UI SDK](https://ui-sdk.dev) web components (see below), and the help search is `src/scripts/search.ts`. Every page reads without JavaScript. The look is the Komorebi brand, website variant B; see [docs/DESIGN.md](docs/DESIGN.md).
+Astro, static output, one hand-written stylesheet (`src/styles/site.css`) and a few scripts: the interactive parts are [UI SDK](https://ui-sdk.dev) web components (see below), and the help search is `src/scripts/search.ts`. Every page reads without JavaScript. The look is the Komorebi brand, website variant A; see [docs/DESIGN.md](docs/DESIGN.md).
 
 ## Develop
 
@@ -69,7 +69,7 @@ Without JavaScript the theme control and the menu button are not shown, the phon
 ## Images
 
 - Logo and wordmark: `src/components/Logo.astro` and `public/brand/` (from the brand folder).
-- The product picture on the home page is a real screenshot of the app, light and dark, wide and compact (1280 x 800 and 900 x 700 windows, made-up demo mail). `pnpm images <folder>` encodes it to AVIF and WebP in `public/preview/`.
+- The product pictures are crops of the real Komorebi 1.0 screenshots, light and dark (1280 x 800 windows, made-up demo mail, `.github/assets/screenshots` in the app repository). The crops are listed in `src/lib/shots.json`; `pnpm images <that folder>` encodes them to AVIF and WebP in `public/shots/`.
 - `pnpm og` renders the Open Graph cards (`public/og/`) and the PNG icons with resvg. The output is committed; run it on Windows, where the line is set in Segoe UI.
 
 ## Content-Security-Policy

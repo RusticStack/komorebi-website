@@ -17,7 +17,11 @@
   --ink-3: #6a6a66;
   --on-ink: #ffffff;
   --seal: #b3503a;
+  --fall: #f3f3f0;
   --overlay: rgb(0 0 0 / 0.32);
+  /* the window's lift: a hairline ring and two soft, ink-tinted shadows */
+  --lift: 0 0 0 1px rgb(23 23 23 / 0.06), 0 2px 4px rgb(23 23 23 / 0.04), 0 12px 32px -8px rgb(23 23 23 / 0.12), 0 40px 80px -24px rgb(23 23 23 / 0.18);
+  --lift-sm: 0 0 0 1px rgb(23 23 23 / 0.06), 0 1px 2px rgb(23 23 23 / 0.04), 0 8px 24px -8px rgb(23 23 23 / 0.12);
 
   --display: "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --text: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -46,6 +50,9 @@
     --ink-2: #b0b0ac;
     --ink-3: #939390;
     --on-ink: #141414;
+    --fall: #1d1d1d;
+    --lift: 0 0 0 1px rgb(255 255 255 / 0.08), 0 2px 6px rgb(0 0 0 / 0.4), 0 24px 64px -16px rgb(0 0 0 / 0.7);
+    --lift-sm: 0 0 0 1px rgb(255 255 255 / 0.07), 0 8px 24px -8px rgb(0 0 0 / 0.6);
     color-scheme: dark;
   }
 }
@@ -58,6 +65,9 @@
   --ink-2: #b0b0ac;
   --ink-3: #939390;
   --on-ink: #141414;
+  --fall: #1d1d1d;
+  --lift: 0 0 0 1px rgb(255 255 255 / 0.08), 0 2px 6px rgb(0 0 0 / 0.4), 0 24px 64px -16px rgb(0 0 0 / 0.7);
+  --lift-sm: 0 0 0 1px rgb(255 255 255 / 0.07), 0 8px 24px -8px rgb(0 0 0 / 0.6);
   color-scheme: dark;
 }
 
@@ -402,19 +412,80 @@ a {
   text-underline-offset: 3px;
 }
 
-/* ---------- home ---------- */
+/* ---------- home: the hero (brand variant A) ---------- */
+/* The fall, the K's light very large in the fall tone, stands at the right and runs off the page;
+   the hero clips it sideways only (overflow-x: clip makes no scroll container, so the window's
+   shadow still shows below). It is never behind the copy: the copy is kept narrower than the
+   space the fall leaves, and on a phone the copy starts under it. */
 .hero {
-  padding: clamp(5.5rem, 3rem + 7vw, 9.5rem) 0 clamp(6rem, 3.5rem + 7vw, 10rem);
+  --fw: clamp(18.75rem, 46vw, 56rem);
+  position: relative;
+  overflow-x: clip;
+  padding-bottom: clamp(4rem, 2rem + 6vw, 7.5rem);
 }
-.hero .seal {
+.hero-fall {
+  position: absolute;
+  z-index: 0;
+  top: clamp(0rem, 3vw - 1rem, 2.5rem);
+  right: calc(var(--fw) * -0.3);
+  width: var(--fw);
+  pointer-events: none;
+}
+.fall {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+.fall path {
+  fill: var(--fall);
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+}
+.hero-copy {
+  padding-top: clamp(4.5rem, 2rem + 7vw, 8.5rem);
+}
+.hero-copy > * {
+  max-width: min(36rem, 54vw);
+}
+.hero-mark {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: clamp(1.75rem, 1.4rem + 1vw, 2.5rem);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2rem;
+  padding: 0 0.875rem;
+  border-radius: 1rem;
+  background: var(--wash);
+  color: var(--ink);
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 100ms linear;
+}
+.pill span {
+  color: var(--ink-2);
+}
+.pill span::after {
+  content: " \2192";
+}
+.pill:hover {
+  background: var(--line);
 }
 h1 {
   font-family: var(--display);
   font-weight: 600;
-  font-size: clamp(2.875rem, 2.25rem + 2.4vw, 4rem);
-  line-height: 1.0625;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.875rem, 1.6rem + 4.2vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
   text-wrap: balance;
 }
 .lede {
@@ -432,37 +503,47 @@ h1 {
   margin-top: clamp(2rem, 1.8rem + 0.6vw, 2.5rem);
 }
 
-.shot {
+/* the window: the product picture framed as the app window it is, lifted off the page by a soft
+   shadow (the site's one exception to the brand's flat rule, asked for by the owner; the app
+   itself stays flat). In dark mode a shadow barely shows, so a faint light ring draws the edge. */
+.hero-shot {
+  margin-top: clamp(3.5rem, 2rem + 5vw, 6rem);
+}
+.window {
   position: relative;
-  border-radius: 1rem;
+  border-radius: clamp(0.625rem, 0.4rem + 0.6vw, 0.875rem);
   overflow: hidden;
   background: var(--canvas);
+  box-shadow: var(--lift);
+}
+.hero-window {
   aspect-ratio: 1280 / 800;
 }
-.shot picture,
-.shot img {
+.hero-window picture,
+.hero-window img {
   width: 100%;
   height: 100%;
 }
-.shot img {
+.hero-window img {
   object-fit: cover;
   object-position: left top;
 }
-.shot .pic-dark {
+/* the theme's picture: light by default, dark when the page is dark */
+.pic-dark {
   display: none;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-color-scheme="light"]) .shot .pic-light {
+  :root:not([data-color-scheme="light"]) .pic-light {
     display: none;
   }
-  :root:not([data-color-scheme="light"]) .shot .pic-dark {
+  :root:not([data-color-scheme="light"]) .pic-dark {
     display: block;
   }
 }
-:root[data-color-scheme="dark"] .shot .pic-light {
+:root[data-color-scheme="dark"] .pic-light {
   display: none;
 }
-:root[data-color-scheme="dark"] .shot .pic-dark {
+:root[data-color-scheme="dark"] .pic-dark {
   display: block;
 }
 /* the picture opens larger in a UI SDK dialog; the button covers it, its pill sits in a corner */
@@ -538,23 +619,7 @@ h1 {
   height: auto;
   max-height: calc(100vh - 2rem);
 }
-.lightbox .pic-dark {
-  display: none;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-color-scheme="light"]) .lightbox .pic-light {
-    display: none;
-  }
-  :root:not([data-color-scheme="light"]) .lightbox .pic-dark {
-    display: block;
-  }
-}
-:root[data-color-scheme="dark"] .lightbox .pic-light {
-  display: none;
-}
-:root[data-color-scheme="dark"] .lightbox .pic-dark {
-  display: block;
-}
+
 .lightbox ui-dialog-content:is([data-starting-style], [data-ending-style]) {
   opacity: 0;
   transform: scale(0.98);
@@ -1531,9 +1596,22 @@ details.older > div > * + * {
   .cta .fine {
     text-align: center;
   }
-  .shot {
-    border-radius: 0.75rem;
-    aspect-ratio: 9 / 14;
+  .hero-window {
+    aspect-ratio: 640 / 800;
+  }
+  /* a phone: the fall stands at the top right (brand mockup a-home-*-390) and the copy starts
+     under it; the seal sits beside the fall's stem, well to its left */
+  .hero-fall {
+    right: calc(var(--fw) * -0.4);
+  }
+  .hero-copy {
+    padding-top: calc(var(--fw) * 0.86);
+  }
+  .hero-copy > * {
+    max-width: none;
+  }
+  .hero-mark .pill {
+    display: none;
   }
   .foot .home {
     width: 100%;
