@@ -4,8 +4,7 @@
 //   node scripts/prepare-images.mjs <folder>
 //
 // <folder> holds inbox-light-wide.png, inbox-dark-wide.png, inbox-light-compact.png and
-// inbox-dark-compact.png. Today these are the brand mockup renders of the inbox (a design preview,
-// see docs/TODO-SCREENSHOTS.md); replace them with real screenshots of the same names and sizes.
+// inbox-dark-compact.png: real screenshots of the app (1280 x 800 and 900 x 700 windows).
 import { mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import sharp from "sharp";

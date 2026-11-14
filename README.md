@@ -66,7 +66,7 @@ Without JavaScript the theme control and the menu button are not shown, the phon
 ## Images
 
 - Logo and wordmark: `src/components/Logo.astro` and `public/brand/` (from the brand folder).
-- The product picture on the home page is a design preview until real screenshots of the new app exist: see [docs/TODO-SCREENSHOTS.md](docs/TODO-SCREENSHOTS.md). `pnpm images <folder>` encodes it to AVIF and WebP in `public/preview/`.
+- The product picture on the home page is a real screenshot of the app, light and dark, wide and compact (1280 x 800 and 900 x 700 windows, made-up demo mail). `pnpm images <folder>` encodes it to AVIF and WebP in `public/preview/`.
 - `pnpm og` renders the Open Graph cards (`public/og/`) and the PNG icons with resvg. The output is committed; run it on Windows, where the line is set in Segoe UI.
 
 ## Deploy
