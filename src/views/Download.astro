@@ -62,8 +62,9 @@ const description = pt
   current="download"
   jsonLd={[softwareApplication(locale), breadcrumbs([{ name: "Komorebi", path: p("/") }, { name: t.download, path: p("/download") }])]}
 >
-  <div class="wrap">
-    <section class="dl" aria-labelledby="title">
+  <section class="dl" aria-labelledby="title">
+    <div class="hero-fall"><Logo kind="fall" /></div>
+    <div class="wrap dl-inner">
       <Logo kind="seal" />
       <h1 id="title">{pt ? "Transferir o Komorebi" : "Download Komorebi"}</h1>
       <ul class="meta">
@@ -78,9 +79,11 @@ const description = pt
           {pt ? "Instala-se para o seu utilizador do Windows, sem direitos de administrador." : "Installs for your Windows user, with no administrator rights."}
         </p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="options" aria-labelledby="options">
+  <div class="wrap">
+    <section class="options" aria-labelledby="options" data-reveal>
       <h2 id="options">{pt ? "Escolha como o quer" : "Choose how you want it"}</h2>
       {
         /* two options are UI SDK tabs; one option, or a page without the script, shows cards */
@@ -109,7 +112,7 @@ const description = pt
       }
     </section>
 
-    <div class="grid2">
+    <div class="grid2" data-reveal-group>
       <section aria-labelledby="smartscreen">
         <h2 id="smartscreen">{pt ? "Antes de o executar" : "Before you run it"}</h2>
         <div class="prose">

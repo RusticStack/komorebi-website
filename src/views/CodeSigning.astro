@@ -33,6 +33,7 @@ const p = (path: string) => localePath(locale, path);
         {pt && <p>Em português: assinatura de código gratuita fornecida pela SignPath.io, certificado da SignPath Foundation.</p>}
 
         <h2 id="status">{pt ? "Estado" : "Status"}</h2>
+        <div class="callout">
         {
           pt ? (
             <p>
@@ -44,6 +45,7 @@ const p = (path: string) => localePath(locale, path);
             </p>
           )
         }
+        </div>
 
         <h2 id="what-is-signed">{pt ? "O que é assinado" : "What is signed"}</h2>
         <p>

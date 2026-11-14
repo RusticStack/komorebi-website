@@ -27,6 +27,12 @@ const pt = locale === "pt";
   <div class="wrap">
     <article class="page">
       <h1>{pt ? "Sobre o Komorebi" : "About Komorebi"}</h1>
+      <dl class="facts">
+        <div><dt>{pt ? "Feito por" : "Made by"}</dt><dd>{AUTHOR}</dd></div>
+        <div><dt>{pt ? "Licença" : "Licence"}</dt><dd>GPL-3.0-or-later</dd></div>
+        <div><dt>{pt ? "Código" : "Source"}</dt><dd><a href={REPO_URL} rel="noopener">GitHub</a></dd></div>
+        <div><dt>{pt ? "O nome" : "The name"}</dt><dd>{pt ? "Luz do sol entre as folhas" : "Sunlight through leaves"}</dd></div>
+      </dl>
       <div class="prose">
         {
           pt ? (
