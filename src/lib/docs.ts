@@ -12,7 +12,7 @@ export const DOC_GROUPS: { key: string; title: Record<Locale, string>; pages: st
   {
     key: "daily",
     title: { en: "Daily use", pt: "No dia a dia" },
-    pages: ["composer", "signatures", "rules", "contacts", "calendar", "notifications-and-tray"],
+    pages: ["composer", "signatures", "rules", "contacts", "notifications-and-tray"],
   },
   {
     key: "private",

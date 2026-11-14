@@ -11,6 +11,8 @@
     { "source": "/pt/docs/contacts-and-calendar", "destination": "/pt/docs/contacts", "permanent": true },
     { "source": "/docs/certificates-and-encrypted-cache", "destination": "/docs/certificates", "permanent": true },
     { "source": "/pt/docs/certificates-and-encrypted-cache", "destination": "/pt/docs/certificates", "permanent": true },
+    { "source": "/docs/calendar", "destination": "/docs/faq", "permanent": false },
+    { "source": "/pt/docs/calendar", "destination": "/pt/docs/faq", "permanent": false },
     { "source": "/md/:path*", "destination": "/:path*", "permanent": true }
   ],
   "headers": [

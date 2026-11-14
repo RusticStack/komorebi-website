@@ -1,7 +1,7 @@
 ---
 title: Get notifications
 lede: All off until you turn them on, in Settings > General.
-description: Turn on Windows notifications for new mail and reminders in Komorebi, keep it in the notification area and start it with Windows.
+description: Turn on Windows notifications for new mail in Komorebi, keep it in the notification area and start it with Windows.
 ---
 
 1. **Open Settings > General.**

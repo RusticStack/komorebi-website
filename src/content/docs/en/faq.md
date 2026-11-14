@@ -1,7 +1,7 @@
 ---
 title: Read the FAQ
 lede: Short answers to the questions people ask most.
-description: Short answers about Komorebi's price, email providers, Gmail, SmartScreen, privacy, languages and what it will not do.
+description: Short answers about Komorebi's price, email providers, Gmail, SmartScreen, privacy, languages, the calendar and what it will not do.
 ---
 
 ## Is Komorebi free?
@@ -27,6 +27,10 @@ No. There is no telemetry and no Komorebi server. See [what leaves your PC](/doc
 ## Which languages does it speak?
 
 English and European Portuguese. It follows the Windows display language, and Settings > General > Language can pin one.
+
+## Is there a calendar?
+
+Not in Komorebi 1.0. The calendar is planned to come back in a later version. A meeting invitation still shows on a card above the message, with **Accept**, **Tentative** and **Decline** (the reply goes only to the organizer) and **Save .ics** to take the event to your calendar app.
 
 ## Does it run on Arm, macOS or Linux?
 

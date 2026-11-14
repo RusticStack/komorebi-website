@@ -1,7 +1,7 @@
 ---
 title: Ler as perguntas frequentes
 lede: Respostas curtas às perguntas mais comuns.
-description: Respostas curtas sobre o preço do Komorebi, fornecedores de email, Gmail, SmartScreen, privacidade, idiomas e o que não vai fazer.
+description: Respostas curtas sobre o preço do Komorebi, fornecedores de email, Gmail, SmartScreen, privacidade, idiomas, o calendário e o que não vai fazer.
 ---
 
 ## O Komorebi é gratuito?
@@ -27,6 +27,10 @@ Não. Não há telemetria nem servidor do Komorebi. Veja [o que sai do seu PC](/
 ## Que idiomas fala?
 
 Inglês e português europeu. Segue o idioma de apresentação do Windows, e Definições > Geral > Idioma pode fixar um.
+
+## Tem calendário?
+
+Não no Komorebi 1.0. O calendário deverá voltar numa versão posterior. Um convite para uma reunião continua a aparecer num cartão por cima da mensagem, com **Aceitar**, **Provisório** e **Recusar** (a resposta vai só para o organizador) e **Guardar .ics** para levar o evento para a sua aplicação de calendário.
 
 ## Funciona em Arm, macOS ou Linux?
 

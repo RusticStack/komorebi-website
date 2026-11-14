@@ -9,7 +9,7 @@ O Komorebi não tem telemetria, publicidade nem estatísticas. Não existe nenhu
 | Para | O quê | Quando |
 |---|---|---|
 | Os seus servidores de correio | Início de sessão, sincronização e o correio que envia | Com o Komorebi aberto, por TLS ou STARTTLS |
-| Os seus servidores CardDAV e CalDAV | Contactos e eventos | Só onde ativou a sincronização |
+| Os seus servidores CardDAV | Contactos | Só onde ativou a sincronização |
 | O seu DNS e o servidor web do seu domínio | Só o nome do domínio | Quando pede ao Komorebi para procurar definições |
 | Os servidores de imagens de uma mensagem | Pedidos das imagens | Só depois de decidir transferi-las |
 | GitHub | Uma verificação de atualizações e a atualização que transferir | Quando verifica, ou uma vez por dia se o ativar |
@@ -20,4 +20,4 @@ As imagens da web ficam bloqueadas até decidir. **Transferir imagens** transfer
 
 ## O que fica aqui
 
-O correio, os contactos, o calendário, as regras e as definições ficam em `%LOCALAPPDATA%\komorebi`. As palavras-passe ficam só no Gestor de Credenciais do Windows. A lista completa está na página [Privacidade](/pt/privacy).
+O correio, os contactos, as regras e as definições ficam em `%LOCALAPPDATA%\komorebi`. As palavras-passe ficam só no Gestor de Credenciais do Windows. A lista completa está na página [Privacidade](/pt/privacy).

@@ -1,7 +1,7 @@
 ---
 title: Receber notificações
 lede: Tudo desligado até o ativar, em Definições > Geral.
-description: Ative no Komorebi as notificações do Windows para correio novo e lembretes, mantenha-o na área de notificação e inicie-o com o Windows.
+description: Ative no Komorebi as notificações do Windows para correio novo, mantenha-o na área de notificação e inicie-o com o Windows.
 ---
 
 1. **Abra Definições > Geral.**

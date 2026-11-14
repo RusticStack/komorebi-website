@@ -4,7 +4,7 @@ lede: A local address book, synced with CardDAV if you want.
 description: Use Komorebi's address book with groups, and sync it with your provider over CardDAV, read only or read and write.
 ---
 
-1. **Open Contacts.** It is in the navigation, above Calendar.
+1. **Open Contacts.** It is at the foot of the folder pane, above Settings.
 2. **Add or edit a contact:** names, addresses, phone numbers, organization, notes and groups. <kbd>Enter</kbd> in the Name box saves.
 3. **Write to someone.** **New message** on their card opens the composer, which suggests contacts first, then groups.
 

@@ -4,7 +4,7 @@ lede: Um livro de endereços local, sincronizado por CardDAV se quiser.
 description: Use o livro de endereços do Komorebi com grupos e sincronize-o com o seu fornecedor por CardDAV, só de leitura ou de leitura e escrita.
 ---
 
-1. **Abra Contactos.** Está na navegação, por cima de Calendário.
+1. **Abra Contactos.** Está no fundo do painel de pastas, por cima de Definições.
 2. **Junte ou edite um contacto:** nomes, endereços, números de telefone, organização, notas e grupos. <kbd>Enter</kbd> na caixa Nome guarda.
 3. **Escreva a alguém.** **Nova mensagem**, no cartão do contacto, abre o editor, que sugere primeiro os contactos e depois os grupos.
 
