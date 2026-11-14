@@ -52,6 +52,19 @@ const EN = {
   readHelp: "Read the help",
   viewLarger: "View the picture larger",
   close: "Close",
+  tagline: "Read. Reply. Rest.",
+  footerProduct: "Komorebi",
+  footerHelp: "Help",
+  footerProject: "Project",
+  onThisPage: "On this page",
+  minRead: "{n} min read",
+  guideVideo: "Video: {title}. Silent.",
+  latest: "Latest",
+  helpHome: "All help",
+  getStarted: "Install Komorebi",
+  addAccount: "Add an account",
+  shortcuts: "Keyboard shortcuts",
+  faq: "Questions and answers",
 };
 
 export type UiStrings = Record<keyof typeof EN, string>;
@@ -97,6 +110,19 @@ const PT: UiStrings = {
   readHelp: "Ler a ajuda",
   viewLarger: "Ver a imagem maior",
   close: "Fechar",
+  tagline: "Ler. Responder. Descansar.",
+  footerProduct: "Komorebi",
+  footerHelp: "Ajuda",
+  footerProject: "Projeto",
+  onThisPage: "Nesta página",
+  minRead: "{n} min de leitura",
+  guideVideo: "Vídeo: {title}. Sem som.",
+  latest: "Mais recente",
+  helpHome: "Toda a ajuda",
+  getStarted: "Instalar o Komorebi",
+  addAccount: "Adicionar uma conta",
+  shortcuts: "Atalhos de teclado",
+  faq: "Perguntas e respostas",
 };
 
 export function ui(locale: Locale): UiStrings {

@@ -2,11 +2,12 @@
 import Base from "../layouts/Base.astro";
 import Logo from "../components/Logo.astro";
 import ProductPicture from "../components/ProductPicture.astro";
+import Shot from "../components/Shot.astro";
 import Film from "../components/Film.astro";
 import { localePath, ui, type Locale } from "../lib/i18n";
 import { heroPreloads } from "../lib/shots";
 import { softwareApplication, website } from "../lib/seo";
-import { downloadHref, getRelease, installerSize } from "../lib/upstream";
+import { downloadHref, formatDate, getRelease, installerSize } from "../lib/upstream";
 
 interface Props {
   locale: Locale;
@@ -14,8 +15,12 @@ interface Props {
 const { locale } = Astro.props;
 const t = ui(locale);
 const pt = locale === "pt";
+const p = (path: string) => localePath(locale, path);
 const size = installerSize(locale);
 const release = getRelease();
+// the rendered width of a feature picture: about half the content width, all of it on a phone
+const HALF = "(min-width: 1312px) 640px, (min-width: 900px) 52vw, 100vw";
+const TILE = "(min-width: 1312px) 700px, (min-width: 900px) 56vw, 100vw";
 
 const copy = pt
   ? {
@@ -28,11 +33,6 @@ const copy = pt
       alt: "O Komorebi com a caixa de entrada e uma newsletter aberta no painel de leitura",
       caption: "Uma newsletter, desenhada pelo próprio Komorebi. Segue o tema do Windows, claro ou escuro.",
       film: "Filme de apresentação do Komorebi, sem som",
-      principles: [
-        ["Pequeno", size ? `Um instalador de ${size}. A janela abre em menos de 200 ms, e nada é redesenhado enquanto espera.` : "A janela abre em menos de 200 ms, e nada é redesenhado enquanto espera."],
-        ["Privado", "Sem conta connosco, sem rastreio, sem IA. O seu correio vai deste PC para o seu servidor, e volta."],
-        ["Sossegado", "Sem feed e nada a pedir atenção. As notificações ficam desligadas até as ativar."],
-      ],
     }
   : {
       title: "Komorebi: a small, private email app for Windows",
@@ -44,12 +44,85 @@ const copy = pt
       alt: "Komorebi with the inbox and a newsletter open in the reading pane",
       caption: "A newsletter, drawn by Komorebi itself. It follows the Windows theme, light or dark.",
       film: "Komorebi launch film, silent",
-      principles: [
-        ["Small", size ? `A ${size} installer. Its window is up in under 200 ms, and nothing is redrawn while it waits.` : "Its window is up in under 200 ms, and nothing is redrawn while it waits."],
-        ["Private", "No account with us, no tracking, no AI. Your mail goes from this PC to your server and back."],
-        ["Quiet", "No feed and nothing asking for attention. Notifications are off until you turn them on."],
-      ],
     };
+
+// The numbers, all from the Komorebi README and the latest release.
+const proof = [
+  { value: "200 ms", prefix: pt ? "menos de" : "under", label: pt ? "do clique à janela aberta" : "from a click to its window" },
+  { value: "600 ms", prefix: pt ? "menos de" : "under", label: pt ? "para listar uma pasta guardada" : "to list a cached folder" },
+  ...(size ? [{ value: size, prefix: "", label: pt ? "o instalador inteiro" : "the whole installer" }] : []),
+  { value: "0", prefix: "", label: pt ? "telemetria, anúncios ou relatórios de falhas" : "telemetry, ads or crash reports" },
+];
+
+// Read, Reply, Sort, Keep: four sections, each with the part of the app it talks about.
+const features = [
+  {
+    shot: "read" as const,
+    eyebrow: pt ? "Ler" : "Read",
+    title: pt ? "Correio desenhado pelo Komorebi, não por um browser." : "Mail drawn by Komorebi, not by a browser.",
+    text: pt
+      ? "O Komorebi faz a paginação do correio HTML com o seu próprio motor. Não há nenhum motor web lá dentro, e as imagens remotas ficam bloqueadas até as carregar, por isso os pixéis de rastreio nunca disparam."
+      : "Komorebi lays out HTML mail with its own engine. There is no web engine inside, and remote images stay blocked until you load them, so tracking pixels never fire.",
+    points: pt
+      ? ["Claro e escuro, a seguir o Windows", "Separadores e janelas separadas", "Convites de reunião num cartão, com Guardar .ics"]
+      : ["Light and dark, following Windows", "Tabs and separate windows", "Meeting invitations on a card, with Save .ics"],
+    alt: pt ? "Uma newsletter aberta no painel de leitura do Komorebi" : "A newsletter open in Komorebi's reading pane",
+  },
+  {
+    shot: "reply" as const,
+    eyebrow: pt ? "Responder" : "Reply",
+    title: pt ? "Escreva como deve ser, e envie." : "Write it properly, then send.",
+    text: pt
+      ? "Tipos de letra, cores, listas, tabelas e assinaturas com nome. Os destinatários tornam-se etiquetas, e um endereço incompleto é assinalado antes de enviar."
+      : "Fonts, colours, lists, tables and named signatures. Recipients turn into chips, and an incomplete address is flagged before you send.",
+    points: pt ? ["Rascunhos e anexos", "Ctrl+Enter envia", "Ctrl+Z desfaz o último envio"] : ["Drafts and attachments", "Ctrl+Enter sends", "Ctrl+Z undoes the last send"],
+    alt: pt ? "O editor de mensagens do Komorebi, com a barra de formatação e uma assinatura" : "Komorebi's composer, with the formatting bar and a signature",
+  },
+  {
+    shot: "rules" as const,
+    eyebrow: pt ? "Arrumar" : "Sort",
+    title: pt ? "Regras que arrumam o correio antes de o ver." : "Rules that file mail before you see it.",
+    text: pt
+      ? "Mover, apagar, marcar como lida ou importante, à medida que o correio chega, neste PC. Copie-as como um script Sieve para os filtros do seu fornecedor."
+      : "Move, delete, mark read or important as mail arrives, on this PC. Copy them as a Sieve script for your provider's own filters.",
+    points: pt ? ["Correm de cima para baixo", "Nunca reencaminham nem respondem", "Uma lista do que fizeram"] : ["They run top to bottom", "They never forward or auto-reply", "A list of what they did"],
+    alt: pt ? "A lista de regras nas Definições do Komorebi" : "The list of rules in Komorebi's Settings",
+  },
+  {
+    shot: "privacy" as const,
+    eyebrow: pt ? "Guardar" : "Keep",
+    title: pt ? "O seu correio fica consigo." : "Your mail stays with you.",
+    text: pt
+      ? "Sem conta Komorebi e sem servidor Komorebi. As palavras-passe ficam no Gestor de Credenciais do Windows, a cache pode ser cifrada e Remover todos os dados apaga tudo o que o Komorebi guardou."
+      : "No Komorebi account and no Komorebi server. Passwords live in Windows Credential Manager, the cache can be encrypted, and Remove all data clears everything Komorebi kept.",
+    points: pt
+      ? ["Todas as ligações com TLS ou STARTTLS", "Um registo de diagnóstico que fica no PC", "Sem IA a ler o seu correio"]
+      : ["Every connection over TLS or STARTTLS", "A diagnostics log that stays on the PC", "No AI reading your mail"],
+    alt: pt ? "As definições de privacidade do Komorebi" : "Komorebi's privacy settings",
+  },
+];
+
+// three of the demo mailbox's rules, as the rules screenshot shows them
+const rules = pt
+  ? [
+      ["De contém billing@", "Mover para Recibos"],
+      ["De contém brightloom.example.com", "Marcar como importante"],
+      ["Assunto contém offsite", "Mover para Projetos"],
+    ]
+  : [
+      ["From contains billing@", "Move to Receipts"],
+      ["From contains brightloom.example.com", "Mark as important"],
+      ["Subject contains offsite", "Move to Projects"],
+    ];
+
+const shortcuts = [
+  { keys: ["Ctrl", "N"], label: pt ? "Novo correio" : "New mail" },
+  { keys: ["Ctrl", "R"], label: pt ? "Responder" : "Reply" },
+  { keys: ["Ctrl", "Enter"], label: pt ? "Enviar" : "Send" },
+  { keys: ["Ctrl", "E"], label: pt ? "Pesquisar" : "Search" },
+  { keys: ["Backspace"], label: pt ? "Arquivar" : "Archive" },
+  { keys: ["F1"], label: pt ? "Todos os atalhos" : "Every shortcut" },
+];
 ---
 
 <Base
@@ -69,18 +142,20 @@ const copy = pt
       <div class="hero-copy">
         <div class="hero-mark">
           <Logo kind="seal" />
-          {release && (
-            <a class="pill" href={localePath(locale, "/changelog")}>
-              {pt ? `Versão ${release.version}` : `Version ${release.version}`}
-              <span>{pt ? "O que mudou" : "What changed"}</span>
-            </a>
-          )}
+          {
+            release && (
+              <a class="pill" href={p("/changelog")}>
+                {pt ? `Versão ${release.version}` : `Version ${release.version}`}
+                <span>{pt ? "O que mudou" : "What changed"}</span>
+              </a>
+            )
+          }
         </div>
         <h1 id="tagline" set:html={pt ? "Ler. Responder.<br>Descansar." : "Read. Reply.<br>Rest."} />
         <p class="lede">{copy.lede}</p>
         <div class="cta">
           <a class="btn" href={downloadHref()}>{t.downloadForWindows}</a>
-          <p class="fine">{copy.fine} <a href={localePath(locale, "/download")}>{copy.notes}</a></p>
+          <p class="fine">{copy.fine} <a href={p("/download")}>{copy.notes}</a></p>
         </div>
       </div>
 
@@ -98,18 +173,152 @@ const copy = pt
     </div>
   </section>
 
+  <!-- The picture, larger: a UI SDK dialog, loaded on the first hover, focus or press. -->
+  <ui-dialog id="shot-dialog" class="lightbox">
+    <ui-dialog-backdrop hidden></ui-dialog-backdrop>
+    <ui-dialog-content hidden>
+      <ui-dialog-title class="visually-hidden">{copy.alt}</ui-dialog-title>
+      <ProductPicture alt={copy.alt} large />
+      <ui-dialog-close>
+        <button type="button" class="lightbox-close">{t.close}</button>
+      </ui-dialog-close>
+    </ui-dialog-content>
+  </ui-dialog>
+
   <div class="wrap">
-    <!-- The picture, larger: a UI SDK dialog, loaded on the first hover, focus or press. -->
-    <ui-dialog id="shot-dialog" class="lightbox">
-      <ui-dialog-backdrop hidden></ui-dialog-backdrop>
-      <ui-dialog-content hidden>
-        <ui-dialog-title class="visually-hidden">{copy.alt}</ui-dialog-title>
-        <ProductPicture alt={copy.alt} large />
-        <ui-dialog-close>
-          <button type="button" class="lightbox-close">{t.close}</button>
-        </ui-dialog-close>
-      </ui-dialog-content>
-    </ui-dialog>
+    <!-- Proof: the numbers, from the README and the release -->
+    <section class="proof" aria-labelledby="proof-title">
+      <h2 id="proof-title" class="visually-hidden">{pt ? "Em números" : "In numbers"}</h2>
+      <ul data-reveal-group>
+        {
+          proof.map((item) => (
+            <li>
+              <span class="proof-value">
+                {item.prefix && <small>{item.prefix} </small>}
+                {item.value}
+              </span>
+              <span class="proof-label">{item.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="fine proof-note">
+        {pt ? "Tempos medidos num PC de desenvolvimento, com uma cache de 2000 mensagens: 77 ms até à primeira imagem." : "Times measured on a development PC with a 2,000-message cache: 77 ms to the first frame."}
+      </p>
+    </section>
+
+    <!-- Read, Reply, Sort, Keep -->
+    {
+      features.map((feature, index) => (
+        <section class:list={["feature", { flip: index % 2 === 1 }]} aria-labelledby={`feature-${feature.shot}`} data-reveal>
+          <div class="feature-text">
+            <p class="eyebrow">{feature.eyebrow}</p>
+            <h2 id={`feature-${feature.shot}`}>{feature.title}</h2>
+            <p class="feature-lede">{feature.text}</p>
+            <ul class="checks">
+              {feature.points.map((point) => (
+                <li>{point}</li>
+              ))}
+            </ul>
+          </div>
+          <div class="feature-shot">
+            <Shot name={feature.shot} alt={feature.alt} sizes={HALF} class="window" />
+          </div>
+        </section>
+      ))
+    }
+
+    <!-- Everything else: a bento of short facts, each with its own small picture -->
+    <section class="more" aria-labelledby="more-title">
+      <div class="section-head">
+        <h2 id="more-title">{pt ? "Pequeno de propósito." : "Small on purpose."}</h2>
+        <p>{pt ? "Tudo o que uma aplicação de email precisa, e nada que lhe peça atenção." : "Everything an email app needs, and nothing that asks for your attention."}</p>
+      </div>
+      <ul class="bento" data-reveal-group>
+        <li class="tile t-small">
+          <p class="tile-big">{size ?? "200 ms"}</p>
+          <h3>{pt ? "Pequeno" : "Small"}</h3>
+          <p>{pt ? "Um instalador por utilizador, sem direitos de administrador. A janela abre em menos de 200 ms, e nada é redesenhado enquanto espera." : "A per-user installer with no administrator rights. Its window is up in under 200 ms, and nothing is redrawn while it waits."}</p>
+        </li>
+        <li class="tile t-private">
+          <p class="tile-big">0</p>
+          <h3>{pt ? "Privado" : "Private"}</h3>
+          <p>{pt ? "Pedidos a um servidor Komorebi. Não existe nenhum: o seu correio vai deste PC para o seu servidor, e volta." : "Requests to a Komorebi server. There is none: your mail goes from this PC to your server and back."}</p>
+        </li>
+        <li class="tile t-native">
+          <p class="tile-big tile-word">{pt ? "Sem WebView" : "No WebView"}</p>
+          <h3>{pt ? "Desenhado de raiz" : "Drawn natively"}</h3>
+          <p>{pt ? "A interface é GPUI sobre DirectX 11, e o correio HTML tem o seu próprio motor de paginação." : "The interface is GPUI on DirectX 11, and HTML mail has its own layout engine."}</p>
+        </li>
+        <li class="tile t-quiet tile-pic">
+          <div class="tile-text">
+            <h3>{pt ? "Sossegado" : "Quiet"}</h3>
+            <p>{pt ? "Sem feed nem contadores a pedir atenção. Uma mensagem por ler é um ponto cheio; depois de lida, fica sossegada." : "No feed and no badges asking for attention. Unread mail is a solid spot; once read, it goes quiet."}</p>
+          </div>
+          <Shot name="list" alt={pt ? "A lista de mensagens do Komorebi" : "Komorebi's message list"} sizes="(min-width: 900px) 392px, 100vw" class="tile-shot" />
+        </li>
+        <li class="tile t-contacts tile-pic">
+          <div class="tile-text">
+            <h3>{pt ? "Contactos" : "Contacts"}</h3>
+            <p>{pt ? "Um livro de endereços com grupos, sincronizado por CardDAV se quiser, só de leitura ou de leitura e escrita." : "An address book with groups, synced over CardDAV if you want, read only or read and write."}</p>
+          </div>
+          <Shot name="contacts" alt={pt ? "Um contacto aberto no Komorebi" : "A contact open in Komorebi"} sizes={TILE} class="tile-shot" />
+        </li>
+        <li class="tile t-notify">
+          <div class="toast" aria-hidden="true">
+            <Logo kind="seal" />
+            <span class="toast-text">
+              <b>Priya Raman</b>
+              <span>Re: Launch checklist for Thursday</span>
+            </span>
+          </div>
+          <h3>{pt ? "Notificações e área de notificação" : "Notifications and tray"}</h3>
+          <p>{pt ? "Notificações do Windows para correio novo e um ícone na área de notificação, ambos desligados até os ligar. Sem serviço de push." : "Windows notifications for new mail and a notification area icon, both off until you turn them on. No push service."}</p>
+        </li>
+        <li class="tile t-cache tile-pic">
+          <div class="tile-text">
+            <h3>{pt ? "Cache cifrada" : "Encrypted cache"}</h3>
+            <p>{pt ? "Cada página da cache selada com AES-256-GCM, com uma chave que só o seu utilizador do Windows desbloqueia. Desligada por omissão." : "Every page of the cache sealed with AES-256-GCM, with a key only your Windows user can unlock. Off by default."}</p>
+          </div>
+          <Shot name="cache" alt={pt ? "A opção de cifrar a cache de correio" : "The option to encrypt the mail cache"} sizes={TILE} class="tile-shot tile-strip" />
+        </li>
+        <li class="tile t-rules">
+          <ol class="rule-demo" aria-hidden="true">
+            {
+              rules.map(([when, then]) => (
+                <li>
+                  <span class="chip">{when}</span>
+                  <span class="chip ink">{then}</span>
+                </li>
+              ))
+            }
+          </ol>
+          <h3>{pt ? "Regras" : "Rules"}</h3>
+          <p>{pt ? "Arrumam, apagam e marcam o correio novo neste PC, e copiam-se como Sieve." : "File, delete and flag new mail on this PC, and copy as Sieve."}</p>
+        </li>
+        <li class="tile t-keys">
+          <ul class="keys-demo" aria-label={pt ? "Alguns atalhos" : "Some shortcuts"}>
+            {
+              shortcuts.map((s) => (
+                <li>
+                  <span class="combo">
+                    {s.keys.map((k) => (
+                      <kbd>{k}</kbd>
+                    ))}
+                  </span>
+                  <span>{s.label}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <h3>{pt ? "Teclado" : "Keyboard"}</h3>
+          <p>
+            {pt ? "Tudo tem uma tecla, e Alt mostra as letras dos comandos. " : "Everything has a key, and Alt shows the commands' letters. "}
+            <a href={p("/docs/keyboard-shortcuts")}>{t.shortcuts}</a>
+          </p>
+        </li>
+      </ul>
+    </section>
 
     <!-- The launch film: renders nothing until public/media/komorebi-film.webm or .mp4 exists. -->
     <Film locale={locale} label={copy.film}>
@@ -119,15 +328,24 @@ const copy = pt
       </div>
     </Film>
 
-    <ul class="principles" data-reveal-group>
-      {
-        copy.principles.map(([title, text]) => (
-          <li>
-            <h2>{title}</h2>
-            <p>{text}</p>
-          </li>
-        ))
-      }
-    </ul>
+    <!-- Get it -->
+    <section class="get" aria-labelledby="get-title" data-reveal>
+      <div class="get-copy">
+        <Logo kind="seal" />
+        <h2 id="get-title">{pt ? "Lê correio. Envia correio. A ideia é só essa." : "It reads mail. It sends mail. That is the whole idea."}</h2>
+        <div class="cta">
+          <a class="btn" href={downloadHref()}>{t.downloadForWindows}</a>
+          <a class="btn ghost" href={p("/docs/getting-started")}>{t.getStarted}</a>
+        </div>
+      </div>
+      <ul class="get-meta">
+        {release && <li><span>{pt ? "Versão" : "Version"}</span>{release.version}</li>}
+        {release && <li><span>{pt ? "Publicada" : "Released"}</span>{formatDate(release.publishedAt, locale)}</li>}
+        {size && <li><span>{pt ? "Instalador" : "Installer"}</span>{size}</li>}
+        <li><span>{pt ? "Sistema" : "System"}</span>{pt ? "Windows 10 e 11, 64 bits" : "Windows 10 and 11, 64-bit"}</li>
+        <li><span>{pt ? "Licença" : "Licence"}</span>GPL-3.0-or-later</li>
+        <li><a href={p("/download")}>{pt ? "Zip portátil e SHA-256" : "Portable zip and SHA-256"}</a></li>
+      </ul>
+    </section>
   </div>
 </Base>

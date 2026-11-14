@@ -1,5 +1,6 @@
 ---
-// The header. Wider than a phone it is one row: wordmark, links, Download, language and theme.
+// The header, in a bar that stays at the top of the window while the page scrolls (a hairline
+// shows under it once the page has moved). Wider than a phone it is one row: wordmark, links, Download, language and theme.
 // On a phone the links and the theme fold into a menu: a UI SDK collapsible whose panel CSS shows
 // in the row on wider screens (src/scripts/site.ts, src/styles/site.css). The theme is a UI SDK
 // segmented control: light, dark or follow Windows. Without JavaScript the menu button and the
@@ -23,6 +24,7 @@ const schemes = [
 ];
 ---
 
+<div class="bar">
 <div class="wrap">
   <header class="top">
     <a class="home" href={localePath(locale, "/")} aria-label={t.home}><Logo kind="wordmark" /></a>
@@ -73,4 +75,5 @@ const schemes = [
       }
     </div>
   </header>
+</div>
 </div>

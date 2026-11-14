@@ -1,4 +1,6 @@
 ---
+// The footer: the wordmark and the tagline, three columns of links, and the small print. It holds
+// every link of the header too, so a phone without JavaScript (no menu button) reaches them all.
 import Logo from "./Logo.astro";
 import { localePath, ui, type Locale } from "../lib/i18n";
 import { REPO_URL, SITE_REPO_URL } from "../lib/site";
@@ -9,23 +11,64 @@ interface Props {
 const { locale } = Astro.props;
 const t = ui(locale);
 const p = (path: string) => localePath(locale, path);
+const columns = [
+  {
+    title: t.footerProduct,
+    links: [
+      { href: p("/download"), label: t.download },
+      { href: p("/changelog"), label: t.changelog },
+      { href: p("/privacy"), label: t.privacy },
+      { href: p("/code-signing"), label: t.codeSigning },
+    ],
+  },
+  {
+    title: t.footerHelp,
+    links: [
+      { href: p("/docs"), label: t.helpHome },
+      { href: p("/docs/getting-started"), label: t.getStarted },
+      { href: p("/docs/adding-an-account"), label: t.addAccount },
+      { href: p("/docs/keyboard-shortcuts"), label: t.shortcuts },
+      { href: p("/docs/faq"), label: t.faq },
+    ],
+  },
+  {
+    title: t.footerProject,
+    links: [
+      { href: p("/about"), label: t.about },
+      { href: REPO_URL, label: t.source, external: true },
+      { href: SITE_REPO_URL, label: t.siteSource, external: true },
+    ],
+  },
+];
 ---
 
-<div class="wrap">
-  <footer class="foot">
-    <a class="home" href={p("/")} aria-label={t.home}><Logo kind="wordmark" /></a>
-    <nav aria-label={t.footerLinks}>
-      <ul>
-        <li class="phone-only"><a href={p("/docs")}>{t.help}</a></li>
-        <li class="phone-only"><a href={p("/privacy")}>{t.privacy}</a></li>
-        <li class="phone-only"><a href={REPO_URL} rel="noopener">{t.source}</a></li>
-        <li><a href={p("/changelog")}>{t.changelog}</a></li>
-        <li><a href={p("/code-signing")}>{t.codeSigning}</a></li>
-        <li><a href={p("/about")}>{t.about}</a></li>
-        <li><a href={SITE_REPO_URL} rel="noopener">{t.siteSource}</a></li>
-      </ul>
-    </nav>
-    <p>{t.footerFree}</p>
-    <p>{t.footerTracking}</p>
-  </footer>
-</div>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="home" href={p("/")} aria-label={t.home}><Logo kind="seal" /><Logo kind="wordmark" /></a>
+        <p>{t.tagline}</p>
+      </div>
+      {
+        columns.map((column) => (
+          <nav class="foot-col" aria-label={column.title}>
+            <h2>{column.title}</h2>
+            <ul>
+              {column.links.map((link) => (
+                <li>
+                  <a href={link.href} rel={"external" in link ? "noopener" : undefined}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+    <div class="foot-base">
+      <p>{t.footerFree}</p>
+      <p>{t.footerTracking}</p>
+    </div>
+  </div>
+</footer>

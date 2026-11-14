@@ -1,0 +1,28 @@
+---
+// A crop of a Komorebi 1.0 screenshot (src/lib/shots.json), light and dark. CSS shows the one that
+// matches the page's theme; both are lazy, and a lazy image that is not displayed is never
+// fetched, so only the visible theme downloads.
+import { crop, fallback, srcset, type ShotName, type Theme } from "../lib/shots";
+
+interface Props {
+  name: ShotName;
+  alt: string;
+  /** The rendered width, for the browser's choice of file. */
+  sizes: string;
+  class?: string;
+}
+const { name, alt, sizes, class: className } = Astro.props;
+const { w, h } = crop(name);
+const themes: Theme[] = ["light", "dark"];
+---
+
+<div class:list={["shot", className]}>
+  {
+    themes.map((theme) => (
+      <picture class={`pic-${theme}`}>
+        <source type="image/avif" srcset={srcset(name, theme, "avif")} sizes={sizes} />
+        <img src={fallback(name, theme)} srcset={srcset(name, theme, "webp")} sizes={sizes} width={w} height={h} alt={alt} loading="lazy" decoding="async" />
+      </picture>
+    ))
+  }
+</div>
