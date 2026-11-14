@@ -28,6 +28,10 @@ Não. Não há telemetria nem servidor do Komorebi. Veja [o que sai do seu PC](/
 
 Inglês e português europeu. Segue o idioma de apresentação do Windows, e Definições > Geral > Idioma pode fixar um.
 
+## O que mudou no Komorebi 1.0?
+
+Uma interface nova sobre o mesmo motor de correio: o Komorebi passa a desenhar com GPUI e DirectX 11, segue o Fluent 2 e tem um aspeto novo. As contas, o correio, as regras, os contactos e as definições passam para a nova versão. A memória e o processador usados em repouso são mais altos do que na 0.7, e está prevista a sua redução. Os temas de alto contraste não são suportados na 1.0. A lista completa está nas [alterações](/pt/changelog).
+
 ## Tem calendário?
 
 Não no Komorebi 1.0. O calendário deverá voltar numa versão posterior. Um convite para uma reunião continua a aparecer num cartão por cima da mensagem, com **Aceitar**, **Provisório** e **Recusar** (a resposta vai só para o organizador) e **Guardar .ics** para levar o evento para a sua aplicação de calendário.

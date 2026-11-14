@@ -28,6 +28,10 @@ No. There is no telemetry and no Komorebi server. See [what leaves your PC](/doc
 
 English and European Portuguese. It follows the Windows display language, and Settings > General > Language can pin one.
 
+## What changed in Komorebi 1.0?
+
+A new interface on the same mail engine: Komorebi now draws with GPUI and DirectX 11, follows Fluent 2 and has a new look. Your accounts, mail, rules, contacts and settings carry over. Idle memory and CPU use are higher than in 0.7, and reducing them is planned. High contrast themes are not supported in 1.0. The full list is in the [changelog](/changelog).
+
 ## Is there a calendar?
 
 Not in Komorebi 1.0. The calendar is planned to come back in a later version. A meeting invitation still shows on a card above the message, with **Accept**, **Tentative** and **Decline** (the reply goes only to the organizer) and **Save .ics** to take the event to your calendar app.

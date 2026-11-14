@@ -16,12 +16,21 @@ export function readUpstream(file: UpstreamFile): string {
   throw new Error(`${file} not found in .generated/ or upstream/`);
 }
 
+/** A file of a release. The size and the hash are unknown in a local preview. */
+export type ReleaseFile = { name: string; size: number | null; url: string; sha256?: string | null };
+
 export type Release = {
   tag: string;
   version: string;
   publishedAt: string;
   htmlUrl: string;
-  installer: { name: string; size: number; url: string; sha256Url: string | null; sha256?: string | null } | null;
+  installer: (ReleaseFile & { sha256Url: string | null }) | null;
+  /** komorebi-<version>-portable-x64.zip, from 1.0 on. */
+  portable?: ReleaseFile | null;
+  /** SHA256SUMS, the hash of every file of the release, from 1.0 on. */
+  sha256sumsUrl?: string | null;
+  /** A local preview of a version that is not released (KOMOREBI_UPSTREAM_LOCAL). */
+  preview?: boolean;
 };
 
 let cached: Release | null | undefined;
@@ -48,8 +57,11 @@ export function formatMb(bytes: number, locale: Locale): string {
 }
 
 export function installerSize(locale: Locale): string | null {
-  const size = getRelease()?.installer?.size;
-  return size ? formatMb(size, locale) : null;
+  return fileSize(getRelease()?.installer ?? null, locale);
+}
+
+export function fileSize(file: ReleaseFile | null, locale: Locale): string | null {
+  return file?.size ? formatMb(file.size, locale) : null;
 }
 
 export function formatDate(iso: string, locale: Locale): string {

@@ -28,11 +28,13 @@ pnpm words         # help page word counts, now and on origin/main
 
 `pnpm build` first runs `scripts/upstream.mjs`. It asks the GitHub API for the latest Komorebi release, reads the installer's SHA-256 from its `.sha256` asset, and fetches `CHANGELOG.md`, `PRIVACY.md` and `README.md` at that release's tag into `.generated/` (ignored by git):
 
-- the download buttons and the JSON-LD `downloadUrl` point at that release's installer, or at `releases/latest` when there is none;
-- the download page shows the version, size, date and SHA-256;
+- the download buttons and the JSON-LD `downloadUrl` point at that release's installer, `komorebi-<version>-setup.exe`, or at `releases/latest` when there is none;
+- the download page shows the version, size and date, and the installer and (from 1.0 on) the portable zip, `komorebi-<version>-portable-x64.zip`, each with its SHA-256 from the installer's `.sha256` asset or from the release's `SHA256SUMS`;
 - the Changelog page and `/releases.xml` (RSS) render `CHANGELOG.md`; the Privacy page renders `PRIVACY.md` under a ten-line summary.
 
 When GitHub cannot be reached, the build uses the snapshot committed in `upstream/` (`KOMOREBI_UPSTREAM_OFFLINE=1` forces it). Refresh it after a release with `pnpm sync:upstream` and commit the result.
+
+To see the site as it will be for a version that is not released yet, point `KOMOREBI_UPSTREAM_LOCAL` at a Komorebi checkout and build: `$env:KOMOREBI_UPSTREAM_LOCAL = '..\komorebi'; pnpm build` in PowerShell. It takes the three files from that checkout, the version from its `Cargo.toml`, dates its "Unreleased" changelog entry today and uses the file names the release will have, without sizes or hashes. Such a build is for checking only; never deploy it.
 
 ## Content
 

@@ -1,7 +1,7 @@
 ---
 title: Use the keyboard
-lede: The keys you will use most. F1 in Komorebi shows them all.
-description: The most used keyboard shortcuts in Komorebi, for reading, writing and tabs. F1 shows every key inside the app.
+lede: The keys you will use most. F1 or Ctrl+/ in Komorebi shows them all.
+description: The most used keyboard shortcuts in Komorebi, for reading, writing and tabs, and the Alt access keys. F1 shows every key inside the app.
 ---
 
 ## Reading
@@ -15,7 +15,9 @@ description: The most used keyboard shortcuts in Komorebi, for reading, writing 
 | <kbd>Delete</kbd> | Delete |
 | <kbd>Ctrl+Shift+V</kbd> | Move to a folder |
 | <kbd>Ctrl+Z</kbd> | Undo the last archive, delete, move or send |
+| <kbd>Ctrl+S</kbd> | Save the message as a .eml file |
 | <kbd>Ctrl+E</kbd> | Search |
+| <kbd>Ctrl+Shift+I</kbd> | Go to the Inbox |
 | <kbd>F5</kbd> | Refresh |
 
 ## Writing
@@ -40,4 +42,9 @@ description: The most used keyboard shortcuts in Komorebi, for reading, writing 
 | <kbd>Ctrl+W</kbd> | Close the tab |
 | <kbd>Ctrl+Shift+T</kbd> | Reopen a closed tab |
 | <kbd>F6</kbd> | Next pane |
+| <kbd>Ctrl+Shift+E</kbd> | Show or hide the folders |
 | <kbd>Ctrl+,</kbd> | Settings |
+
+## Access keys
+
+Hold <kbd>Alt</kbd> and a letter shows under the main commands: New mail, Folders, Settings, Refresh, Reply, Forward, Archive and Delete, and Attach, Send and Link in the composer. Press <kbd>Alt</kbd> and that letter to run the command. The letters follow the language, so they differ in Portuguese; in English, for example, <kbd>Alt+N</kbd> is New mail and <kbd>Alt+R</kbd> is Reply.

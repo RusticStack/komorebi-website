@@ -19,7 +19,7 @@ export const GET: APIRoute = () => {
     "",
     "## Pages",
     "",
-    `- [Download](${absolute("/download")}): the installer, its SHA-256 and the requirements`,
+    `- [Download](${absolute("/download")}): the installer or the portable zip, the SHA-256 and the requirements`,
     `- [Privacy](${absolute("/privacy")}): a ten-line summary and the full privacy statement`,
     `- [Changelog](${absolute("/changelog")}): every release, latest first`,
     `- [Code signing policy](${absolute("/code-signing")})`,

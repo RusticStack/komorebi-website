@@ -877,6 +877,13 @@ kbd {
 .summary li + li {
   margin-top: 0.25rem;
 }
+.release-summary {
+  padding-left: 1.5rem;
+}
+.release-summary ul {
+  margin-top: 0.5rem;
+  padding-left: 1.25rem;
+}
 .release-head {
   display: flex;
   flex-wrap: wrap;
@@ -956,17 +963,45 @@ details.older > div > * + * {
   color: var(--ink-2);
   font-size: 1rem;
 }
+.options {
+  padding-top: 0.5rem;
+}
+.options > h2,
+.option-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
+  gap: 1rem clamp(2.5rem, 2rem + 2vw, 4rem);
+  margin-top: 1.25rem;
+}
+.option {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: var(--canvas);
+  color: var(--ink-2);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.option h3 {
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+.option p + p {
+  margin-top: 0.75rem;
+}
+.option-file a {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}
 .grid2 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr));
   gap: clamp(2.5rem, 2rem + 2vw, 4rem);
   padding: 2.5rem 0 clamp(4.5rem, 3rem + 3vw, 6rem);
-}
-.grid2 h2 {
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: 1.375rem;
-  line-height: 1.75rem;
 }
 .grid2 .prose {
   margin-top: 0.875rem;

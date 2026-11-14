@@ -6,8 +6,8 @@ description: Ative no Komorebi as notificações do Windows para correio novo, m
 
 1. **Abra Definições > Geral.**
 2. **Ative Notificações de correio novo.** A página de cada conta pode deixar essa conta de fora.
-3. **Escolha o que aparece.** Desative **Mostrar o remetente e o assunto nas notificações** para ver só "Novo correio", por exemplo no ecrã de bloqueio.
-4. **Mantenha-o a correr.** **Continuar na área de notificação quando a janela fecha** deixa o correio continuar a chegar. Saia pelo menu do ícone, que também tem **Pausar notificações**.
+3. **Escolha o que aparece.** Desative **Mostrar o remetente e o assunto** para ver só "Novo correio", por exemplo no ecrã de bloqueio.
+4. **Mantenha-o a correr.** Com **Continuar na área de notificação**, fechar a janela deixa o correio continuar a chegar. Saia pelo menu do ícone, que também tem **Pausar notificações**.
 
 As notificações são feitas neste PC a partir da ligação que o Komorebi já tem. Não há serviço push. A primeira transferência de uma conta nova nunca gera notificações.
 

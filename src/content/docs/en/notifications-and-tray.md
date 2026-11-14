@@ -6,8 +6,8 @@ description: Turn on Windows notifications for new mail in Komorebi, keep it in 
 
 1. **Open Settings > General.**
 2. **Turn on Notifications for new mail.** Each account's page can leave that account out.
-3. **Choose what shows.** Turn off **Show the sender and subject in notifications** to see only "New mail", for example on the lock screen.
-4. **Keep it running.** **Keep running in the notification area when the window closes** keeps mail arriving. Quit from the icon's menu, which also has **Pause notifications**.
+3. **Choose what shows.** Turn off **Show the sender and subject** to see only "New mail", for example on the lock screen.
+4. **Keep it running.** With **Keep running in the notification area**, closing the window keeps mail arriving. Quit from the icon's menu, which also has **Pause notifications**.
 
 Notifications are made on this PC from the connection Komorebi already has. There is no push service. A new account's first download never notifies.
 

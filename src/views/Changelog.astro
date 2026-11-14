@@ -15,6 +15,30 @@ const pt = locale === "pt";
 const [latest, ...older] = releases();
 const release = getRelease();
 const source = `${REPO_URL}/blob/${release?.tag ?? "main"}/CHANGELOG.md`;
+// Komorebi 1.0 in short, in the page's language, above its English entry (from its CHANGELOG.md).
+const v1 = pt
+  ? {
+      title: "O Komorebi 1.0 em resumo",
+      points: [
+        "Uma interface nova, em GPUI e DirectX 11, a seguir o Fluent 2, sobre o mesmo motor de correio. As contas, a cache, as regras, os contactos e as definições passam para a nova versão sem nada ser convertido.",
+        "Um aspeto novo: o selo K cor de dióspiro como ícone da aplicação, na área de notificação e nas notificações.",
+        "Teclas de acesso: mantenha Alt premida para ver a letra dos comandos principais.",
+        "O calendário sai da 1.0 e deverá voltar numa versão posterior. Os convites continuam a aparecer num cartão, com Guardar .ics.",
+        "A memória e o processador usados em repouso são mais altos do que na 0.7; está prevista a sua redução. Os temas de alto contraste não são suportados.",
+        "Além do instalador, há um zip portátil com o komorebi.exe.",
+      ],
+    }
+  : {
+      title: "Komorebi 1.0 in short",
+      points: [
+        "A new interface, on GPUI and DirectX 11 and following Fluent 2, over the same mail engine. Accounts, the cache, rules, contacts and settings carry over, with nothing converted.",
+        "A new look: the persimmon K seal as the app icon, in the notification area and on notifications.",
+        "Access keys: hold Alt to see the letter of the main commands.",
+        "The calendar is left out of 1.0 and planned to return in a later version. Invitations still show on a card, with Save .ics.",
+        "Idle memory and CPU use are higher than in 0.7; reducing them is planned. High contrast themes are not supported.",
+        "Besides the installer, there is a portable zip with komorebi.exe.",
+      ],
+    };
 ---
 
 <Base
@@ -42,6 +66,16 @@ const source = `${REPO_URL}/blob/${release?.tag ?? "main"}/CHANGELOG.md`;
               <h2 id={latest.id}>{latest.version}</h2>
               <time datetime={latest.date}>{formatDate(latest.date, locale)}</time>
             </div>
+            {latest.version === "1.0.0" && (
+              <div class="summary release-summary" lang={pt ? "pt-PT" : "en"}>
+                <p><strong>{v1.title}</strong></p>
+                <ul>
+                  {v1.points.map((point) => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <Fragment set:html={latest.html} />
           </section>
         )

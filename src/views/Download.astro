@@ -4,7 +4,7 @@ import Logo from "../components/Logo.astro";
 import { localePath, ui, type Locale } from "../lib/i18n";
 import { breadcrumbs, softwareApplication } from "../lib/seo";
 import { LATEST_RELEASE_URL } from "../lib/site";
-import { downloadHref, formatDate, getRelease, installerSize } from "../lib/upstream";
+import { downloadHref, fileSize, formatDate, getRelease, installerSize } from "../lib/upstream";
 
 interface Props {
   locale: Locale;
@@ -16,11 +16,40 @@ const p = (path: string) => localePath(locale, path);
 const release = getRelease();
 const installer = release?.installer ?? null;
 const size = installerSize(locale);
-const file = installer?.name ?? "komorebi-<version>-setup.exe";
+const portable = release?.portable ?? null;
+const releasePage = release?.htmlUrl ?? LATEST_RELEASE_URL;
+const sums = release?.sha256sumsUrl ?? null;
+const placeholder = pt ? "<versão>" : "<version>";
+// The two ways a release comes, from 1.0 on: the installer and the portable zip. A release
+// without a zip (0.7 and older) shows the installer only.
+const options = [
+  {
+    key: "installer",
+    title: pt ? "Instalador" : "Installer",
+    name: installer?.name ?? `komorebi-${placeholder}-setup.exe`,
+    href: downloadHref(),
+    size: installerSize(locale),
+    sha256: installer?.sha256 ?? null,
+    text: pt
+      ? "Instala o komorebi.exe para o seu utilizador do Windows, sem direitos de administrador, com um atalho no menu Iniciar. Atualiza-se a partir de Definições > Acerca de."
+      : "Installs komorebi.exe for your Windows user, with no administrator rights, and adds a Start menu shortcut. It updates itself from Settings > About.",
+  },
+  {
+    key: "portable",
+    title: pt ? "Zip portátil" : "Portable zip",
+    name: portable?.name ?? `komorebi-${placeholder}-portable-x64.zip`,
+    href: portable?.url ?? releasePage,
+    size: fileSize(portable, locale),
+    sha256: portable?.sha256 ?? null,
+    text: pt
+      ? "O komorebi.exe com a licença, a declaração de privacidade e o registo de alterações. Descompacte-o onde quiser e execute-o; os dados ficam em %LOCALAPPDATA%\\komorebi, como na aplicação instalada."
+      : "komorebi.exe with the licence, the privacy statement and the changelog. Unzip it anywhere and run it; it keeps its data in %LOCALAPPDATA%\\komorebi, as the installed app does.",
+  },
+].filter((option) => option.key === "installer" || portable || !release);
 const title = pt ? "Transferir o Komorebi para Windows" : "Download Komorebi for Windows";
 const description = pt
-  ? "Transfira o Komorebi para Windows 10 e 11: o instalador, o seu SHA-256, os requisitos e o que esperar do Windows SmartScreen."
-  : "Download Komorebi for Windows 10 and 11: the installer, its SHA-256, the requirements and what to expect from Windows SmartScreen.";
+  ? "Transfira o Komorebi para Windows 10 e 11: o instalador ou o zip portátil, o SHA-256, os requisitos e o que esperar do Windows SmartScreen."
+  : "Download Komorebi for Windows 10 and 11: the installer or the portable zip, the SHA-256, the requirements and what to expect from Windows SmartScreen.";
 ---
 
 <Base
@@ -50,6 +79,30 @@ const description = pt
       </div>
     </section>
 
+    <section class="options" aria-labelledby="options">
+      <h2 id="options">{pt ? "Escolha como o quer" : "Choose how you want it"}</h2>
+      <div class="option-list">
+        {
+          options.map((option) => (
+            <div class="option" id={option.key}>
+              <h3>{option.title}</h3>
+              <p class="option-text">{option.text}</p>
+              <p class="option-file">
+                <a href={option.href}>{option.name}</a>
+                {option.size && <span class="fine"> {option.size}</span>}
+              </p>
+              {option.sha256 && (
+                <p class="fine">
+                  SHA-256
+                  <code class="hash">{option.sha256}</code>
+                </p>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
     <div class="grid2">
       <section aria-labelledby="smartscreen">
         <h2 id="smartscreen">{pt ? "Antes de o executar" : "Before you run it"}</h2>
@@ -71,22 +124,13 @@ const description = pt
       <section aria-labelledby="check">
         <h2 id="check">{pt ? "Verificar o ficheiro" : "Check the file"}</h2>
         <div class="prose">
-          {
-            installer?.sha256 ? (
-              <p>
-                <span class="fine">SHA-256 {pt ? "de" : "of"} {installer.name}</span>
-                <code class="hash">{installer.sha256}</code>
-              </p>
-            ) : (
-              <p>
-                {pt ? "O SHA-256 está no ficheiro .sha256 da " : "The SHA-256 is in the .sha256 file of the "}
-                <a href={release?.htmlUrl ?? LATEST_RELEASE_URL}>{pt ? "versão no GitHub" : "release on GitHub"}</a>.
-              </p>
-            )
-          }
-          <p>{pt ? "No PowerShell, na pasta da transferência:" : "In PowerShell, in the download folder:"}</p>
-          <pre><code>{`(Get-FileHash .\\${file}).Hash.ToLower()`}</code></pre>
-          <p>{pt ? "Os dois valores têm de ser iguais. Se forem diferentes, apague o ficheiro e transfira-o de novo." : "The two must match. If they differ, delete the file and download it again."}</p>
+          <p>
+            {pt ? "Cada versão traz o SHA-256 de todos os seus ficheiros em " : "Every release lists the SHA-256 of each of its files in "}
+            {sums ? <a href={sums}>SHA256SUMS</a> : <a href={releasePage}>SHA256SUMS</a>}
+            {pt ? ". No PowerShell, na pasta da transferência, o resultado de" : ". In PowerShell, in the download folder, the result of"}
+          </p>
+          <pre><code>{`(Get-FileHash .\\${options[0].name}).Hash.ToLower()`}</code></pre>
+          <p>{pt ? "tem de ser igual ao valor desse ficheiro. Se for diferente, apague o ficheiro e transfira-o de novo." : "must match the value for that file. If it differs, delete the file and download it again."}</p>
         </div>
       </section>
 
@@ -95,6 +139,11 @@ const description = pt
         <div class="prose">
           <ul>
             <li>{pt ? "Windows 10 ou Windows 11, 64 bits (x64)." : "Windows 10 or Windows 11, 64-bit (x64)."}</li>
+            <li>
+              {pt
+                ? "DirectX 11. Sem uma placa gráfica utilizável, o Komorebi desenha com o renderizador de software do Windows."
+                : "DirectX 11. Without a usable graphics card, Komorebi draws with Windows' software renderer."}
+            </li>
             <li>{pt ? "Uma conta de email com IMAP e SMTP e uma palavra-passe ou palavra-passe de aplicação." : "An email account with IMAP and SMTP and a password or app password."}</li>
             <li>{pt ? "Não há início de sessão OAuth: contas que o exigem, como Gmail e Microsoft 365, não funcionam." : "There is no OAuth sign-in: accounts that require it, such as Gmail and Microsoft 365, do not work."}</li>
           </ul>

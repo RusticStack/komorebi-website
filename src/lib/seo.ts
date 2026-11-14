@@ -55,7 +55,7 @@ export function softwareApplication(locale: Locale): JsonLd {
           softwareVersion: release.version,
           datePublished: release.publishedAt.slice(0, 10),
           releaseNotes: absolute(localePath(locale, "/changelog")),
-          ...(release.installer ? { fileSize: `${(release.installer.size / 1_000_000).toFixed(1)} MB` } : {}),
+          ...(release.installer?.size ? { fileSize: `${(release.installer.size / 1_000_000).toFixed(1)} MB` } : {}),
         }
       : {}),
     image: `${SITE_URL}/brand/icon-512.png`,
