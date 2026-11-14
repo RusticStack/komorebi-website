@@ -71,10 +71,58 @@ for (const file of files) {
     }
   }
   if (!/<meta property="og:image" content="https:\/\//.test(head)) fail("no og:image");
+  for (const p of ["og:title", "og:description", "og:url"]) if (!new RegExp(`<meta property="${p}" content="[^"]+"`).test(head)) fail(`no ${p}`);
+  for (const n of ["twitter:card", "twitter:title", "twitter:description", "twitter:image"]) if (!new RegExp(`<meta name="${n}" content="[^"]+"`).test(head)) fail(`no ${n}`);
+  if (!/<link rel="manifest" href="\/(pt\/)?manifest\.webmanifest"/.test(head)) fail("no manifest link");
+  if (!/<link rel="icon" href="\/favicon\.svg"/.test(head) || !/<link rel="apple-touch-icon"/.test(head)) fail("no icons");
+
+  // structured data by page type
+  const data = blocks.map(([, json]) => {
+    try {
+      return JSON.parse(json);
+    } catch {
+      return {};
+    }
+  });
+  const has = (type) => data.find((d) => d["@type"] === type);
+  if (["index.html", "pt.html", "download.html", "pt/download.html"].includes(rel)) {
+    const app = has("SoftwareApplication");
+    if (!app) fail("no SoftwareApplication JSON-LD");
+    else {
+      if (String(app.offers?.price) !== "0") fail("SoftwareApplication offers.price is not 0");
+      if (!/Windows 10/.test(app.operatingSystem ?? "") || !/Windows 11/.test(app.operatingSystem ?? "")) fail("SoftwareApplication operatingSystem is not Windows 10 and 11");
+      if (!/^\d+\.\d+\.\d+/.test(app.softwareVersion ?? "")) fail("SoftwareApplication has no softwareVersion");
+      if (!/^https:\/\//.test(app.downloadUrl ?? "")) fail("SoftwareApplication has no downloadUrl");
+    }
+  }
+  if (/(^|\/)docs\/[^/]+\.html$/.test(rel) && !has("BreadcrumbList")) fail("help page without BreadcrumbList JSON-LD");
+  if (/(^|\/)docs\/faq\.html$/.test(rel) && !has("FAQPage")) fail("FAQ without FAQPage JSON-LD");
 }
 
 for (const [title, pages] of titles) if (pages.length > 1) problems.push(`duplicate title "${title}": ${pages.join(", ")}`);
 for (const [, pages] of descriptions) if (pages.length > 1) problems.push(`duplicate description: ${pages.join(", ")}`);
+
+// robots.txt, the sitemap and the manifests
+const read = (name) => {
+  try {
+    return readFileSync(join(root, name), "utf8");
+  } catch {
+    problems.push(`missing ${name}`);
+    return "";
+  }
+};
+if (!read("robots.txt").includes(`Sitemap: ${SITE}/sitemap.xml`)) problems.push("robots.txt does not name the sitemap");
+const urls = [...read("sitemap.xml").matchAll(/<url>[\s\S]*?<\/url>/g)].map((m) => m[0]);
+if (urls.length !== files.length - 1) problems.push(`sitemap.xml has ${urls.length} urls for ${files.length - 1} indexable pages`);
+for (const u of urls) for (const l of ["en", "pt-PT", "x-default"]) if (!u.includes(`hreflang="${l}"`)) problems.push(`sitemap url without hreflang ${l}: ${/<loc>([^<]*)/.exec(u)?.[1]}`);
+for (const m of ["manifest.webmanifest", "pt/manifest.webmanifest"]) {
+  try {
+    const j = JSON.parse(read(m));
+    if (!j.name || !j.icons?.length) problems.push(`${m} has no name or icons`);
+  } catch {
+    problems.push(`${m} does not parse`);
+  }
+}
 
 console.log(`check-seo: ${files.length} pages`);
 if (problems.length) {

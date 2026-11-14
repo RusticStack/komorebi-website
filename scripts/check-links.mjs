@@ -37,7 +37,8 @@ for (const [file, html] of pages) {
   const refs = [
     ...[...html.matchAll(/<a\s[^>]*href="([^"]+)"/g)].map((m) => m[1]),
     ...[...html.matchAll(/<(?:img|source)\s[^>]*(?:src|srcSet|srcset)="([^"]+)"/g)].flatMap((m) =>
-      m[1].split(",").map((part) => part.trim().split(/\s+/)[0]),
+      // a data: URI holds a comma of its own and is not a file
+      m[1].startsWith("data:") ? [] : m[1].split(",").map((part) => part.trim().split(/\s+/)[0]),
     ),
     ...[...html.matchAll(/<link\s[^>]*href="([^"]+)"/g)].map((m) => m[1]),
   ];

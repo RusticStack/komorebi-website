@@ -48,7 +48,7 @@ const headScript =
 <html lang={HTML_LANG[locale]}>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta property="csp-nonce" content="" />
     <script is:inline set:html={headScript} />
     <title>{title}</title>
@@ -84,6 +84,10 @@ const headScript =
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={title} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={title} />
     {graph.map((item) => <script type="application/ld+json" set:html={JSON.stringify(item)} />)}
   </head>
   <body>
