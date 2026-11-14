@@ -24,10 +24,17 @@ const t = ui(locale);
         <slot />
         {
           current !== "index" && (
-            <details class="pages">
-              <summary>{t.allPages}</summary>
-              <DocsNav locale={locale} current={current} />
-            </details>
+            <ui-collapsible class="pages">
+              <ui-collapsible-trigger>
+                <button type="button" aria-expanded="false">
+                  {t.allPages}
+                  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </button>
+              </ui-collapsible-trigger>
+              <ui-collapsible-panel keep-mounted hidden>
+                <DocsNav locale={locale} current={current} />
+              </ui-collapsible-panel>
+            </ui-collapsible>
           )
         }
       </div>
@@ -43,4 +50,7 @@ const t = ui(locale);
     <ul class="results" id="search-dialog-results"></ul>
     <p class="visually-hidden" aria-live="polite" data-status></p>
   </dialog>
+  <script>
+    import "../scripts/search.ts";
+  </script>
 </Base>

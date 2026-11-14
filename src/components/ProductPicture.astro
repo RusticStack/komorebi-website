@@ -5,24 +5,29 @@
 // PLACEHOLDER: these are the brand mockup renders of the inbox (F:\Projects\komorebi-brand\final\
 // app\png), not screenshots. Replace them with real screenshots of the GPUI app when it exists;
 // see docs/TODO-SCREENSHOTS.md. Until then the alt text and the caption say "design preview".
+//
+// `large` is the copy in the lightbox dialog: the wide picture only, at up to the full width of
+// the window, loaded when the dialog first shows it.
 import { COMPACT_SIZES, PHONE, WIDE_SIZES, srcset } from "../lib/preview";
 
 interface Props {
   alt: string;
+  large?: boolean;
 }
-const { alt } = Astro.props;
+const { alt, large = false } = Astro.props;
+const wideSizes = large ? "min(100vw, 100rem)" : WIDE_SIZES;
 ---
 
 {
   ["light", "dark"].map((theme) => (
     <picture class={`pic-${theme}`}>
-      <source media={PHONE} type="image/avif" srcset={srcset(theme, "compact", "avif")} sizes={COMPACT_SIZES} width="900" height="700" />
-      <source media={PHONE} type="image/webp" srcset={srcset(theme, "compact", "webp")} sizes={COMPACT_SIZES} width="900" height="700" />
-      <source type="image/avif" srcset={srcset(theme, "wide", "avif")} sizes={WIDE_SIZES} />
+      {!large && <source media={PHONE} type="image/avif" srcset={srcset(theme, "compact", "avif")} sizes={COMPACT_SIZES} width="900" height="700" />}
+      {!large && <source media={PHONE} type="image/webp" srcset={srcset(theme, "compact", "webp")} sizes={COMPACT_SIZES} width="900" height="700" />}
+      <source type="image/avif" srcset={srcset(theme, "wide", "avif")} sizes={wideSizes} />
       <img
         src={`/preview/inbox-${theme}-wide-1312.webp`}
         srcset={srcset(theme, "wide", "webp")}
-        sizes={WIDE_SIZES}
+        sizes={wideSizes}
         width="1280"
         height="800"
         alt={alt}

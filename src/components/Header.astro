@@ -1,4 +1,9 @@
 ---
+// The header. Wider than a phone it is one row: wordmark, links, Download, language and theme.
+// On a phone the links and the theme fold into a menu: a UI SDK collapsible whose panel CSS shows
+// in the row on wider screens (src/scripts/site.ts, src/styles/site.css). The theme is a UI SDK
+// segmented control: light, dark or follow Windows. Without JavaScript the menu button and the
+// theme are not shown; the footer repeats the links on a phone.
 import Logo from "./Logo.astro";
 import { localePath, ui, type Locale } from "../lib/i18n";
 import { REPO_URL } from "../lib/site";
@@ -11,41 +16,61 @@ interface Props {
 const { locale, path, current } = Astro.props;
 const t = ui(locale);
 const here = (key: string) => (current === key ? { "aria-current": "page" as const } : {});
+const schemes = [
+  { value: "light", label: t.themeLight, icon: "M8 4.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15M3.05 3.05l1.06 1.06M11.89 11.89l1.06 1.06M3.05 12.95l1.06-1.06M11.89 4.11l1.06-1.06" },
+  { value: "dark", label: t.themeDark, icon: "M13.5 9.6A5.75 5.75 0 0 1 6.4 2.5a5.75 5.75 0 1 0 7.1 7.1z" },
+  { value: "system", label: t.themeSystem, icon: "M2 3.25h12v8H2zM5.5 14h5M8 11.25V14" },
+];
 ---
 
 <div class="wrap">
   <header class="top">
     <a class="home" href={localePath(locale, "/")} aria-label={t.home}><Logo kind="wordmark" /></a>
-    <nav aria-label={t.nav}>
-      <ul>
-        <li><a href={localePath(locale, "/docs")} {...here("docs")}>{t.help}</a></li>
-        <li><a href={localePath(locale, "/privacy")} {...here("privacy")}>{t.privacy}</a></li>
-        <li><a href={REPO_URL} rel="noopener">{t.source}</a></li>
-      </ul>
-    </nav>
+    <ui-collapsible class="menu">
+      <ui-collapsible-trigger class="menu-trigger">
+        <button type="button" aria-expanded="false">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 5h11M2.5 11h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+          <span>{t.menu}</span>
+        </button>
+      </ui-collapsible-trigger>
+      <ui-collapsible-panel class="menu-panel" keep-mounted hidden>
+        <nav aria-label={t.nav}>
+          <ul>
+            <li><a href={localePath(locale, "/docs")} {...here("docs")}>{t.help}</a></li>
+            <li><a href={localePath(locale, "/privacy")} {...here("privacy")}>{t.privacy}</a></li>
+            <li><a href={REPO_URL} rel="noopener">{t.source}</a></li>
+          </ul>
+        </nav>
+        <ui-segmented-control class="scheme" aria-label={t.theme} default-value="system">
+          <ui-segmented-control-indicator></ui-segmented-control-indicator>
+          {
+            schemes.map((s) => (
+              <ui-segmented-control-item value={s.value}>
+                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <path d={s.icon} fill={s.value === "dark" ? "currentColor" : "none"} stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="scheme-text">{s.label}</span>
+              </ui-segmented-control-item>
+            ))
+          }
+        </ui-segmented-control>
+      </ui-collapsible-panel>
+    </ui-collapsible>
     <a class="btn-sm" href={localePath(locale, "/download")} {...here("download")}>{t.download}</a>
-    <div class="toggles">
-      <div class="lang" role="group" aria-label={t.language}>
-        {
-          locale === "en" ? (
-            <>
-              <span aria-current="true" lang="en">EN</span>
-              <a href={localePath("pt", path)} hreflang="pt-PT" lang="pt-PT" aria-label="Português (Portugal)">PT</a>
-            </>
-          ) : (
-            <>
-              <a href={localePath("en", path)} hreflang="en" lang="en" aria-label="English">EN</a>
-              <span aria-current="true" lang="pt-PT">PT</span>
-            </>
-          )
-        }
-      </div>
-      <button class="theme" type="button" aria-label={t.themeToggle} title={t.themeToggle} aria-pressed="false">
-        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-          <circle cx="8" cy="8" r="6.75" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
-          <path d="M8 1.25a6.75 6.75 0 0 1 0 13.5z" fill="currentColor"></path>
-        </svg>
-      </button>
+    <div class="lang" role="group" aria-label={t.language}>
+      {
+        locale === "en" ? (
+          <>
+            <span aria-current="true" lang="en">EN</span>
+            <a href={localePath("pt", path)} hreflang="pt-PT" lang="pt-PT" aria-label="Português (Portugal)">PT</a>
+          </>
+        ) : (
+          <>
+            <a href={localePath("en", path)} hreflang="en" lang="en" aria-label="English">EN</a>
+            <span aria-current="true" lang="pt-PT">PT</span>
+          </>
+        )
+      }
     </div>
   </header>
 </div>

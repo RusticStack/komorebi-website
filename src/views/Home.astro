@@ -75,9 +75,26 @@ const copy = pt
       <div class="shot">
         <!-- Placeholder: brand design preview of the inbox, not a screenshot. See docs/TODO-SCREENSHOTS.md. -->
         <ProductPicture alt={copy.alt} />
+        <button class="shot-zoom" type="button" data-lightbox="shot-dialog" aria-haspopup="dialog" aria-label={t.viewLarger}>
+          <span class="shot-zoom-pill">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9 7M2.5 13.5 7 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </span>
+        </button>
       </div>
       <figcaption class="cap">{copy.caption}</figcaption>
     </figure>
+
+    <!-- The picture, larger: a UI SDK dialog, loaded on the first hover, focus or press. -->
+    <ui-dialog id="shot-dialog" class="lightbox">
+      <ui-dialog-backdrop hidden></ui-dialog-backdrop>
+      <ui-dialog-content hidden>
+        <ui-dialog-title class="visually-hidden">{copy.alt}</ui-dialog-title>
+        <ProductPicture alt={copy.alt} large />
+        <ui-dialog-close>
+          <button type="button" class="lightbox-close">{t.close}</button>
+        </ui-dialog-close>
+      </ui-dialog-content>
+    </ui-dialog>
 
     <!-- Launch film slot: renders nothing until public/media/komorebi-film.webm or .mp4 exists. -->
     <Film locale={locale} label={copy.film} />

@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import Logo from "../components/Logo.astro";
+import Option from "../components/DownloadOption.astro";
 import { localePath, ui, type Locale } from "../lib/i18n";
 import { breadcrumbs, softwareApplication } from "../lib/seo";
 import { LATEST_RELEASE_URL } from "../lib/site";
@@ -81,26 +82,31 @@ const description = pt
 
     <section class="options" aria-labelledby="options">
       <h2 id="options">{pt ? "Escolha como o quer" : "Choose how you want it"}</h2>
-      <div class="option-list">
-        {
-          options.map((option) => (
-            <div class="option" id={option.key}>
-              <h3>{option.title}</h3>
-              <p class="option-text">{option.text}</p>
-              <p class="option-file">
-                <a href={option.href}>{option.name}</a>
-                {option.size && <span class="fine"> {option.size}</span>}
-              </p>
-              {option.sha256 && (
-                <p class="fine">
-                  SHA-256
-                  <code class="hash">{option.sha256}</code>
-                </p>
-              )}
-            </div>
-          ))
-        }
-      </div>
+      {
+        /* two options are UI SDK tabs; one option, or a page without the script, shows cards */
+        options.length > 1 ? (
+          <ui-tabs class="option-tabs" default-value={options[0].key}>
+            <ui-tabs-list aria-labelledby="options">
+              {options.map((option) => (
+                <ui-tabs-tab value={option.key}>
+                  <button type="button">{option.title}</button>
+                </ui-tabs-tab>
+              ))}
+            </ui-tabs-list>
+            {options.map((option) => (
+              <ui-tabs-panel value={option.key} keep-mounted>
+                <Option option={option} />
+              </ui-tabs-panel>
+            ))}
+          </ui-tabs>
+        ) : (
+          <div class="option-list">
+            {options.map((option) => (
+              <Option option={option} />
+            ))}
+          </div>
+        )
+      }
     </section>
 
     <div class="grid2">
@@ -170,4 +176,12 @@ const description = pt
       </section>
     </div>
   </div>
+  {
+    options.length > 1 && (
+      <script>
+        // The installer and the portable zip as tabs: UI SDK's tabs, on this page only.
+        import "@ui-sdk/web/tabs";
+      </script>
+    )
+  }
 </Base>

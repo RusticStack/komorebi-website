@@ -2,7 +2,7 @@
 
 The website and help pages for [Komorebi](https://github.com/RusticStack/komorebi), a small, private email app for Windows 10 and 11. Served at https://komorebi.rusticstack.com, in English and European Portuguese.
 
-Astro, static output, one hand-written stylesheet (`src/styles/site.css`) and one small script (`public/site.js`, the theme toggle and the help search). Every page reads without JavaScript. The look is the Komorebi brand, website variant B; see [docs/DESIGN.md](docs/DESIGN.md).
+Astro, static output, one hand-written stylesheet (`src/styles/site.css`) and a few scripts: the interactive parts are [UI SDK](https://ui-sdk.dev) web components (see below), and the help search is `src/scripts/search.ts`. Every page reads without JavaScript. The look is the Komorebi brand, website variant B; see [docs/DESIGN.md](docs/DESIGN.md).
 
 ## Develop
 
@@ -41,6 +41,27 @@ To see the site as it will be for a version that is not released yet, point `KOM
 - Help pages: `src/content/docs/en/<slug>.md` and `src/content/docs/pt/<slug>.md` (European Portuguese, AO90). Front matter: `title`, `lede` (the line under the title) and `description` (the meta description). The groups and order are in `src/lib/docs.ts`. Every page exists in both languages. Keep each page to one screen: numbered steps, keys as `<kbd>`, a tip as a blockquote that starts with a bold line.
 - Other pages: `src/views/*.astro`, routed for both languages by `src/pages/[...path].astro`. Interface strings: `src/lib/i18n.ts`.
 - English pages are at `/...`, Portuguese pages at `/pt/...`.
+
+## Interactive parts: UI SDK
+
+The interactive parts use [UI SDK](https://ui-sdk.dev) (Vercel Labs, [source](https://github.com/vercel-labs/ui), Apache-2.0, which GPL-3.0 code may use): unstyled behaviour primitives that handle the keyboard, focus and ARIA, and leave the look to us. We use its **web components** (`@ui-sdk/web` over `@ui-sdk/core`), the build that needs no framework runtime, so the site has no React, Vue, Svelte or Solid and no hydration: the `<ui-*>` elements are written straight into the `.astro` files as static HTML and upgrade when their module loads. `src/styles/site.css` styles them with the site's own tokens, by element name (which also holds before they upgrade) and their `data-*` and ARIA states; `@layer ui-sdk;` at its top keeps UI SDK's few injected rules below ours.
+
+| Where | Component | Loaded |
+|---|---|---|
+| Every page: light, dark or system theme | `createColorScheme` and `preferencesScript` from `@ui-sdk/core`, `<ui-preferences>`, `<ui-segmented-control>` | `src/scripts/site.ts`, a module on every page |
+| Every page: the menu on a phone | `<ui-collapsible>` (wider screens keep it open and lay it out as the header row) | same |
+| Every page, wider than a phone: the theme icons' names | `<ui-tooltip>`, one shared, opened from code | on the first hover or keyboard focus of the theme control |
+| Help pages on a tablet or phone: All help pages | `<ui-collapsible>` | with the rest of `site.ts` |
+| Download: installer or portable zip | `<ui-tabs>` (only when the release has both) | that page only |
+| Home: the product picture, larger | `<ui-dialog>` | on the first hover, focus or press of the picture |
+
+The theme choice is saved in `localStorage` under `color-scheme` and written on `<html>` as `data-color-scheme`. `preferencesScript` makes the inline script at the top of `<head>` at build time (`src/layouts/Base.astro`), so a saved choice is on `<html>` before the first paint and there is no flash of the other theme; "system" follows `prefers-color-scheme` in CSS, before any script runs. A choice saved by the old toggle (`theme`) is moved over once. The search dialog stays a native `<dialog>`, and the changelog's earlier releases stay `<details>`: both work without a script.
+
+Without JavaScript the theme control and the menu button are not shown, the phone menu's links are in the footer, the help page list stays open and the Download options show as cards side by side.
+
+**Versions.** `@ui-sdk/core` and `@ui-sdk/web` are pinned to exactly `0.1.0-beta.1`, the npm `latest`. `0.1.0-beta.2` (tag `beta`) was under a day old when this was set up, younger than pnpm's minimum release age, so it was not taken instead of adding an exception to that policy; move both to the same newer version together, and read the release notes first.
+
+**Trade-offs.** UI SDK is a beta: its APIs and markup may change before 1.0, so upgrades need a look at every `<ui-*>` here. It costs more script than the 2 KB `site.js` it replaces, about 29 KB gzipped on every page and 33 KB on Download (`dist/_astro`), plus about 21 KB for the tooltip and about 37 KB for the lightbox, each loaded only when it is about to be used; all of it is deferred module script and nothing blocks the first paint. In return the theme switch, the menu, the tabs and the dialog get UI SDK's tested keyboard, focus and ARIA behaviour (radio group, disclosure, APG tabs, modal dialog with focus return). `@astrojs/react` islands were not needed: every component used is in the web components build. A closed collapsible panel is hidden by an `!important` rule in UI SDK's layer, which is why the header's panel is kept open on wider screens by the script rather than shown by CSS.
 
 ## Images
 

@@ -5,6 +5,8 @@ import Footer from "../components/Footer.astro";
 import { HTML_LANG, OG_LOCALE, localePath, ui, type Locale } from "../lib/i18n";
 import { absolute, organization, type JsonLd } from "../lib/seo";
 import { SITE_NAME } from "../lib/site";
+import { colorScheme } from "../lib/color-scheme";
+import { preferencesScript } from "@ui-sdk/core";
 
 interface Props {
   locale: Locale;
@@ -28,6 +30,13 @@ const canonical = absolute(localePath(locale, path));
 const ogImage = absolute(`/og/${locale}/${og}.png`);
 const other: Locale = locale === "en" ? "pt" : "en";
 const graph = [...jsonLd, organization()];
+// Runs as the head is parsed, before the first paint: marks that scripts run (the theme switch and
+// the menu button show only then), moves a choice saved by the old toggle ("theme") to UI SDK's
+// key, then UI SDK's own script writes the saved choice on <html> as data-color-scheme.
+const headScript =
+  'document.documentElement.classList.add("js");' +
+  'try{var o=localStorage.getItem("theme");if(o){if(!localStorage.getItem("color-scheme"))localStorage.setItem("color-scheme",o);localStorage.removeItem("theme")}}catch(e){}' +
+  preferencesScript([colorScheme]);
 ---
 
 <!doctype html>
@@ -35,6 +44,7 @@ const graph = [...jsonLd, organization()];
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline set:html={headScript} />
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
@@ -68,23 +78,19 @@ const graph = [...jsonLd, organization()];
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={title} />
     <meta name="twitter:card" content="summary_large_image" />
-    <script is:inline>
-      // marks that the script can run, so the theme toggle and the search show from the first frame
-      document.documentElement.classList.add("js");
-      try {
-        var t = localStorage.getItem("theme");
-        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
-      } catch (e) {}
-    </script>
     {graph.map((item) => <script type="application/ld+json" set:html={JSON.stringify(item)} />)}
-    <script src="/site.js" defer></script>
   </head>
   <body>
-    <a class="skip" href="#main">{t.skip}</a>
-    <Header locale={locale} path={path} current={current} />
-    <main id="main" tabindex="-1">
-      <slot />
-    </main>
-    <Footer locale={locale} />
+    <ui-preferences>
+      <a class="skip" href="#main">{t.skip}</a>
+      <Header locale={locale} path={path} current={current} />
+      <main id="main" tabindex="-1">
+        <slot />
+      </main>
+      <Footer locale={locale} />
+    </ui-preferences>
+    <script>
+      import "../scripts/site.ts";
+    </script>
   </body>
 </html>

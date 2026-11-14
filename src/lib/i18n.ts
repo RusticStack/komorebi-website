@@ -25,7 +25,11 @@ const EN = {
   about: "About",
   siteSource: "Source of this site",
   language: "Language",
-  themeToggle: "Dark theme",
+  menu: "Menu",
+  theme: "Theme",
+  themeLight: "Light",
+  themeDark: "Dark",
+  themeSystem: "System",
   footerFree: "Free and open source. Windows 10 and 11.",
   footerTracking: "No tracking on this site.",
   footerLinks: "More",
@@ -46,6 +50,8 @@ const EN = {
   notFoundText: "The page you asked for does not exist or has moved.",
   goHome: "Go to the home page",
   readHelp: "Read the help",
+  viewLarger: "View the picture larger",
+  close: "Close",
 };
 
 export type UiStrings = Record<keyof typeof EN, string>;
@@ -64,7 +70,11 @@ const PT: UiStrings = {
   about: "Sobre",
   siteSource: "Código deste site",
   language: "Idioma",
-  themeToggle: "Tema escuro",
+  menu: "Menu",
+  theme: "Tema",
+  themeLight: "Claro",
+  themeDark: "Escuro",
+  themeSystem: "Sistema",
   footerFree: "Gratuito e de código aberto. Windows 10 e 11.",
   footerTracking: "Este site não segue ninguém.",
   footerLinks: "Mais",
@@ -85,6 +95,8 @@ const PT: UiStrings = {
   notFoundText: "A página que procura não existe ou mudou de sítio.",
   goHome: "Ir para a página inicial",
   readHelp: "Ler a ajuda",
+  viewLarger: "Ver a imagem maior",
+  close: "Fechar",
 };
 
 export function ui(locale: Locale): UiStrings {

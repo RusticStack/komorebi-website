@@ -38,15 +38,15 @@ Contrast (WCAG 2), lowest pair per text colour:
 
 Every text pair passes AA (4.5:1).
 
-The theme follows Windows (`prefers-color-scheme`). The toggle in the header sets `data-theme` on `<html>` and remembers it in `localStorage`; picking the system's own theme again goes back to following Windows.
+The theme follows Windows (`prefers-color-scheme`). The theme control in the header (light, dark or system) sets `data-color-scheme` on `<html>` and remembers it in `localStorage`; "system" goes back to following Windows.
 
 ## Layout
 
 - Content width 1184 px (the mockup's 1312 px frame less its gutters), gutters from 16 px on a phone to 64 px, set with `clamp()`.
 - Type is fluid with `clamp()`: the hero from 46 to 64 px, body from 17 to 18 px.
-- Header: wordmark, Help, Privacy, Source, a small Download pill, the language and theme toggles. Under 640 px the three links move to the footer, as in the mockup.
+- Header: wordmark, Help, Privacy, Source, a small Download pill, the language links and the theme control. Under 640 px the three links and the theme fold into a Menu button; without JavaScript the links are in the footer, as in the mockup.
 - Help: a 240 px page list beside a 680 px column. Under 960 px the list becomes an "All help pages" disclosure under the page.
 
 ## Script
 
-`public/site.js` is the only script: the theme toggle and the help search (a static index, `/search-en.json` and `/search-pt.json`, the field on the help home and a Ctrl+K dialog on every help page). Without it, every page still reads and every link works; the toggle and the search field stay hidden.
+The scripts are `src/scripts/site.ts` (the theme, light, dark or system, and the phone menu, with UI SDK web components; see the README) and `src/scripts/search.ts` (the help search: a static index, `/search-en.json` and `/search-pt.json`, the field on the help home and a Ctrl+K dialog on every help page). Without them, every page still reads and every link works; the theme control, the menu button and the search field stay hidden.

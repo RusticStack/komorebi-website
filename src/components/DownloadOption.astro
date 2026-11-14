@@ -1,0 +1,24 @@
+---
+// One way to get Komorebi on the Download page: the installer or the portable zip.
+interface Props {
+  option: { key: string; title: string; name: string; href: string; size: string | null; sha256: string | null; text: string };
+}
+const { option } = Astro.props;
+---
+
+<div class="option" id={option.key}>
+  <h3>{option.title}</h3>
+  <p class="option-text">{option.text}</p>
+  <p class="option-file">
+    <a href={option.href}>{option.name}</a>
+    {option.size && <span class="fine"> {option.size}</span>}
+  </p>
+  {
+    option.sha256 && (
+      <p class="fine">
+        SHA-256
+        <code class="hash">{option.sha256}</code>
+      </p>
+    )
+  }
+</div>

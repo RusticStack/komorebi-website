@@ -1,56 +1,22 @@
-// The only script on the site. Every page reads fine without it; it adds the theme toggle and the
-// help search (the field on the help home and the Ctrl+K dialog on every help page).
-(() => {
-  const root = document.documentElement;
-  const store = {
-    get: () => {
-      try {
-        return localStorage.getItem("theme");
-      } catch {
-        return null;
-      }
-    },
-    set: (value) => {
-      try {
-        if (value) localStorage.setItem("theme", value);
-        else localStorage.removeItem("theme");
-      } catch {}
-    },
-  };
+// Help search over a static index of the help pages: the field on the help home and the Ctrl+K
+// dialog (a native <dialog>, which needs no library) on every help page. Only help pages load it.
+type Entry = { t: string; d: string; x: string; u: string };
 
-  // Theme: follows Windows until the toggle picks the other one; picking the system's own theme
-  // again goes back to following it.
-  const system = matchMedia("(prefers-color-scheme: dark)");
-  const effective = () => root.dataset.theme || (system.matches ? "dark" : "light");
-  const toggle = document.querySelector(".theme");
-  const sync = () => toggle && toggle.setAttribute("aria-pressed", String(effective() === "dark"));
-  if (toggle) {
-    sync();
-    toggle.addEventListener("click", () => {
-      const next = effective() === "dark" ? "light" : "dark";
-      if (next === (system.matches ? "dark" : "light")) {
-        delete root.dataset.theme;
-        store.set(null);
-      } else {
-        root.dataset.theme = next;
-        store.set(next);
-      }
-      sync();
-    });
-    system.addEventListener("change", sync);
-  }
+const dialog = document.getElementById("search-dialog") as HTMLDialogElement | null;
+if (dialog) setup(dialog);
 
-  // Help search over a static index of the help pages.
-  const dialog = document.getElementById("search-dialog");
-  if (!dialog) return;
-  let index = null;
-  const load = () => (index ??= fetch(dialog.dataset.index).then((r) => (r.ok ? r.json() : [])).catch(() => []));
-  const fold = (text) => text.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+function setup(dialog: HTMLDialogElement) {
+  let index: Promise<Entry[]> | null = null;
+  const load = () =>
+    (index ??= fetch(dialog.dataset.index ?? "")
+      .then((r) => (r.ok ? (r.json() as Promise<Entry[]>) : []))
+      .catch(() => []));
+  const fold = (text: string) => text.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
-  function find(query, docs) {
+  function find(query: string, docs: Entry[]): Entry[] {
     const terms = fold(query).split(/\s+/).filter(Boolean);
     if (!terms.length) return [];
-    const hits = [];
+    const hits: [number, Entry][] = [];
     for (const doc of docs) {
       const title = fold(doc.t);
       const body = fold(`${doc.d} ${doc.x}`);
@@ -65,10 +31,13 @@
       }
       if (score) hits.push([score, doc]);
     }
-    return hits.sort((a, b) => b[0] - a[0]).slice(0, 8).map((hit) => hit[1]);
+    return hits
+      .sort((a, b) => b[0] - a[0])
+      .slice(0, 8)
+      .map((hit) => hit[1]);
   }
 
-  function bind(input, list, status) {
+  function bind(input: HTMLInputElement, list: HTMLElement, status: HTMLElement) {
     const links = () => [...list.querySelectorAll("a")];
     input.addEventListener("input", async () => {
       const query = input.value.trim();
@@ -90,10 +59,14 @@
       if (query && !hits.length) {
         const li = document.createElement("li");
         li.className = "none";
-        li.textContent = dialog.dataset.none;
+        li.textContent = dialog.dataset.none ?? "";
         list.append(li);
       }
-      status.textContent = query ? (hits.length ? dialog.dataset.count.replace("{n}", hits.length) : dialog.dataset.none) : "";
+      status.textContent = query
+        ? hits.length
+          ? (dialog.dataset.count ?? "").replace("{n}", String(hits.length))
+          : (dialog.dataset.none ?? "")
+        : "";
     });
     input.addEventListener("keydown", (event) => {
       if (event.key === "ArrowDown" && links().length) {
@@ -106,7 +79,7 @@
     });
     list.addEventListener("keydown", (event) => {
       const all = links();
-      const at = all.indexOf(document.activeElement);
+      const at = all.indexOf(document.activeElement as HTMLAnchorElement);
       if (at < 0) return;
       if (event.key === "ArrowDown" && at < all.length - 1) {
         event.preventDefault();
@@ -118,12 +91,12 @@
     });
   }
 
-  const inline = document.getElementById("search-input");
+  const inline = document.getElementById("search-input") as HTMLInputElement | null;
   if (inline) {
-    bind(inline, document.getElementById("search-results"), document.getElementById("search-status"));
+    bind(inline, document.getElementById("search-results")!, document.getElementById("search-status")!);
   }
-  const dialogInput = document.getElementById("search-dialog-input");
-  bind(dialogInput, document.getElementById("search-dialog-results"), dialog.querySelector("[data-status]"));
+  const dialogInput = document.getElementById("search-dialog-input") as HTMLInputElement;
+  bind(dialogInput, document.getElementById("search-dialog-results")!, dialog.querySelector<HTMLElement>("[data-status]")!);
 
   const open = () => {
     if (dialog.open) return;
@@ -148,4 +121,4 @@
     const inside = event.clientX >= box.left && event.clientX <= box.right && event.clientY >= box.top && event.clientY <= box.bottom;
     if (!inside) dialog.close();
   });
-})();
+}
