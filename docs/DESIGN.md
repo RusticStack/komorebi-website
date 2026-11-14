@@ -2,11 +2,11 @@
 
 The site follows the Komorebi brand (`D:\Projects\komorebi-brand\final`: `BRAND.md`, the mockups in `site\site.html` and `site\png`). This page records how the brand maps to this code.
 
-**Variant A.** The brand board drew two website heroes: A, the very large fall (the K's light, in the fall tone) at the right of the hero, and B, a plain 44 px seal. The site was first built on B; at the owner's request it now uses **A** (November 2026), because B left out the brand's one image. The fall is the seal's K alone, drawn inline from `logo/fall.svg`'s path (`src/components/Logo.astro`, kind `fall`) in `--fall`. It stands at the right of the home hero and runs off the page; the hero clips it sideways (`overflow-x: clip`, so no horizontal scroll and no scroll container). It never sits behind reading text: wider than a phone the copy is kept narrower than the room the fall leaves (`min(36rem, 54vw)`), and on a phone, as in `a-home-*-390.png`, the fall stands at the top right and the copy starts under it. The product window sits in front of the fall's foot. The persimmon seal stays above the headline, as on the app's welcome screen.
+**Variant A.** The brand board drew two website heroes: A, the very large fall (the K's light, in the fall tone) at the right of the hero, and B, a plain 44 px seal. The site was first built on B; at the owner's request it now uses **A** (November 2026), because B left out the brand's one image. The fall is the seal's K alone, drawn inline from `logo/fall.svg`'s path (`src/components/Logo.astro`, kind `fall`) in `--fall`. It stands at the right of the home hero and runs off the page; the hero clips it sideways (`overflow-x: clip`, so no horizontal scroll and no scroll container). It never sits behind reading text: wider than a phone the copy is kept narrower than the room the fall leaves (`min(36rem, 54vw)`), and on a phone, as in `a-home-*-390.png`, the fall stands at the top right and the copy starts under it. The product window sits in front of the fall's foot. The seal stays above the headline, as on the app's welcome screen.
 
 ## Rules
 
-- **One colour.** The persimmon seal `#B3503A` is the only colour, and it only fills the seal (`src/components/Logo.astro`). It is never text, a link, a button or a state. Everything else is paper, ink and greys.
+- **No accent colour.** The site is paper, ink and greys only. The seal was persimmon `#B3503A`; by the owner's decision of November 2026 it is neutral, to match the K icon in the app: an ink square with the K carved through to the paper in light, the reverse in dark. Its colour is one token, `--seal`, so it can be set once when the app's final icon colours are known. The favicon, the touch and manifest icons and the Open Graph cards use the neutral seal too (`public/brand/*.svg`, rendered by `pnpm og`).
 - **One square.** The seal is the only square. Controls are pills (radius half the height) or circles. The docs' `<kbd>` and code use the brand's 6 px code radius.
 - **Flat.** No gradients, blur, glow or shadows. The one edge is 1 px: table rules and the bottom of `<kbd>`.
 - **System fonts.** Segoe UI Variable Display for headings, Segoe UI Variable Text for text, then Segoe UI and `system-ui`. No web fonts.
@@ -28,7 +28,7 @@ All in `src/styles/site.css` as custom properties on `:root`.
 | `--ink-2` | `#555552` | `#B0B0AC` | secondary text |
 | `--ink-3` | `#6A6A66` | `#939390` | captions, small print |
 | `--on-ink` | `#FFFFFF` | `#141414` | text on ink |
-| `--seal` | `#B3503A` | `#B3503A` | the seal only |
+| `--seal` | `#171717` | `#F2F2F0` | the seal only (neutral; the K is carved through to `--paper`) |
 
 Contrast (WCAG 2), lowest pair per text colour:
 
