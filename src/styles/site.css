@@ -2771,7 +2771,7 @@ details.older > div > * + * {
     text-align: center;
   }
   .hero-window {
-    aspect-ratio: 640 / 800;
+    aspect-ratio: 656 / 800;
   }
   /* a phone: the fall stands at the top right (brand mockup a-home-*-390) and the copy starts
      under it; the seal sits beside the fall's stem, well to its left */

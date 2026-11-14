@@ -1,12 +1,12 @@
 {
-  "_": "Crops of the Komorebi 1.0 screenshots (1280 x 800 windows, .github/assets/screenshots in the app repository). x, y, w and h are in screenshot pixels; widths are the encoded sizes. scripts/prepare-images.mjs makes public/shots/<name>-<theme>-<width>.{avif,webp}; src/lib/shots.ts reads the same table.",
+  "_": "Crops of the Komorebi 1.0.2 screenshots (1280 x 800 windows, .github/assets/screenshots in the app repository). x, y, w and h are in screenshot pixels; widths are the encoded sizes. scripts/prepare-images.mjs makes public/shots/<name>-<theme>-<width>.{avif,webp}; src/lib/shots.ts reads the same table.",
   "hero": { "src": "inbox-personal", "x": 0, "y": 0, "w": 1280, "h": 800, "widths": [800, 1280] },
-  "hero-phone": { "src": "inbox-personal", "x": 0, "y": 0, "w": 640, "h": 800, "widths": [360, 640] },
-  "read": { "src": "inbox-personal", "x": 640, "y": 48, "w": 640, "h": 752, "widths": [440, 640] },
-  "reply": { "src": "compose", "x": 640, "y": 48, "w": 640, "h": 400, "widths": [440, 640] },
-  "rules": { "src": "rules", "x": 484, "y": 64, "w": 772, "h": 536, "widths": [520, 772] },
-  "privacy": { "src": "settings-privacy", "x": 484, "y": 64, "w": 772, "h": 700, "widths": [520, 772] },
-  "contacts": { "src": "contacts", "x": 648, "y": 64, "w": 600, "h": 420, "widths": [400, 600] },
-  "cache": { "src": "settings-privacy", "x": 496, "y": 486, "w": 748, "h": 110, "widths": [374, 748] },
-  "list": { "src": "inbox", "x": 248, "y": 48, "w": 392, "h": 448, "widths": [392] }
+  "hero-phone": { "src": "inbox-personal", "x": 0, "y": 0, "w": 656, "h": 800, "widths": [360, 640] },
+  "read": { "src": "inbox-personal", "x": 656, "y": 48, "w": 624, "h": 752, "widths": [440, 640] },
+  "reply": { "src": "compose", "x": 656, "y": 48, "w": 624, "h": 400, "widths": [440, 640] },
+  "rules": { "src": "rules", "x": 500, "y": 64, "w": 772, "h": 536, "widths": [520, 772] },
+  "privacy": { "src": "settings-privacy", "x": 500, "y": 64, "w": 772, "h": 700, "widths": [520, 772] },
+  "contacts": { "src": "contacts", "x": 664, "y": 64, "w": 600, "h": 420, "widths": [400, 600] },
+  "cache": { "src": "settings-privacy", "x": 512, "y": 486, "w": 748, "h": 110, "widths": [374, 748] },
+  "list": { "src": "inbox", "x": 264, "y": 48, "w": 392, "h": 448, "widths": [392] }
 }

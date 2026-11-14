@@ -28,8 +28,8 @@ const themes: Theme[] = ["light", "dark"];
   themes.map((theme) => (
     <picture class={`pic-${theme}`}>
       {!large && <source data-guard={theme} media={`(prefers-color-scheme: ${theme === "light" ? "dark" : "light"})`} srcset={BLANK} />}
-      {!large && <source media={PHONE} type="image/avif" srcset={srcset("hero-phone", theme, "avif")} sizes={HERO_PHONE_SIZES} width="640" height="800" />}
-      {!large && <source media={PHONE} type="image/webp" srcset={srcset("hero-phone", theme, "webp")} sizes={HERO_PHONE_SIZES} width="640" height="800" />}
+      {!large && <source media={PHONE} type="image/avif" srcset={srcset("hero-phone", theme, "avif")} sizes={HERO_PHONE_SIZES} width="656" height="800" />}
+      {!large && <source media={PHONE} type="image/webp" srcset={srcset("hero-phone", theme, "webp")} sizes={HERO_PHONE_SIZES} width="656" height="800" />}
       <source type="image/avif" srcset={srcset("hero", theme, "avif")} sizes={sizes} />
       <img
         src={fallback("hero", theme)}
