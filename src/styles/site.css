@@ -954,12 +954,16 @@ h1 {
   white-space: nowrap;
 }
 
-/* the captions, drawn by the script: ink on a pill, above the controls */
+/* the captions, drawn by the script: ink on a pill in the lower third, always above the controls
+   pill (its foot is the pill's top plus 0.625 rem, whether or not the pill is showing). Off until
+   the visitor turns them on. */
 .player-caption {
   position: absolute;
   left: 50%;
-  bottom: 4.25rem;
+  bottom: 4rem;
   width: max-content;
+  max-height: 30%;
+  overflow: hidden;
   max-width: calc(100% - 2rem);
   padding: 0.25rem 0.75rem;
   border-radius: 0.875rem;
@@ -985,8 +989,9 @@ h1 {
   .pb-total {
     display: none;
   }
-  .player-caption {
-    bottom: 3.75rem;
+  /* no room beside the play button: the caption waits for the video to play */
+  .player.has-captions:not([data-state="playing"]) .player-caption.on {
+    opacity: 0;
   }
 }
 @container (max-width: 21rem) {
@@ -1002,6 +1007,9 @@ h1 {
   .player-bar {
     height: 3rem;
     border-radius: 1.5rem;
+  }
+  .player-caption {
+    bottom: 4.375rem;
   }
 }
 

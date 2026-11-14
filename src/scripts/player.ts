@@ -30,6 +30,7 @@ type FullscreenVideo = HTMLVideoElement & {
   audioTracks?: { length: number };
 };
 
+const CAPTIONS_KEY = "player-captions";
 const SPEEDS = [1, 1.25, 1.5, 2, 0.75];
 const IDLE_MS = 2200;
 const SEEK_S = 5;
@@ -215,14 +216,26 @@ function setupPlayer(root: HTMLElement) {
   };
   mute.addEventListener("click", toggleMute);
 
-  // ---------- captions: drawn by the page, above the controls, in the site's type ----------
+  // ---------- captions: drawn by the page in the lower third, above the controls ----------
+  // Off at first on every player (the film's words are already in the picture); the CC button or
+  // C turns them on, and the choice is remembered for this visitor's next videos.
   const track = video.textTracks[0];
-  const showCaptions = (on: boolean) => {
+  const showCaptions = (on: boolean, remember = true) => {
     if (!track || !cc) return;
     track.mode = on ? "hidden" : "disabled";
     cc.setAttribute("aria-pressed", String(on));
     root.classList.toggle("has-captions", on);
-    if (!on) caption.textContent = "";
+    if (!on) {
+      caption.textContent = "";
+      caption.classList.remove("on");
+    }
+    if (remember) {
+      try {
+        localStorage.setItem(CAPTIONS_KEY, on ? "on" : "off");
+      } catch {
+        // storage blocked: the choice lasts for this page only
+      }
+    }
   };
   if (track && cc) {
     track.mode = "disabled";
@@ -232,6 +245,13 @@ function setupPlayer(root: HTMLElement) {
       caption.classList.toggle("on", caption.textContent !== "");
     });
     cc.addEventListener("click", () => showCaptions(cc.getAttribute("aria-pressed") !== "true"));
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(CAPTIONS_KEY);
+    } catch {
+      saved = null;
+    }
+    if (saved === "on") showCaptions(true, false);
   }
   const toggleCaptions = () => {
     if (cc) showCaptions(cc.getAttribute("aria-pressed") !== "true");
