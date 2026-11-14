@@ -18,7 +18,13 @@ export function releases(): ReleaseEntry[] {
     const markdown = part.slice(part.indexOf("\n") + 1).replace(/^\[[^\]]+\]:\s*\S+\s*$/gm, "").trim();
     const id = `v${head[1].replace(/\./g, "-")}`;
     // every release has its own "Added" and "Fixed" headings: prefix their ids with the version
-    const html = renderMarkdown(markdown).replace(/ id="/g, ` id="${id}-`);
+    // a link relative to the app repository (docs/GPUI-MIGRATION.md) points at that file on GitHub, at this release's tag
+    const html = renderMarkdown(markdown)
+      .replace(/ id="/g, ` id="${id}-`)
+      .replace(
+        / href="(?![a-z][a-z0-9+.-]*:|#|\/)([^"]+)"/gi,
+        ` href="https://github.com/RusticStack/komorebi/blob/v${head[1]}/$1"`,
+      );
     entries.push({ version: head[1], date: head[2], markdown, html, id });
   }
   cached = entries;
