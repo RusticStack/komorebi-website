@@ -11,6 +11,8 @@ export default defineConfig({
     format: "file",
     inlineStylesheets: "always",
   },
+  // No script is inlined into a page (the Content-Security-Policy allows exactly one inline script).
+  vite: { build: { assetsInlineLimit: 0 } },
   devToolbar: { enabled: false },
   prefetch: false,
 });

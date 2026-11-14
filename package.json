@@ -15,12 +15,15 @@
     "og": "node scripts/render-og.mjs",
     "images": "node scripts/prepare-images.mjs",
     "dev": "pnpm upstream && astro dev",
-    "build": "pnpm upstream && astro build",
+    "build": "pnpm upstream && astro build && node scripts/check-csp.mjs dist",
     "preview": "astro preview",
     "typecheck": "astro check",
     "check:links": "node scripts/check-links.mjs dist",
     "check:seo": "node scripts/check-seo.mjs dist",
-    "words": "node scripts/word-count.mjs"
+    "words": "node scripts/word-count.mjs",
+    "check:csp": "node scripts/check-csp.mjs dist",
+    "csp:update": "node scripts/check-csp.mjs dist --write",
+    "serve": "node scripts/serve.mjs dist"
   },
   "dependencies": {
     "@ui-sdk/core": "0.1.0-beta.1",

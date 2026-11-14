@@ -30,6 +30,10 @@ const canonical = absolute(localePath(locale, path));
 const ogImage = absolute(`/og/${locale}/${og}.png`);
 const other: Locale = locale === "en" ? "pt" : "en";
 const graph = [...jsonLd, organization()];
+// The csp-nonce meta below (empty) tells UI SDK there is no style nonce, so it adds its few rules as
+// constructed (adopted) style sheets, which the policy allows, and not as style elements, which it
+// would block.
+//
 // Runs as the head is parsed, before the first paint: marks that scripts run (the theme switch and
 // the menu button show only then), moves a choice saved by the old toggle ("theme") to UI SDK's
 // key, then UI SDK's own script writes the saved choice on <html> as data-color-scheme.
@@ -44,6 +48,7 @@ const headScript =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="csp-nonce" content="" />
     <script is:inline set:html={headScript} />
     <title>{title}</title>
     <meta name="description" content={description} />
