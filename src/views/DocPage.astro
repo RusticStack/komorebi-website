@@ -1,6 +1,7 @@
 ---
 import Docs from "../layouts/Docs.astro";
-import { getDoc, neighbours } from "../lib/docs";
+import GuideVideo from "../components/GuideVideo.astro";
+import { DOC_GROUPS, getDoc, neighbours } from "../lib/docs";
 import { localePath, ui, type Locale } from "../lib/i18n";
 import { breadcrumbs, faqPage } from "../lib/seo";
 
@@ -11,6 +12,7 @@ interface Props {
 const { locale, slug } = Astro.props;
 const t = ui(locale);
 const doc = getDoc(locale, slug);
+const group = DOC_GROUPS.find((g) => g.key === doc.group)!;
 const { previous, next } = neighbours(locale, slug);
 const help = localePath(locale, "/docs");
 const jsonLd = [
@@ -31,17 +33,23 @@ const jsonLd = [
   current={slug}
   jsonLd={jsonLd}
 >
-  <article>
-    <nav class="crumb" aria-label={t.breadcrumb}><a href={help}>{t.help}</a></nav>
+  <article class="doc">
+    <nav class="crumb" aria-label={t.breadcrumb}>
+      <a href={help}>{t.help}</a>
+      <span aria-hidden="true">/</span>
+      <span>{group.title[locale]}</span>
+    </nav>
     <h1>{doc.title}</h1>
     <p class="lede">{doc.lede}</p>
+    <p class="doc-meta">{t.minRead.replace("{n}", String(doc.minutes))}</p>
+    <GuideVideo slug={slug} locale={locale} title={doc.title} />
     <div class="prose" set:html={doc.html} />
   </article>
   <nav class="pager" aria-label={t.pager}>
     {
       previous && (
-        <a href={previous.path} rel="prev">
-          {t.previous}
+        <a class="prev" href={previous.path} rel="prev">
+          <span>{t.previous}</span>
           <b>{previous.title}</b>
         </a>
       )
@@ -49,10 +57,24 @@ const jsonLd = [
     {
       next && (
         <a class="next" href={next.path} rel="next">
-          {t.next}
+          <span>{t.next}</span>
           <b>{next.title}</b>
         </a>
       )
     }
   </nav>
+  {
+    doc.toc.length > 0 && (
+      <nav class="toc" aria-labelledby="toc-title" slot="toc">
+        <h2 id="toc-title">{t.onThisPage}</h2>
+        <ul>
+          {doc.toc.map((h) => (
+            <li>
+              <a href={`#${h.id}`}>{h.text}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
 </Docs>

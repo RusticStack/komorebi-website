@@ -10,11 +10,27 @@ const processor = remark()
   .use(rehypeSlug)
   .use(rehypeStringify, { allowDangerousHtml: true });
 
-/** Markdown to HTML. Tables get a scrolling wrapper so a wide one never widens the page. */
+/**
+ * Markdown to HTML. Tables get a scrolling wrapper so a wide one never widens the page. A key
+ * combination, <kbd>Ctrl+Shift+V</kbd>, becomes one keycap per key inside an outer <kbd> (the
+ * HTML way to write a combination). A blockquote is a callout: the help pages write a tip as a
+ * blockquote that starts with a bold line.
+ */
 export function renderMarkdown(markdown: string): string {
   return String(processor.processSync(markdown))
     .replace(/<table>/g, '<div class="table-wrap"><table>')
-    .replace(/<\/table>/g, "</table></div>");
+    .replace(/<\/table>/g, "</table></div>")
+    .replace(/<kbd>([^<]+)<\/kbd>/g, (whole, keys: string) => {
+      const parts = keys.split(/\+(?=.)/);
+      if (parts.length < 2) return whole;
+      return `<kbd class="combo">${parts.map((k) => `<kbd>${k}</kbd>`).join('<span class="plus">+</span>')}</kbd>`;
+    })
+    .replace(/<blockquote>/g, '<blockquote class="callout">');
+}
+
+/** The h2 headings of a rendered page, for its table of contents (rehype-slug gives the ids). */
+export function headings(html: string): { id: string; text: string }[] {
+  return [...html.matchAll(/<h2 id="([^"]+)">([\s\S]*?)<\/h2>/g)].map((m) => ({ id: m[1], text: textOf(m[2]) }));
 }
 
 /** Plain text of an HTML fragment, for the search index, word counts and llms-full.txt. */

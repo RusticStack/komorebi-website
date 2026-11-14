@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { localePath, type Locale } from "./i18n";
-import { renderMarkdown, splitFrontMatter, textOf } from "./markdown";
+import { headings, renderMarkdown, splitFrontMatter, textOf } from "./markdown";
 
 // The help pages live in src/content/docs/<locale>/<slug>.md. Each has a title and a description
 // in its front matter. The groups below are the "I want to..." list on the help home and the order
@@ -42,6 +42,8 @@ export type Doc = {
   text: string;
   words: number;
   minutes: number;
+  /** The page's h2 headings, for its table of contents. */
+  toc: { id: string; text: string }[];
   /** Question and answer pairs, for the FAQ page's FAQPage JSON-LD. */
   faq: { question: string; answer: string }[];
 };
@@ -78,6 +80,7 @@ function load(locale: Locale, slug: string): Doc {
     text,
     words,
     minutes: Math.max(1, Math.round(words / 200)),
+    toc: headings(html),
     faq,
   };
   cache.set(key, doc);

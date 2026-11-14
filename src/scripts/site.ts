@@ -176,6 +176,31 @@ if (!still.matches && "IntersectionObserver" in window) {
   }
 }
 
+// ---------- on this page ----------
+// The help pages' contents list marks the section being read: the last h2 above the upper third
+// of the window.
+{
+  const links = new Map<string, HTMLAnchorElement>();
+  for (const a of document.querySelectorAll<HTMLAnchorElement>(".toc a[href^='#']")) links.set(a.hash.slice(1), a);
+  const headings = [...document.querySelectorAll<HTMLElement>(".prose h2[id]")].filter((h) => links.has(h.id));
+  if (headings.length && "IntersectionObserver" in window) {
+    let current: HTMLAnchorElement | undefined;
+    const mark = () => {
+      const line = window.innerHeight / 3;
+      let id = headings[0].id;
+      for (const h of headings) if (h.getBoundingClientRect().top <= line) id = h.id;
+      const link = links.get(id);
+      if (link === current) return;
+      current?.removeAttribute("aria-current");
+      link?.setAttribute("aria-current", "location");
+      current = link;
+    };
+    const watch = new IntersectionObserver(mark, { rootMargin: "0px 0px -66% 0px" });
+    for (const h of headings) watch.observe(h);
+    mark();
+  }
+}
+
 // ---------- the web manifest ----------
 // It only matters for installing the site as an app, and the browser fetches it at high priority
 // as soon as it sees the link, in the middle of the first load. So the link is added once the page

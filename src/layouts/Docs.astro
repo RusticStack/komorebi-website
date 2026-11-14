@@ -18,9 +18,9 @@ const t = ui(locale);
 
 <Base locale={locale} path={path} title={title} description={description} og="docs" current="docs" jsonLd={jsonLd} ogType="article">
   <div class="wrap">
-    <div class="docs">
+    <div class:list={["docs", { "has-toc": Astro.slots.has("toc") }]}>
       <DocsNav locale={locale} current={current} />
-      <div>
+      <div class="docs-main">
         <slot />
         {
           current !== "index" && (
@@ -38,6 +38,7 @@ const t = ui(locale);
           )
         }
       </div>
+      <slot name="toc" />
     </div>
   </div>
   <dialog class="dialog" id="search-dialog" aria-label={t.searchLabel} data-index={`/search-${locale}.json`} data-none={t.searchNone} data-count={t.searchCount}>

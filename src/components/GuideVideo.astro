@@ -1,0 +1,53 @@
+---
+// The room on each help page for a screen recording of the app doing what the page says. It
+// shows nothing until the recording exists:
+//
+//   public/media/guides/<slug>.webm   (and/or .mp4)   the recording, English interface
+//   public/media/guides/<slug>.jpg                    its poster
+//   public/media/guides/<slug>.pt.webm (and/or .pt.mp4, .pt.jpg)   the Portuguese recording
+//   public/media/guides/<slug>.vtt, <slug>.pt.vtt     captions, when there are any
+//
+// A Portuguese page uses the .pt files when they exist, and the English recording otherwise.
+// The video is muted, plays inline, has controls and loads nothing until it is played.
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import { ui, type Locale } from "../lib/i18n";
+
+interface Props {
+  slug: string;
+  locale: Locale;
+  /** The page's title, for the caption and the accessible name. */
+  title: string;
+}
+const { slug, locale, title } = Astro.props;
+const t = ui(locale);
+const dir = join(process.cwd(), "public", "media", "guides");
+const has = (name: string) => existsSync(join(dir, name));
+const pick = (suffix: string) => {
+  const sources = [
+    { file: `${slug}${suffix}.webm`, type: "video/webm" },
+    { file: `${slug}${suffix}.mp4`, type: "video/mp4" },
+  ].filter((s) => has(s.file));
+  return sources.length ? { sources, poster: has(`${slug}${suffix}.jpg`) ? `/media/guides/${slug}${suffix}.jpg` : undefined, suffix } : null;
+};
+const video = (locale === "pt" ? pick(".pt") : null) ?? pick("");
+const captionsFile = video ? `${slug}${video.suffix}.vtt` : "";
+const captions = video && has(captionsFile) ? `/media/guides/${captionsFile}` : null;
+const label = t.guideVideo.replace("{title}", title);
+---
+
+{
+  video && (
+    <figure class="guide-video">
+      <div class="window">
+        <video controls muted playsinline preload="none" poster={video.poster} width="1280" height="800" aria-label={label}>
+          {video.sources.map((s) => (
+            <source src={`/media/guides/${s.file}`} type={s.type} />
+          ))}
+          {captions && <track kind="captions" src={captions} srclang={video.suffix ? "pt-PT" : "en"} label={video.suffix ? "Português" : "English"} />}
+        </video>
+      </div>
+      <figcaption class="cap">{label}</figcaption>
+    </figure>
+  )
+}
