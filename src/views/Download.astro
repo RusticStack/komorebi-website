@@ -130,13 +130,23 @@ const description = pt
       <section aria-labelledby="check">
         <h2 id="check">{pt ? "Verificar o ficheiro" : "Check the file"}</h2>
         <div class="prose">
-          <p>
-            {pt ? "Cada versão traz o SHA-256 de todos os seus ficheiros em " : "Every release lists the SHA-256 of each of its files in "}
-            {sums ? <a href={sums}>SHA256SUMS</a> : <a href={releasePage}>SHA256SUMS</a>}
-            {pt ? ". No PowerShell, na pasta da transferência, o resultado de" : ". In PowerShell, in the download folder, the result of"}
-          </p>
+          {
+            sums || !release ? (
+              <p>
+                {pt ? "Cada versão traz o SHA-256 de todos os seus ficheiros em " : "Every release lists the SHA-256 of each of its files in "}
+                <a href={sums ?? releasePage}>SHA256SUMS</a>
+                {pt ? ". No PowerShell, na pasta da transferência, o resultado de" : ". In PowerShell, in the download folder, the result of"}
+              </p>
+            ) : (
+              <p>
+                {pt ? "O SHA-256 do instalador está acima e no ficheiro .sha256 da " : "The installer's SHA-256 is above and in the .sha256 file on the "}
+                <a href={releasePage}>{pt ? "página da versão" : "release page"}</a>
+                {pt ? ". No PowerShell, na pasta da transferência, o resultado de" : ". In PowerShell, in the download folder, the result of"}
+              </p>
+            )
+          }
           <pre><code>{`(Get-FileHash .\\${options[0].name}).Hash.ToLower()`}</code></pre>
-          <p>{pt ? "tem de ser igual ao valor desse ficheiro. Se for diferente, apague o ficheiro e transfira-o de novo." : "must match the value for that file. If it differs, delete the file and download it again."}</p>
+          <p>{pt ? "tem de ser igual a esse valor. Se for diferente, apague o ficheiro e transfira-o de novo." : "must match that value. If it differs, delete the file and download it again."}</p>
         </div>
       </section>
 
