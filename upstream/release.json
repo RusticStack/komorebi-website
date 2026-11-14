@@ -1,22 +1,22 @@
 {
-  "tag": "v1.0.1",
-  "version": "1.0.1",
-  "name": "Komorebi 1.0.1",
-  "publishedAt": "2026-11-14T15:49:35Z",
-  "htmlUrl": "https://github.com/RusticStack/komorebi/releases/tag/v1.0.1",
+  "tag": "v1.0.2",
+  "version": "1.0.2",
+  "name": "Komorebi 1.0.2",
+  "publishedAt": "2026-11-14T17:03:07Z",
+  "htmlUrl": "https://github.com/RusticStack/komorebi/releases/tag/v1.0.2",
   "installer": {
-    "name": "komorebi-1.0.1-setup.exe",
-    "size": 7829465,
-    "url": "https://github.com/RusticStack/komorebi/releases/download/v1.0.1/komorebi-1.0.1-setup.exe",
-    "sha256": "f624a74d776d38880446d7d2495bcd008f710a177ea3a993e638878691fd6f54",
-    "sha256Url": "https://github.com/RusticStack/komorebi/releases/download/v1.0.1/komorebi-1.0.1-setup.exe.sha256"
+    "name": "komorebi-1.0.2-setup.exe",
+    "size": 7840376,
+    "url": "https://github.com/RusticStack/komorebi/releases/download/v1.0.2/komorebi-1.0.2-setup.exe",
+    "sha256": "79225a6857a5ce1d29b1aa62971a0b59922185465bf7ed38e2df1fcfb56d1e47",
+    "sha256Url": "https://github.com/RusticStack/komorebi/releases/download/v1.0.2/komorebi-1.0.2-setup.exe.sha256"
   },
   "portable": {
-    "name": "komorebi-1.0.1-portable-x64.zip",
-    "size": 8726848,
-    "url": "https://github.com/RusticStack/komorebi/releases/download/v1.0.1/komorebi-1.0.1-portable-x64.zip",
-    "sha256": "2b966bc3cdb0381fcfdec0ed1e752ed82cf4672550b0d8e4c53658e11dda2bd0"
+    "name": "komorebi-1.0.2-portable-x64.zip",
+    "size": 8742453,
+    "url": "https://github.com/RusticStack/komorebi/releases/download/v1.0.2/komorebi-1.0.2-portable-x64.zip",
+    "sha256": "4af528039e3d153244f7fc847744ece78d20ad40d98bd6883a0482842798620e"
   },
-  "sha256sumsUrl": "https://github.com/RusticStack/komorebi/releases/download/v1.0.1/SHA256SUMS",
-  "fetchedFrom": "https://github.com/RusticStack/komorebi/tree/v1.0.1"
+  "sha256sumsUrl": "https://github.com/RusticStack/komorebi/releases/download/v1.0.2/SHA256SUMS",
+  "fetchedFrom": "https://github.com/RusticStack/komorebi/tree/v1.0.2"
 }
