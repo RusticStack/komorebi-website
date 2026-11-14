@@ -33,6 +33,7 @@ const copy = pt
       alt: "O Komorebi com a caixa de entrada e uma newsletter aberta no painel de leitura",
       caption: "Uma newsletter, desenhada pelo próprio Komorebi. Segue o tema do Windows, claro ou escuro.",
       film: "Filme de apresentação do Komorebi, sem som",
+      filmCaption: "40 segundos, sem som. As palavras estão na imagem; as legendas ligam-se nos controlos.",
     }
   : {
       title: "Komorebi: a small, private email app for Windows",
@@ -44,6 +45,7 @@ const copy = pt
       alt: "Komorebi with the inbox and a newsletter open in the reading pane",
       caption: "A newsletter, drawn by Komorebi itself. It follows the Windows theme, light or dark.",
       film: "Komorebi launch film, silent",
+      filmCaption: "40 seconds, no sound. The words are in the picture; captions are in the controls.",
     };
 
 // The numbers, all from the Komorebi README and the latest release.
@@ -207,6 +209,16 @@ const shortcuts = [
       </p>
     </section>
 
+    <!-- The launch film, the page's story in forty seconds, between the numbers and the four
+         sections it sums up. Renders nothing until public/media/komorebi-film.webm or .mp4 exists. -->
+    <Film locale={locale} label={copy.film} caption={copy.filmCaption}>
+      <div class="section-head">
+        <p class="eyebrow">{pt ? "O filme" : "The film"}</p>
+        <h2 id="film-title">{pt ? "Ler, responder, descansar. Em quarenta segundos." : "Read, reply, rest. In forty seconds."}</h2>
+        <p>{pt ? "Uma mensagem de cada vez, ao ritmo da própria aplicação." : "One message at a time, at the app's own pace."}</p>
+      </div>
+    </Film>
+
     <!-- Read, Reply, Sort, Keep -->
     {
       features.map((feature, index) => (
@@ -319,14 +331,6 @@ const shortcuts = [
         </li>
       </ul>
     </section>
-
-    <!-- The launch film: renders nothing until public/media/komorebi-film.webm or .mp4 exists. -->
-    <Film locale={locale} label={copy.film}>
-      <div class="section-head">
-        <h2>{pt ? "Quarenta segundos sossegados." : "Forty quiet seconds."}</h2>
-        <p>{pt ? "O filme de apresentação: ler, responder e descansar, ao ritmo da própria aplicação. Sem som, como a aplicação." : "The launch film: reading, replying and resting, at the app's own pace. Silent, like the app."}</p>
-      </div>
-    </Film>
 
     <!-- Get it -->
     <section class="get" aria-labelledby="get-title" data-reveal>

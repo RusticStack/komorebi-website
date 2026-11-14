@@ -708,18 +708,7 @@ h1 {
   font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
   line-height: 1.55;
 }
-/* the launch film, framed as a window (16:9, so the box is known before the poster loads) */
-.film-block {
-  padding-top: clamp(4.5rem, 3rem + 5vw, 8rem);
-}
-.film-window {
-  aspect-ratio: 16 / 9;
-  background: var(--paper);
-}
-.film {
-  width: 100%;
-  height: 100%;
-}
+
 /* ---------- the video player (src/components/Player.astro, src/scripts/player.ts) ----------
    The launch film and the help videos. The video sits on the site's window (radius, lift, canvas
    ground), its box fixed by its aspect ratio so nothing moves when it loads. Over it: one large
@@ -1037,6 +1026,24 @@ h1 {
 }
 .player.is-full .player-caption {
   bottom: 5.5rem;
+}
+
+/* the launch film's section: a heading and its line, then the film on a canvas stage, as wide as
+   the feature sections, and one line under it */
+.film-block {
+  padding-top: clamp(5.5rem, 3rem + 7vw, 10rem);
+}
+.film-block .section-head h2 {
+  margin-top: 1rem;
+}
+.film-stage {
+  padding: clamp(0.75rem, 0.25rem + 2.5vw, 3.5rem);
+  border-radius: 1.5rem;
+  background: var(--canvas);
+}
+.film-stage .player-stage,
+.film-stage .player-video {
+  background: var(--paper);
 }
 
 /* ---------- home: proof, the four feature sections, the bento, the film, get it ---------- */

@@ -1,41 +1,34 @@
 ---
-// The launch film (the brand folder's launch/LAUNCH.md): 40 seconds made from the storyboard
-// frames, silent, 400 ms cross-fades. The section, with whatever is passed in its slot (the
-// heading), renders only when public/media/komorebi-film.webm or .mp4 exists. It is muted, plays
-// inline, shows its poster and loads nothing until it is played (preload="none"). The film's
-// words are in the picture; they also ship as a caption track per language
-// (public/media/komorebi-film.<locale>.vtt) for screen readers, off by default so they are not
-// shown twice.
-import { existsSync } from "node:fs";
-import { join } from "node:path";
+// The launch film's section on the home page: its heading and one line (the slot), the film on a
+// canvas stage in the site's player, and one line under it. It renders only when
+// public/media/komorebi-film.webm or .mp4 exists (see src/lib/media.ts for the file names: the
+// poster komorebi-film.webp or .jpg, captions komorebi-film.vtt and .pt.vtt, and .pt videos).
+// The film plays itself, muted and looping, while it is on screen, and pauses off screen; with
+// reduced motion it waits for a press. Its words are in the picture, so the captions are off until
+// turned on.
+import Player from "./Player.astro";
 import type { Locale } from "../lib/i18n";
+import { findMedia } from "../lib/media";
 
 interface Props {
   locale: Locale;
+  /** The film's accessible name. */
   label: string;
+  /** The line under the film. */
+  caption: string;
 }
-const { locale, label } = Astro.props;
-const media = (name: string) => existsSync(join(process.cwd(), "public", "media", name));
-const sources = [
-  { file: "komorebi-film.webm", type: "video/webm" },
-  { file: "komorebi-film.mp4", type: "video/mp4" },
-].filter((s) => media(s.file));
-const captions = media(`komorebi-film.${locale}.vtt`) ? `/media/komorebi-film.${locale}.vtt` : null;
-const poster = media("komorebi-film-poster.webp") ? "/media/komorebi-film-poster.webp" : undefined;
+const { locale, label, caption } = Astro.props;
+const media = findMedia("komorebi-film", locale);
 ---
 
 {
-  sources.length > 0 && (
-    <section class="film-block" aria-label={label} data-reveal>
+  media && (
+    <section class="film-block" aria-labelledby="film-title" data-reveal>
       <slot />
-      <div class="window film-window">
-        <video class="film" controls muted playsinline preload="none" poster={poster} width="1920" height="1080" aria-label={label}>
-          {sources.map((s) => (
-            <source src={`/media/${s.file}`} type={s.type} />
-          ))}
-          {captions && <track kind="captions" src={captions} srclang={locale === "pt" ? "pt-PT" : "en"} label={locale === "pt" ? "Português" : "English"} />}
-        </video>
+      <div class="film-stage">
+        <Player media={media} locale={locale} label={label} title={label} mode="film" width={1920} height={1080} />
       </div>
+      <p class="cap">{caption}</p>
     </section>
   )
 }
