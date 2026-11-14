@@ -58,6 +58,8 @@ The interactive parts use [UI SDK](https://ui-sdk.dev) (Vercel Labs, [source](ht
 | Download: installer or portable zip | `<ui-tabs>` (only when the release has both) | that page only |
 | Home: the product picture, larger | `<ui-dialog>` | on the first hover, focus or press of the picture |
 
+`site.ts` also does two small things without UI SDK: the scroll reveals (an IntersectionObserver adds `reveal` and then `in` to sections below the first screen; nothing is hidden without the script or with reduced motion) and the help pages' "On this page" marker (`aria-current` on the link of the section being read).
+
 The theme choice is saved in `localStorage` under `color-scheme` and written on `<html>` as `data-color-scheme`. `preferencesScript` makes the inline script at the top of `<head>` at build time (`src/layouts/Base.astro`), so a saved choice is on `<html>` before the first paint and there is no flash of the other theme; "system" follows `prefers-color-scheme` in CSS, before any script runs. A choice saved by the old toggle (`theme`) is moved over once. The search dialog stays a native `<dialog>`, and the changelog's earlier releases stay `<details>`: both work without a script.
 
 Without JavaScript the theme control and the menu button are not shown, the phone menu's links are in the footer, the help page list stays open and the Download options show as cards side by side.
@@ -71,6 +73,7 @@ Without JavaScript the theme control and the menu button are not shown, the phon
 - Logo and wordmark: `src/components/Logo.astro` and `public/brand/` (from the brand folder).
 - The product pictures are crops of the real Komorebi 1.0 screenshots, light and dark (1280 x 800 windows, made-up demo mail, `.github/assets/screenshots` in the app repository). The crops are listed in `src/lib/shots.json`; `pnpm images <that folder>` encodes them to AVIF and WebP in `public/shots/`.
 - The launch film, `public/media/komorebi-film.webm` and `.mp4` (40 s, silent, 1920 x 1080, about 0.8 and 0.5 MB) with its poster and an English and a Portuguese caption track, is made from the brand storyboard (`launch/launch.html` in the brand folder, the nine frames rendered with the neutral seal, frame 5 replaced by the real 1.0 inbox, the tray frame left out) with 400 ms cross-fades in ffmpeg. `src/components/Film.astro` shows it on the home page only when the files exist.
+- Help videos: `src/components/GuideVideo.astro` shows a screen recording on a help page once `public/media/guides/<slug>.webm` or `.mp4` exists (`<slug>.jpg` poster, `<slug>.vtt` captions, `.pt` variants for Portuguese pages). Until then it renders nothing.
 - `pnpm og` renders the Open Graph cards (`public/og/`) and the PNG icons with resvg. The output is committed; run it on Windows, where the line is set in Segoe UI.
 
 ## Content-Security-Policy
