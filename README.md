@@ -21,6 +21,9 @@ pnpm preview
 pnpm typecheck     # astro check
 pnpm check:links   # every internal link, image and #fragment
 pnpm check:seo     # title, description, canonical, hreflang and JSON-LD on every page; no title twice
+pnpm check:csp     # the Content-Security-Policy in vercel.json matches the inline code in dist; no other inline code
+pnpm csp:update    # rewrite the policy's hashes in vercel.json after editing site.css or the head script
+pnpm serve         # serve dist with vercel.json's headers and redirects (use it, not preview, to see the CSP or run Lighthouse)
 pnpm words         # help page word counts, now and on origin/main
 ```
 
@@ -68,6 +71,14 @@ Without JavaScript the theme control and the menu button are not shown, the phon
 - Logo and wordmark: `src/components/Logo.astro` and `public/brand/` (from the brand folder).
 - The product picture on the home page is a real screenshot of the app, light and dark, wide and compact (1280 x 800 and 900 x 700 windows, made-up demo mail). `pnpm images <folder>` encodes it to AVIF and WebP in `public/preview/`.
 - `pnpm og` renders the Open Graph cards (`public/og/`) and the PNG icons with resvg. The output is committed; run it on Windows, where the line is set in Segoe UI.
+
+## Content-Security-Policy
+
+`vercel.json` sends the policy as a header on every page, with `Cross-Origin-Opener-Policy: same-origin`. Everything is `'self'` (no third-party origin is loaded) plus exactly two inline items, allowed by SHA-256 and with no `'unsafe-inline'` anywhere: the head script in `src/layouts/Base.astro` (theme, `js` class) and the one stylesheet Astro inlines. Page scripts are same-origin modules (`assetsInlineLimit: 0` keeps Vite from inlining the small ones), and the JSON-LD blocks are data, which a CSP does not govern.
+
+`scripts/check-csp.mjs` runs at the end of `pnpm build`. It hashes every inline script and style in `dist/`, rebuilds the policy from them, and fails when `vercel.json` differs, when a page has other inline code, an inline event handler, a `style=""` attribute or a load from another origin. Edited `site.css` or the head script? `pnpm csp:update` writes the new hashes; commit `vercel.json`.
+
+UI SDK needs no `'unsafe-inline'` for styles: it normally adds its few rules in a `<style>` element, but with `<meta property="csp-nonce" content="">` in the head (see `Base.astro`) it uses adopted style sheets, which the policy allows, and its other styling is CSSOM (`element.style.setProperty`), which CSP does not block. `connect-src` is `'self'` because the only run-time fetch is the help search index; the Download page's release data is read at build time.
 
 ## Deploy
 
