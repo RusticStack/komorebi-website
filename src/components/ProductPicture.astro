@@ -2,9 +2,16 @@
 // The product picture on the home page, in the light and the dark theme; CSS shows the one that
 // matches the page's theme. The files are made by scripts/prepare-images.mjs.
 //
+// The picture on the page is the page's largest element, so it loads eagerly and at high
+// priority. Both themes are in the markup, and a hidden image still downloads when it is eager, so
+// each picture starts with a "guard": a source for the other theme's system setting that points
+// at a 1 x 1 data: image. On a light system the dark picture shows the blank image and the light
+// one its real files, and the other way round on a dark system. When the visitor has chosen a
+// theme that differs from the system's, src/scripts/site.ts switches the guards over.
+//
 // `large` is the copy in the lightbox dialog: the wide picture only, at up to the full width of
 // the window, loaded when the dialog first shows it.
-import { COMPACT_SIZES, PHONE, WIDE_SIZES, srcset } from "../lib/preview";
+import { BLANK, COMPACT_SIZES, PHONE, WIDE_SIZES, srcset } from "../lib/preview";
 
 interface Props {
   alt: string;
@@ -17,17 +24,19 @@ const wideSizes = large ? "min(100vw, 100rem)" : WIDE_SIZES;
 {
   ["light", "dark"].map((theme) => (
     <picture class={`pic-${theme}`}>
-      {!large && <source media={PHONE} type="image/avif" srcset={srcset(theme, "compact", "avif")} sizes={COMPACT_SIZES} width="900" height="700" />}
-      {!large && <source media={PHONE} type="image/webp" srcset={srcset(theme, "compact", "webp")} sizes={COMPACT_SIZES} width="900" height="700" />}
+      {!large && <source data-guard={theme} media={`(prefers-color-scheme: ${theme === "light" ? "dark" : "light"})`} srcset={BLANK} />}
+      {!large && <source media={PHONE} type="image/avif" srcset={srcset(theme, "compact", "avif")} sizes={COMPACT_SIZES} width="450" height="700" />}
+      {!large && <source media={PHONE} type="image/webp" srcset={srcset(theme, "compact", "webp")} sizes={COMPACT_SIZES} width="450" height="700" />}
       <source type="image/avif" srcset={srcset(theme, "wide", "avif")} sizes={wideSizes} />
       <img
-        src={`/preview/inbox-${theme}-wide-1312.webp`}
+        src={`/preview/inbox-${theme}-wide-1280.webp`}
         srcset={srcset(theme, "wide", "webp")}
         sizes={wideSizes}
         width="1280"
         height="800"
         alt={alt}
-        loading="lazy"
+        loading={large ? "lazy" : "eager"}
+        fetchpriority={large ? undefined : "high"}
         decoding="async"
       />
     </picture>

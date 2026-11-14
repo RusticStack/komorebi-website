@@ -1532,10 +1532,6 @@ details.older > div > * + * {
     border-radius: 0.75rem;
     aspect-ratio: 9 / 14;
   }
-  .shot img {
-    width: auto;
-    max-width: none;
-  }
   .foot .home {
     width: 100%;
     margin-bottom: 0.5rem;

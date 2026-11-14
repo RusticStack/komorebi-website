@@ -1,10 +1,15 @@
 // The product picture's files, made by scripts/prepare-images.mjs (keep the widths in step).
-export const WIDE = [800, 1312, 1920, 2560];
-export const COMPACT = [720, 1440, 1800];
-export const WIDE_SIZES = "(min-width: 1440px) 1312px, 90vw";
-/** On a phone the compact picture is cropped to the left half of a 9:14 box. */
-export const COMPACT_SIZES = "calc(200vw - 64px)";
+// The wide picture is 1280 px at most. The compact one is its own left half, 450 px at most: a
+// phone shows only that half (the sidebar and the list), so the other half is never sent.
+export const WIDE = [800, 1280];
+export const COMPACT = [360, 450];
+/** The picture's box: the content width, at most 74rem (the page's gutters are 1rem to 4rem). */
+export const BOX = "calc(100vw - 2 * clamp(1rem, 5vw - 0.5rem, 4rem))";
+export const WIDE_SIZES = `(min-width: 1312px) 1184px, ${BOX}`;
+export const COMPACT_SIZES = BOX;
 export const PHONE = "(max-width: 640px)";
+/** A 1 x 1 transparent GIF: what the picture of the other theme loads (see ProductPicture.astro). */
+export const BLANK = "data:image/gif;base64,R0lGODlhAQABAAAAACw=";
 
 export function srcset(theme: string, size: "wide" | "compact", ext: "avif" | "webp"): string {
   const widths = size === "wide" ? WIDE : COMPACT;
