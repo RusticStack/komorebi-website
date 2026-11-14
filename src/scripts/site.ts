@@ -121,3 +121,32 @@ if (zoom) {
     if (dialog) dialog.open = true;
   });
 }
+
+// ---------- the product picture follows a chosen theme ----------
+// Each picture starts with a guard source that sends it to a blank image while the system is set
+// to the other theme (see ProductPicture.astro). When the visitor has chosen a theme that differs
+// from the system's, the picture shown is the other one, so its guard is switched off and the
+// hidden picture's is switched on for either theme.
+const guards = document.querySelectorAll<HTMLSourceElement>("source[data-guard]");
+if (guards.length) {
+  const dark = matchMedia("(prefers-color-scheme: dark)");
+  const sync = () => {
+    const chosen = colorScheme.get().value;
+    const shown = chosen === "system" ? (dark.matches ? "dark" : "light") : chosen;
+    for (const guard of guards) guard.media = guard.dataset.guard === shown ? "not all" : "all";
+  };
+  sync();
+  colorScheme.subscribe(sync);
+  dark.addEventListener("change", sync);
+}
+
+// ---------- the web manifest ----------
+// It only matters for installing the site as an app, and the browser fetches it at high priority
+// as soon as it sees the link, in the middle of the first load. So the link is added once the page
+// is idle (without a script it is in a noscript element in the head).
+{
+  const link = document.createElement("link");
+  link.rel = "manifest";
+  link.href = document.documentElement.lang === "pt-PT" ? "/pt/manifest.webmanifest" : "/manifest.webmanifest";
+  (window.requestIdleCallback ?? setTimeout)(() => document.head.append(link));
+}

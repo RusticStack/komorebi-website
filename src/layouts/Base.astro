@@ -28,6 +28,7 @@ const { locale, path, title, description, og, jsonLd = [], current = null, noind
 const t = ui(locale);
 const canonical = absolute(localePath(locale, path));
 const ogImage = absolute(`/og/${locale}/${og}.png`);
+const manifest = locale === "pt" ? "/pt/manifest.webmanifest" : "/manifest.webmanifest";
 const other: Locale = locale === "en" ? "pt" : "en";
 const graph = [...jsonLd, organization()];
 // The csp-nonce meta below (empty) tells UI SDK there is no style nonce, so it adds its few rules as
@@ -68,7 +69,7 @@ const headScript =
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href={locale === "pt" ? "/pt/manifest.webmanifest" : "/manifest.webmanifest"} />
+    <noscript><link rel="manifest" href={manifest} /></noscript>
     <link rel="alternate" type="application/rss+xml" title={locale === "pt" ? "Versões do Komorebi" : "Komorebi releases"} href="/releases.xml" />
     {preload.map((p) => <link rel="preload" as="image" imagesrcset={p.srcset} imagesizes={p.sizes} type={p.type} media={p.media} fetchpriority="high" />)}
     <meta property="og:type" content={ogType} />

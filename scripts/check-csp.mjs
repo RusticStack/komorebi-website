@@ -75,7 +75,7 @@ for (const file of files) {
     if (tag === "link" && !/\srel="(stylesheet|preload|icon|apple-touch-icon|manifest|modulepreload|prefetch)"/i.test(attrs)) continue;
     for (const a of attrs.matchAll(/\s(href|src|action|imagesrcset|srcset)="([^"]*)"/gi)) {
       const urls = /srcset/i.test(a[1]) ? a[2].split(",").map((s) => s.trim().split(/\s+/)[0]) : [a[2]];
-      for (const u of urls) if (u && !isSelf(u)) fail(`<${tag}> loads ${u}`);
+      for (const u of urls) if (u && !isSelf(u) && !(tag !== "link" && u.startsWith("data:image/"))) fail(`<${tag}> loads ${u.slice(0, 60)}`); // img-src allows data: images
     }
     if (tag === "iframe" || tag === "embed" || tag === "object") fail(`<${tag}> is not allowed`);
   }
