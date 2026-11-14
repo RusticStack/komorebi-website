@@ -720,6 +720,324 @@ h1 {
   width: 100%;
   height: 100%;
 }
+/* ---------- the video player (src/components/Player.astro, src/scripts/player.ts) ----------
+   The launch film and the help videos. The video sits on the site's window (radius, lift, canvas
+   ground), its box fixed by its aspect ratio so nothing moves when it loads. Over it: one large
+   round play button, the captions in the site's type, and a paper pill of controls at the foot
+   that shows on hover, focus or pause and slides away while playing with the pointer still.
+   Without the script none of that is shown and the native controls stay. Opacity and transform
+   only; all of it holds still with reduced motion. */
+.player {
+  position: relative;
+  container-type: inline-size;
+}
+.player-stage {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: clamp(0.625rem, 0.4rem + 0.6vw, 0.875rem);
+  overflow: hidden;
+  background: var(--canvas);
+  box-shadow: var(--lift);
+  isolation: isolate;
+}
+.player[data-ratio="16:9"] .player-stage {
+  aspect-ratio: 16 / 9;
+}
+.player-video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--canvas);
+}
+.player:not(.is-ready) :is(.player-big, .player-bar, .player-caption) {
+  display: none;
+}
+.player.is-ready .player-video {
+  cursor: pointer;
+}
+.player.is-idle .player-stage,
+.player.is-idle .player-video {
+  cursor: none;
+}
+
+/* the play button: one ink circle in the middle, gone while playing */
+.player-big {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(3.5rem, 2.75rem + 3.5cqi, 5.5rem);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--on-ink);
+  box-shadow: var(--lift-sm);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: opacity 200ms var(--enter), transform 300ms var(--enter);
+}
+.player-big svg {
+  width: 40%;
+  height: 40%;
+  margin-left: 6%;
+  fill: currentColor;
+}
+.player-big:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+.player-big:focus-visible {
+  outline-offset: 3px;
+}
+.player[data-state="playing"] .player-big {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.92);
+}
+
+/* the controls: a paper pill at the foot */
+.player-bar {
+  position: absolute;
+  left: max(0.625rem, calc(50% - 21rem));
+  right: max(0.625rem, calc(50% - 21rem));
+  bottom: 0.625rem;
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  height: 2.75rem;
+  padding: 0 0.25rem;
+  border-radius: 1.375rem;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--lift-sm);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.5rem);
+  transition: opacity 200ms var(--enter), transform 300ms var(--enter);
+}
+.player:is(.is-active, :focus-within, [data-state="paused"], [data-state="ended"]) .player-bar {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+.player.is-idle[data-state="playing"] .player-bar {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.5rem);
+}
+.pb {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 100ms linear;
+}
+.pb[hidden] {
+  display: none;
+}
+.pb:hover {
+  background: var(--wash);
+}
+.pb svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: currentColor;
+}
+.pb .s {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pb[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+.pb-speed {
+  width: auto;
+  min-width: 2.75rem;
+  padding: 0 0.5rem;
+  border-radius: 1.125rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.pb-play .i-pause,
+.player[data-state="playing"] .pb-play .i-play,
+.pb-mute .i-muted,
+.player.is-muted .pb-mute .i-sound,
+.pb-full .i-exit,
+.player.is-full .pb-full .i-full {
+  display: none;
+}
+.player[data-state="playing"] .pb-play .i-pause,
+.player.is-muted .pb-mute .i-muted,
+.player.is-full .pb-full .i-exit {
+  display: block;
+}
+
+/* the scrubber: a 4 px line, what has loaded in grey, what has played in ink; its thumb shows
+   on hover, focus and drag. The two bars scale and the thumb's rail moves, so nothing lays out. */
+.pb-scrub {
+  position: relative;
+  flex: 1;
+  min-width: 3rem;
+  height: 2.25rem;
+  margin: 0 0.5rem;
+  border-radius: 1.125rem;
+  cursor: pointer;
+  touch-action: none;
+}
+.pb-scrub:focus-visible {
+  outline-offset: 0;
+}
+.pb-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+.pb-buffered,
+.pb-played {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+}
+.pb-buffered {
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  transform: scaleX(var(--b, 0));
+}
+.pb-played {
+  background: var(--ink);
+  transform: scaleX(var(--p, 0));
+}
+.pb-rail {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateX(calc(var(--p, 0) * 100%));
+}
+.pb-thumb {
+  position: absolute;
+  left: -0.375rem;
+  top: 50%;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-top: -0.375rem;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 2px var(--paper);
+  transform: scale(0);
+  transition: transform 150ms var(--enter);
+}
+.pb-scrub:is(:hover, :focus-visible) .pb-thumb,
+.player.is-scrubbing .pb-thumb {
+  transform: none;
+}
+.player:not(.has-duration) :is(.pb-sep, .pb-total) {
+  display: none;
+}
+.pb-time {
+  flex: none;
+  padding: 0 0.375rem 0 0;
+  color: var(--ink-2);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* the captions, drawn by the script: ink on a pill, above the controls */
+.player-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 4.25rem;
+  width: max-content;
+  max-width: calc(100% - 2rem);
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.875rem;
+  background: var(--ink);
+  color: var(--on-ink);
+  font-size: clamp(0.8125rem, 0.7rem + 0.8cqi, 1.25rem);
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  white-space: pre-line;
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: opacity 150ms linear;
+  pointer-events: none;
+}
+.player.has-captions .player-caption.on {
+  opacity: 1;
+}
+
+/* small players: the total time and the speed go first */
+@container (max-width: 28rem) {
+  .pb-sep,
+  .pb-total {
+    display: none;
+  }
+  .player-caption {
+    bottom: 3.75rem;
+  }
+}
+@container (max-width: 21rem) {
+  .pb-speed {
+    display: none;
+  }
+}
+@media (pointer: coarse) {
+  .pb {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .player-bar {
+    height: 3rem;
+    border-radius: 1.5rem;
+  }
+}
+
+/* full screen (wider screens: the whole player, so its own controls stay) */
+.player.is-full {
+  background: #000;
+}
+.player.is-full .player-stage {
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: 0;
+  box-shadow: none;
+  background: #000;
+}
+.player.is-full .player-video {
+  background: #000;
+}
+.player.is-full .player-bar {
+  left: max(1.5rem, calc(50% - 28rem));
+  right: max(1.5rem, calc(50% - 28rem));
+  bottom: 1.5rem;
+}
+.player.is-full .player-caption {
+  bottom: 5.5rem;
+}
 
 /* ---------- home: proof, the four feature sections, the bento, the film, get it ---------- */
 .proof {
@@ -1411,12 +1729,12 @@ h1 {
 .crumb a:hover {
   color: var(--ink);
 }
+/* a help page's recording, under the lede: the player, then one line */
 .guide-video {
-  margin-top: 2.5rem;
+  margin-top: 2rem;
 }
-.guide-video video {
-  width: 100%;
-  height: auto;
+.guide-video .cap {
+  margin-top: 0.875rem;
 }
 
 /* the help home: search, then the pages in four group cards */

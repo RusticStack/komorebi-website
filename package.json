@@ -14,6 +14,7 @@
     "sync:upstream": "node scripts/upstream.mjs --snapshot",
     "og": "node scripts/render-og.mjs",
     "images": "node scripts/prepare-images.mjs",
+    "posters": "node scripts/posters.mjs",
     "dev": "pnpm upstream && astro dev",
     "build": "pnpm upstream && astro build && node scripts/check-csp.mjs dist",
     "preview": "astro preview",

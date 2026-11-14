@@ -1,0 +1,103 @@
+---
+// The site's video player, for the launch film and the help pages' recordings. The video sits on
+// a framed stage (the site's window: radius, lift, canvas ground) with its poster; a large round
+// play button sits in the middle, and a pill of controls appears on hover, focus or pause: play,
+// a scrubber with what has played and what has loaded, the time, mute (only once the video turns
+// out to have sound), captions (only when there is a .vtt), playback speed (help videos) and full
+// screen. src/scripts/player.ts gives it its behaviour and keys; without a script it is the plain
+// <video controls> and the custom parts are not shown.
+//
+// mode="film": muted; plays itself, looping, while it is on screen, and pauses off screen, unless
+// the visitor prefers reduced motion or saves data. mode="guide": plays when pressed.
+import { ui, type Locale } from "../lib/i18n";
+import type { Media } from "../lib/media";
+
+interface Props {
+  media: Media;
+  locale: Locale;
+  /** The video's accessible name. */
+  label: string;
+  /** What the big play button says to a screen reader, after "Play:". */
+  title: string;
+  mode: "film" | "guide";
+  width: number;
+  height: number;
+  class?: string;
+}
+const { media, locale, label, title, mode, width, height, class: className } = Astro.props;
+const t = ui(locale);
+// the stage's aspect ratio is fixed in CSS by name, so the box is known before anything loads
+const ratio = Math.abs(width / height - 16 / 9) < 0.01 ? "16:9" : "16:10";
+const strings = JSON.stringify({
+  play: t.play,
+  pause: t.pause,
+  replay: t.replay,
+  mute: t.mute,
+  unmute: t.unmute,
+  fullscreen: t.fullscreen,
+  exitFullscreen: t.exitFullscreen,
+  timeOf: t.timeOf,
+  speed: t.speed,
+});
+---
+
+<div class:list={["player", className]} data-player data-mode={mode} data-ratio={ratio} data-strings={strings} role="group" aria-label={label} aria-roledescription={t.player}>
+  <div class="player-stage">
+    <video
+      class="player-video"
+      controls
+      playsinline
+      muted={mode === "film"}
+      preload="none"
+      poster={media.poster}
+      width={width}
+      height={height}
+      aria-label={label}
+      lang={media.lang === "pt" ? "pt-PT" : "en"}
+    >
+      {media.sources.map((s) => <source src={s.src} type={s.type} />)}
+      {media.captions && <track kind="captions" src={media.captions.src} srclang={media.captions.srclang} label={media.captions.label} />}
+    </video>
+    <p class="player-caption" aria-hidden="true"></p>
+    <button class="player-big" type="button" aria-label={t.playTitle.replace("{title}", title)}>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.5 5.2v13.6a.6.6 0 0 0 .9.5l10.9-6.8a.6.6 0 0 0 0-1L9.4 4.7a.6.6 0 0 0-.9.5Z"></path></svg>
+    </button>
+    <div class="player-bar" role="group" aria-label={t.controls}>
+      <button class="pb pb-play" type="button" aria-label={t.play}>
+        <svg class="i-play" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M6.5 4.4v11.2a.5.5 0 0 0 .76.43l9.1-5.6a.5.5 0 0 0 0-.86l-9.1-5.6a.5.5 0 0 0-.76.43Z"></path></svg>
+        <svg class="i-pause" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M5.5 4.5h3v11h-3zM11.5 4.5h3v11h-3z"></path></svg>
+      </button>
+      <div class="pb-scrub" role="slider" tabindex="0" aria-label={t.seek} aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-valuetext="0:00">
+        <span class="pb-track" aria-hidden="true"><span class="pb-buffered"></span><span class="pb-played"></span></span>
+        <span class="pb-rail" aria-hidden="true"><span class="pb-thumb"></span></span>
+      </div>
+      <span class="pb-time" aria-hidden="true"><span class="pb-now">0:00</span><span class="pb-sep"> / </span><span class="pb-total">0:00</span></span>
+      <button class="pb pb-mute" type="button" aria-label={t.mute} hidden>
+        <svg class="i-sound" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 7.5h2.8L10 4v12l-4.2-3.5H3z"></path><path class="s" d="M13 7.2a4 4 0 0 1 0 5.6M15.4 4.8a7.4 7.4 0 0 1 0 10.4"></path></svg>
+        <svg class="i-muted" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 7.5h2.8L10 4v12l-4.2-3.5H3z"></path><path class="s" d="m13 7.75 4.5 4.5m0-4.5-4.5 4.5"></path></svg>
+      </button>
+      {
+        media.captions && (
+          <button class="pb pb-cc" type="button" aria-label={t.captions} aria-pressed="false">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><rect class="s" x="2.75" y="4.75" width="14.5" height="10.5" rx="2.5"></rect><path class="s" d="M8.6 8.4a1.9 1.9 0 1 0 0 3.2M13.6 8.4a1.9 1.9 0 1 0 0 3.2"></path></svg>
+          </button>
+        )
+      }
+      {
+        mode === "guide" && (
+          <button class="pb pb-speed" type="button" aria-label={`${t.speed}: 1×`}>
+            1×
+          </button>
+        )
+      }
+      <button class="pb pb-full" type="button" aria-label={t.fullscreen}>
+        <svg class="i-full" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path class="s" d="M3.5 7.5v-4h4M12.5 3.5h4v4M16.5 12.5v4h-4M7.5 16.5h-4v-4"></path></svg>
+        <svg class="i-exit" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path class="s" d="M7.5 3.5v4h-4M16.5 7.5h-4v-4M12.5 16.5v-4h4M3.5 12.5h4v4"></path></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import "../scripts/player.ts";
+</script>
