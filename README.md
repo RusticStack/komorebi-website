@@ -41,7 +41,7 @@ To see the site as it will be for a version that is not released yet, point `KOM
 
 ## Content
 
-- Help pages: `src/content/docs/en/<slug>.md` and `src/content/docs/pt/<slug>.md` (European Portuguese, AO90). Front matter: `title`, `lede` (the line under the title) and `description` (the meta description). The groups and order are in `src/lib/docs.ts`. Every page exists in both languages. Keep each page to one screen: numbered steps, keys as `<kbd>`, a tip as a blockquote that starts with a bold line.
+- Help pages: `src/content/docs/en/<slug>.md` and `src/content/docs/pt/<slug>.md` (European Portuguese, AO90). Front matter: `title`, `lede` (the line under the title: the one-line outcome) and `description` (the meta description). The groups and order are in `src/lib/docs.ts`. Every page exists in both languages. Write to the slogan, Read. Reply. Rest.: the shortest path first as numbered steps, three or fewer, one action each, in the app's exact words in bold; then optional details folded in `<details><summary>...</summary>` blocks (leave a blank line after `<summary>` and before `</details>` so the Markdown inside renders). Keys as `<kbd>`, a safety note or tip as a blockquote that starts with a bold line. The FAQ keeps one `##` question per answer (its FAQPage JSON-LD is built from them).
 - Other pages: `src/views/*.astro`, routed for both languages by `src/pages/[...path].astro`. Interface strings: `src/lib/i18n.ts`.
 - English pages are at `/...`, Portuguese pages at `/pt/...`.
 

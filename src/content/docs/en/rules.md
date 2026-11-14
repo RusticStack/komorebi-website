@@ -1,20 +1,28 @@
 ---
 title: Set up rules
-lede: Simple rules that sort new Inbox mail on this PC.
-description: Make Komorebi rules that move, delete or mark new Inbox mail as it arrives, and copy them as a Sieve script.
+lede: Mail sorts itself on this PC, so you do not have to.
+description: Make Komorebi rules that move, delete or mark new Inbox mail as it arrives, and copy them as a Sieve script for your provider.
 ---
 
-1. **Open Settings > Rules.** Pick the account.
-2. **Add a rule and its conditions:** the sender, To or Cc, the subject, or whether there is an attachment. Text matches ignore case and accents.
-3. **Choose what it does:** move to a folder, delete, mark read, mark important, or stop later rules.
-4. **Order the rules.** Drag a rule, or use **Move up** and **Move down** in its menu. They run top to bottom on each new message.
+1. Open **Settings > Rules** and press **New rule**.
+2. Name it, press **Add condition** and set the sender, To or Cc, the subject, or **Has attachment**.
+3. Under **Do this**, choose what happens, and press **Save**.
 
-Rules run while Komorebi is open, before a message reaches the Inbox, so filed mail raises no notification. Mail that came while Komorebi was closed is sorted at the next start.
+Rules run top to bottom on each new message while Komorebi is open, before it reaches the Inbox, so filed mail raises no notification. Mail that came while Komorebi was closed is sorted at the next start.
 
-## What rules never do
+<details>
+<summary>Actions, order and limits</summary>
 
-Rules never send mail: no forward, redirect or auto-reply. They stay on this PC.
+- Actions: **Move to folder**, **Delete**, **Mark as read**, **Mark as important**, **Stop processing more rules**.
+- Several conditions: **All must match** or **Any can match**. Text matches ignore case and accents.
+- Order: drag a rule, or use **Move up** and **Move down** in its menu.
+- Rules never send mail: no forward, redirect or auto-reply. They stay on this PC.
 
-## Copy as Sieve
+</details>
 
-**Copy as Sieve** puts your rules on the clipboard as a Sieve script, for your provider's own filters. The activity list shows what rules did; **Clear activity** empties it.
+<details>
+<summary>Copy as Sieve</summary>
+
+**Copy as Sieve** puts your rules on the clipboard as a Sieve script, for your provider's own filters. **Activity** lists what rules did; **Clear activity** empties it.
+
+</details>

@@ -1,16 +1,22 @@
 ---
 title: Get notifications
-lede: All off until you turn them on, in Settings > General.
-description: Turn on Windows notifications for new mail in Komorebi, keep it in the notification area and start it with Windows.
+lede: Know when mail arrives, without keeping the window open.
+description: Turn on Windows notifications for new mail in Komorebi, keep it in the notification area with an unread dot, and start it with Windows.
 ---
 
-1. **Open Settings > General.**
-2. **Turn on Notifications for new mail.** Each account's page can leave that account out.
-3. **Choose what shows.** Turn off **Show the sender and subject** to see only "New mail", for example on the lock screen.
-4. **Keep it running.** With **Keep running in the notification area**, closing the window keeps mail arriving. Quit from the icon's menu, which also has **Pause notifications**.
+1. Open **Settings > General**.
+2. Turn on **Notifications for new mail**.
+3. Turn on **Keep running in the notification area**, so closing the window keeps mail arriving.
 
-Notifications are made on this PC from the connection Komorebi already has. There is no push service. A new account's first download never notifies.
+The tray icon shows a small dot while you have unread mail. Quit from the icon's menu, which also has **Pause notifications**.
 
-## Start with Windows
+<details>
+<summary>More options</summary>
 
-**Start with Windows** starts Komorebi in the notification area when you sign in. It writes one value, `Komorebi`, under `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`, and removes it when you turn it off.
+- **Show the sender and subject:** turn it off to see only "New mail", for example on the lock screen.
+- **Start with Windows** starts Komorebi in the notification area when you sign in. It writes one value, `Komorebi`, under `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`, and removes it when you turn it off.
+- Each account's page can leave that account out.
+
+</details>
+
+Notifications are made on this PC; there is no push service. A new account's first download never notifies.

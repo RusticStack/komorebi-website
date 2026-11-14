@@ -1,14 +1,23 @@
 ---
 title: Confiar no seu servidor
-lede: Para um servidor de correio autoassinado ou com AC privada.
+lede: Para um servidor de correio autoassinado ou com AC privada, em quatro cliques.
 description: Fixe no Komorebi o certificado de um servidor de correio autoassinado ou com AC privada, pelo certificado exato, pela chave ou pela AC emissora.
 ---
 
-O Komorebi verifica todos os certificados de servidor com o Windows, e só envia uma palavra-passe depois de a ligação segura estar estabelecida.
+1. Prima **Rever certificado** quando uma verificação falha num certificado não fidedigno.
+2. Compare a impressão digital SHA-256 com a que o seu servidor indica.
+3. Escolha **Este certificado exato**, **Esta chave do servidor** ou **A AC emissora** e confirme.
 
-1. **Prima Rever certificado.** Aparece quando uma verificação falha num certificado não fidedigno. O Komorebi lê o certificado sem enviar credenciais.
-2. **Compare a impressão digital.** Confirme a impressão digital SHA-256 com a que o seu servidor indica.
-3. **Escolha em que confiar:** **Este certificado exato**, **Esta chave do servidor** (resiste a uma renovação que mantém a chave) ou **A AC emissora**.
-4. **Confirme.** Nada é guardado antes disto.
+Nada é guardado antes de confirmar, e nenhuma palavra-passe é enviada antes de a ligação segura estar estabelecida.
 
-Um servidor fixado que apresente outro certificado é recusado antes de qualquer palavra-passe ser enviada, e **Rever certificado** mostra a impressão digital antiga e a nova. **Esquecer certificado**, na página da conta, remove a fixação.
+> **Se o certificado mudar.** Um servidor fixado que apresente outro certificado é recusado antes de qualquer palavra-passe ser enviada. **Rever certificado** mostra a impressão digital antiga e a nova.
+
+<details>
+<summary>Qual escolher</summary>
+
+- **Este certificado exato:** uma renovação exige nova revisão.
+- **Esta chave do servidor:** resiste a uma renovação que mantém a chave.
+- **A AC emissora:** confia em tudo o que essa AC assina.
+- **Esquecer certificado**, na página da conta, remove a fixação.
+
+</details>

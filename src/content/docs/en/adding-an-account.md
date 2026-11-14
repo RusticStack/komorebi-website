@@ -1,21 +1,45 @@
 ---
 title: Add an account
-lede: About a minute. You need your email address and its password.
-description: Add a Purelymail, Postale.io or any other IMAP and SMTP account to Komorebi in three short steps.
+lede: Your mail in Komorebi, in about a minute.
+description: Add your email account to Komorebi: type your address, enter the password or app password, and open your inbox. Gmail, iCloud, Yahoo and more are built in.
 ---
 
-1. **Open the steps.** The first start shows **Add your email account** on the welcome screen. Later, use Settings > Accounts > **Add account**.
-2. **Type your email address.** Press **Continue**. Settings for `purelymail.com` and `postale.io` are built in. For other domains Komorebi looks them up, sending only the domain name.
-3. **Type your password.** Press **Sign in**. If your provider uses two-step sign-in, use an app password. It is kept in Windows Credential Manager on this PC.
-4. **Make it yours.** Add the name people see and a signature, or press **Skip**. **You're all set** shows the first download, newest mail first, until you press **Open your inbox**.
+1. Press **Add your email account**. Later: **Settings > Accounts > Add another account**.
+2. Type your email address and press **Continue**. Komorebi finds the provider.
+3. Type your password and press **Sign in**.
 
-## If it does not connect
+Then **Make it yours** asks for a name and a signature: press **Done**, or **Skip**. When **You're all set** shows, press **Open your inbox**.
 
-- A failed check says what went wrong in one sentence, with the next step to try. **Show details** lists every step and the server names.
-- **Change** opens the server settings: host, port, SSL/TLS or STARTTLS, and user names. Plaintext connections are refused. A relay on your own network can be set to **This server does not need a sign-in for sending**; TLS is still required.
-- For a self-signed server, **Review certificate** shows its fingerprint. See [Trust your own server](/docs/certificates).
-- Accounts that only allow OAuth sign-in, such as Gmail and Microsoft 365, do not work.
+> **App passwords.** Many providers need an app password, not your normal one, and the list says which: "App password needed". Make it in your provider's account settings. Komorebi keeps it in Windows Credential Manager, never in its own files.
 
-## More than one account
+<details>
+<summary>The 26 providers</summary>
 
-Each account has its own folders, and **All inboxes** combines their inboxes. Removing an account leaves its mail on the server; its drafts and Outbox messages are lost, and Komorebi tells you how many first.
+- **App password:** AOL Mail, Fastmail, Gmail, Google Workspace, iCloud Mail, Infomaniak, Posteo, Yahoo Mail. Libero Mail and Purelymail only if two-step sign-in is on.
+- **Turn on IMAP first:** GMX, GMX.com, WEB.DE, Zoho Mail. Yandex Mail also needs an app password; mail.com needs a paid plan.
+- **Account password:** Free, mailbox.org, Orange, Postale.io, Seznam Email.
+- **Proton Mail** needs Proton Mail Bridge running on this PC.
+- **Outlook.com** and **Microsoft 365** are not supported yet: they need Microsoft sign-in.
+
+A custom domain is recognized by its mail host ("Your mail is hosted by Postale.io"). Only the domain name is looked up.
+
+</details>
+
+<details>
+<summary>Any other server</summary>
+
+- Press **Add provider** and fill in the IMAP and SMTP servers. Plaintext connections are refused.
+- A relay on your own network can use **This server does not need a sign-in for sending**.
+- For a self-signed server, press **Review certificate**: [Trust your own server](/docs/certificates).
+
+</details>
+
+<details>
+<summary>If it does not connect</summary>
+
+- A failed check says what went wrong. **Show details** lists every step.
+- "That password didn't work": use an app password. **Set username** helps when your login is not your address.
+
+</details>
+
+Removing an account leaves its mail on the server; its drafts and Outbox messages are lost, and Komorebi tells you how many first.

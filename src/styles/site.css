@@ -1950,10 +1950,6 @@ h1 {
   line-height: 2rem;
   text-align: center;
 }
-.prose ol > li > strong:first-child {
-  display: block;
-  margin-bottom: 0.125rem;
-}
 .prose ol > li > p + p {
   margin-top: 0.25rem;
 }
@@ -1992,6 +1988,56 @@ h1 {
 .callout strong:first-child {
   display: block;
   margin-bottom: 0.25rem;
+}
+/* optional details on a help page: collapsed under the steps, opened with a press */
+.prose details {
+  padding: 0 1.25rem;
+  border-radius: 1rem;
+  background: var(--canvas);
+}
+.prose details + details {
+  margin-top: 0.5rem;
+}
+.prose details[open] {
+  padding-bottom: 1.25rem;
+}
+.prose details > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 3.25rem;
+  margin: 0 -1.25rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 1rem;
+  color: var(--ink);
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+  transition: background-color 100ms linear;
+}
+.prose details > summary::-webkit-details-marker {
+  display: none;
+}
+.prose details > summary::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border: 1.5px solid var(--ink-2);
+  border-radius: 50%;
+}
+.prose details[open] > summary::before {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+.prose details > summary:hover {
+  background: var(--wash);
+}
+.prose details > summary + * {
+  margin-top: 0.25rem;
+}
+.prose details > * + * {
+  margin-top: 0.75rem;
 }
 .prose code,
 kbd {

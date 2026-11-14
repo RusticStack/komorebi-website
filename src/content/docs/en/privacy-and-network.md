@@ -10,14 +10,10 @@ Komorebi has no telemetry, no ads and no analytics. There is no Komorebi server.
 |---|---|---|
 | Your mail servers | Sign-in, sync and the mail you send | While Komorebi runs, over TLS or STARTTLS |
 | Your CardDAV servers | Contacts | Only where you turned sync on |
-| Your DNS and your domain's web server | The domain name only | When you ask Komorebi to find settings |
+| Your DNS and your domain's web server | The domain name only | When you add an account and Komorebi looks up its settings |
 | A message's image hosts | Requests for its images | Only after you choose to load them |
 | GitHub | An update check, and the update you download | When you check, or once a day if you turn that on |
 
-## Remote images and links
-
-Images from the web are blocked until you choose. **Load images** loads them for one message; **Always load from this sender** remembers the address, and Settings > Privacy lists it. Links open in your browser only after a prompt that shows the full address.
-
-## What stays here
+> **Remote images and links.** Images from the web are blocked until you press **Load images**. **Always load from this sender** remembers the address, and **Settings > Privacy** lists it. Links open in your browser only after a prompt that shows the full address.
 
 Mail, contacts, rules and settings live in `%LOCALAPPDATA%\komorebi`. Passwords live only in Windows Credential Manager. The full list is on the [Privacy](/privacy) page.

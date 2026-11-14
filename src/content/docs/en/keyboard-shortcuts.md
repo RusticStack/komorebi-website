@@ -16,7 +16,7 @@ description: The most used keyboard shortcuts in Komorebi, for reading, writing 
 | <kbd>Ctrl+Shift+V</kbd> | Move to a folder |
 | <kbd>Ctrl+Z</kbd> | Undo the last archive, delete, move or send |
 | <kbd>Ctrl+S</kbd> | Save the message as a .eml file |
-| <kbd>Ctrl+E</kbd> | Search |
+| <kbd>Ctrl+E</kbd> <kbd>F3</kbd> <kbd>Ctrl+F</kbd> | Search |
 | <kbd>Ctrl+Shift+I</kbd> | Go to the Inbox |
 | <kbd>F5</kbd> | Refresh |
 
@@ -47,4 +47,4 @@ description: The most used keyboard shortcuts in Komorebi, for reading, writing 
 
 ## Access keys
 
-Hold <kbd>Alt</kbd> and a letter shows under the main commands: New mail, Folders, Settings, Refresh, Reply, Forward, Archive and Delete, and Attach, Send and Link in the composer. Press <kbd>Alt</kbd> and that letter to run the command. The letters follow the language, so they differ in Portuguese; in English, for example, <kbd>Alt+N</kbd> is New mail and <kbd>Alt+R</kbd> is Reply.
+Hold <kbd>Alt</kbd> to see a letter under each main command, then press <kbd>Alt</kbd> and that letter to run it. The letters follow the language, so they differ in Portuguese. In English, <kbd>Alt+N</kbd> is New mail and <kbd>Alt+R</kbd> is Reply.

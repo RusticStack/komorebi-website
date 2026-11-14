@@ -1,21 +1,45 @@
 ---
 title: Adicionar uma conta
-lede: Cerca de um minuto. Precisa do seu endereço de email e da palavra-passe.
-description: Adicione ao Komorebi uma conta Purelymail, Postale.io ou de qualquer outro servidor IMAP e SMTP em três passos curtos.
+lede: O seu correio no Komorebi, em cerca de um minuto.
+description: Adicione a sua conta de correio ao Komorebi: escreva o endereço e a palavra-passe ou palavra-passe de aplicação. Gmail, iCloud e Yahoo já estão incluídos.
 ---
 
-1. **Abra os passos.** O primeiro arranque mostra **Adicionar a sua conta de e-mail** no ecrã de boas-vindas. Mais tarde, use Definições > Contas > **Adicionar conta**.
-2. **Escreva o seu endereço de email.** Prima **Continuar**. As definições de `purelymail.com` e `postale.io` já estão incluídas. Para outros domínios, o Komorebi procura-as e envia só o nome do domínio.
-3. **Escreva a palavra-passe.** Prima **Iniciar sessão**. Se o seu fornecedor usa verificação em dois passos, use uma palavra-passe de aplicação. Fica guardada no Gestor de Credenciais do Windows, neste PC.
-4. **Personalize.** Junte o nome que as pessoas veem e uma assinatura, ou prima **Ignorar**. **Está tudo pronto** mostra a primeira transferência, do correio mais recente para o mais antigo, até premir **Abrir a caixa de entrada**.
+1. Prima **Adicionar a sua conta de e-mail**. Mais tarde: **Definições > Contas > Adicionar outra conta**.
+2. Escreva o seu endereço de e-mail e prima **Continuar**. O Komorebi encontra o fornecedor.
+3. Escreva a palavra-passe e prima **Iniciar sessão**.
 
-## Se não ligar
+Depois, **Personalizar** pede um nome e uma assinatura: prima **Concluir**, ou **Ignorar**. Quando aparecer **Está tudo pronto**, prima **Abrir a caixa de entrada**.
 
-- Uma verificação falhada diz numa frase o que correu mal e o que tentar a seguir. **Mostrar detalhes** lista todos os passos e os nomes dos servidores.
-- **Alterar** abre as definições do servidor: anfitrião, porta, SSL/TLS ou STARTTLS e nomes de utilizador. As ligações em texto simples são recusadas. Um servidor de reencaminhamento na sua própria rede pode usar **Este servidor não precisa de início de sessão para enviar**; o TLS continua a ser obrigatório.
-- Num servidor autoassinado, **Rever certificado** mostra a impressão digital. Veja [Confiar no seu servidor](/pt/docs/certificates).
-- As contas que só aceitam início de sessão OAuth, como Gmail e Microsoft 365, não funcionam.
+> **Palavras-passe de aplicação.** Muitos fornecedores exigem uma palavra-passe de aplicação, não a normal, e a lista diz quais: "Requer palavra-passe de aplicação". Crie-a nas definições da conta do seu fornecedor. O Komorebi guarda-a no Gestor de Credenciais do Windows, nunca nos seus ficheiros.
 
-## Mais de uma conta
+<details>
+<summary>Os 26 fornecedores</summary>
 
-Cada conta tem as suas pastas, e **Todas as caixas de entrada** junta as caixas de entrada de todas. Remover uma conta deixa o correio no servidor; os rascunhos e as mensagens da Caixa de saída dessa conta perdem-se, e o Komorebi diz primeiro quantos são.
+- **Palavra-passe de aplicação:** AOL Mail, Fastmail, Gmail, Google Workspace, iCloud Mail, Infomaniak, Posteo, Yahoo Mail. Libero Mail e Purelymail só se tiver a verificação em dois passos.
+- **Ative primeiro o IMAP:** GMX, GMX.com, WEB.DE, Zoho Mail. O Yandex Mail pede também uma palavra-passe de aplicação; o mail.com requer um plano pago.
+- **Palavra-passe da conta:** Free, mailbox.org, Orange, Postale.io, Seznam Email.
+- **O Proton Mail** requer o Proton Mail Bridge em execução neste PC.
+- **Outlook.com** e **Microsoft 365** ainda não são suportados: requerem início de sessão da Microsoft.
+
+Um domínio próprio é reconhecido pelo seu servidor de correio ("O seu correio está alojado em Postale.io"). Só o nome do domínio é consultado.
+
+</details>
+
+<details>
+<summary>Qualquer outro servidor</summary>
+
+- Prima **Adicionar fornecedor** e preencha os servidores IMAP e SMTP. As ligações em texto simples são recusadas.
+- Um servidor de reencaminhamento na sua própria rede pode usar **Este servidor não precisa de início de sessão para enviar**.
+- Num servidor autoassinado, prima **Rever certificado**: [Confiar no seu servidor](/pt/docs/certificates).
+
+</details>
+
+<details>
+<summary>Se não ligar</summary>
+
+- Uma verificação falhada diz o que correu mal. **Mostrar detalhes** lista todos os passos.
+- "A palavra-passe não funcionou": use uma palavra-passe de aplicação. **Definir nome de utilizador** ajuda quando o seu nome de início de sessão não é o endereço.
+
+</details>
+
+Remover uma conta deixa o correio no servidor; os rascunhos e as mensagens da Caixa de saída dessa conta perdem-se, e o Komorebi diz primeiro quantos são.

@@ -1,18 +1,21 @@
 ---
 title: Keep contacts
-lede: A local address book, synced with CardDAV if you want.
-description: Use Komorebi's address book with groups, and sync it with your provider over CardDAV, read only or read and write.
+lede: An address book on your PC, synced over CardDAV if you want.
+description: Use Komorebi's address book with groups, and optionally sync it with your provider over CardDAV, read only or read and write.
 ---
 
-1. **Open Contacts.** It is at the foot of the folder pane, above Settings.
-2. **Add or edit a contact:** names, addresses, phone numbers, organization, notes and groups. <kbd>Enter</kbd> in the Name box saves.
-3. **Write to someone.** **New message** on their card opens the composer, which suggests contacts first, then groups.
+1. Press **Contacts**, at the foot of the folder pane.
+2. Press **New contact** and fill in what you have. <kbd>Enter</kbd> in the Name box saves.
+3. Press **New message** on a contact's card to write to them.
 
-## Sync with CardDAV
+<details>
+<summary>Sync with CardDAV</summary>
 
-1. **Open Contacts > Sync.** Pick the account. Sync is off until you turn it on.
-2. **Find the server.** **Find** looks it up from your mail domain without signing in, or type the address yourself.
-3. **Choose the mode.** **Read only** never writes to the server; **Read and write** sends your changes.
-4. **Find address books.** This signs in, with your mail password unless you turn off **Same as the mail password**.
+1. Open **Contacts > Sync** and pick the account. Sync is off until you turn on **Sync address books**.
+2. Press **Find** to look the server up from your mail domain without signing in, or type its address.
+3. Choose **Read only** (never writes to the server) or **Read and write** (sends your changes).
+4. Press **Find address books**. This signs in with your mail password, unless you turn off **Same as the mail password**.
 
-Sync uses HTTPS only. When a field changed on both sides, the server's value is kept and yours waits until you choose.
+Sync uses HTTPS only. When a field changed on both sides, the server's value is shown and yours is kept until you choose **Keep mine** or **Keep the server's**.
+
+</details>

@@ -16,7 +16,7 @@ description: Os atalhos de teclado mais usados no Komorebi, para ler, escrever e
 | <kbd>Ctrl+Shift+V</kbd> | Mover para uma pasta |
 | <kbd>Ctrl+Z</kbd> | Desfazer o último arquivo, eliminação, movimento ou envio |
 | <kbd>Ctrl+S</kbd> | Guardar a mensagem como ficheiro .eml |
-| <kbd>Ctrl+E</kbd> | Pesquisar |
+| <kbd>Ctrl+E</kbd> <kbd>F3</kbd> <kbd>Ctrl+F</kbd> | Pesquisar |
 | <kbd>Ctrl+Shift+I</kbd> | Ir para a Caixa de entrada |
 | <kbd>F5</kbd> | Atualizar |
 
@@ -47,4 +47,4 @@ description: Os atalhos de teclado mais usados no Komorebi, para ler, escrever e
 
 ## Teclas de acesso
 
-Mantenha <kbd>Alt</kbd> premida e aparece uma letra por baixo dos comandos principais: Novo correio, Pastas, Definições, Atualizar, Responder, Reencaminhar, Arquivar e Eliminar, e Anexar, Enviar e Hiperligação no editor. Prima <kbd>Alt</kbd> e essa letra para executar o comando. As letras seguem o idioma; em português, por exemplo, <kbd>Alt+N</kbd> é Novo correio, <kbd>Alt+R</kbd> é Responder e <kbd>Alt+L</kbd> é Eliminar.
+Mantenha <kbd>Alt</kbd> premida para ver uma letra por baixo de cada comando principal e prima <kbd>Alt</kbd> e essa letra para o executar. As letras seguem o idioma. Em português, por exemplo, <kbd>Alt+N</kbd> é Novo correio, <kbd>Alt+R</kbd> é Responder e <kbd>Alt+L</kbd> é Eliminar.
