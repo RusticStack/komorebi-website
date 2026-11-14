@@ -1,7 +1,11 @@
 ---
-// The slot for the launch film (F:\Projects\komorebi-brand\final\LAUNCH.md). It renders nothing
-// until public/media/komorebi-film.webm or .mp4 exists. The film is silent by design; its words
-// ship as a caption track, public/media/komorebi-film.<locale>.vtt, when that file exists.
+// The launch film (the brand folder's launch/LAUNCH.md): 40 seconds made from the storyboard
+// frames, silent, 400 ms cross-fades. The section, with whatever is passed in its slot (the
+// heading), renders only when public/media/komorebi-film.webm or .mp4 exists. It is muted, plays
+// inline, shows its poster and loads nothing until it is played (preload="none"). The film's
+// words are in the picture; they also ship as a caption track per language
+// (public/media/komorebi-film.<locale>.vtt) for screen readers, off by default so they are not
+// shown twice.
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import type { Locale } from "../lib/i18n";
@@ -22,11 +26,16 @@ const poster = media("komorebi-film-poster.webp") ? "/media/komorebi-film-poster
 
 {
   sources.length > 0 && (
-    <video class="film" data-reveal controls muted playsinline preload="none" poster={poster} width="1920" height="1080" aria-label={label}>
-      {sources.map((s) => (
-        <source src={`/media/${s.file}`} type={s.type} />
-      ))}
-      {captions && <track kind="captions" src={captions} srclang={locale === "pt" ? "pt-PT" : "en"} default />}
-    </video>
+    <section class="film-block" aria-label={label} data-reveal>
+      <slot />
+      <div class="window film-window">
+        <video class="film" controls muted playsinline preload="none" poster={poster} width="1920" height="1080" aria-label={label}>
+          {sources.map((s) => (
+            <source src={`/media/${s.file}`} type={s.type} />
+          ))}
+          {captions && <track kind="captions" src={captions} srclang={locale === "pt" ? "pt-PT" : "en"} label={locale === "pt" ? "Português" : "English"} />}
+        </video>
+      </div>
+    </section>
   )
 }

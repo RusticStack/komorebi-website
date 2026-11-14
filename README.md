@@ -70,6 +70,7 @@ Without JavaScript the theme control and the menu button are not shown, the phon
 
 - Logo and wordmark: `src/components/Logo.astro` and `public/brand/` (from the brand folder).
 - The product pictures are crops of the real Komorebi 1.0 screenshots, light and dark (1280 x 800 windows, made-up demo mail, `.github/assets/screenshots` in the app repository). The crops are listed in `src/lib/shots.json`; `pnpm images <that folder>` encodes them to AVIF and WebP in `public/shots/`.
+- The launch film, `public/media/komorebi-film.webm` and `.mp4` (40 s, silent, 1920 x 1080, about 0.8 and 0.5 MB) with its poster and an English and a Portuguese caption track, is made from the brand storyboard (`launch/launch.html` in the brand folder, the nine frames rendered with the neutral seal, frame 5 replaced by the real 1.0 inbox, the tray frame left out) with 400 ms cross-fades in ffmpeg. `src/components/Film.astro` shows it on the home page only when the files exist.
 - `pnpm og` renders the Open Graph cards (`public/og/`) and the PNG icons with resvg. The output is committed; run it on Windows, where the line is set in Segoe UI.
 
 ## Content-Security-Policy

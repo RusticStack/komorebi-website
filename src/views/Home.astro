@@ -111,8 +111,13 @@ const copy = pt
       </ui-dialog-content>
     </ui-dialog>
 
-    <!-- Launch film slot: renders nothing until public/media/komorebi-film.webm or .mp4 exists. -->
-    <Film locale={locale} label={copy.film} />
+    <!-- The launch film: renders nothing until public/media/komorebi-film.webm or .mp4 exists. -->
+    <Film locale={locale} label={copy.film}>
+      <div class="section-head">
+        <h2>{pt ? "Quarenta segundos sossegados." : "Forty quiet seconds."}</h2>
+        <p>{pt ? "O filme de apresentação: ler, responder e descansar, ao ritmo da própria aplicação. Sem som, como a aplicação." : "The launch film: reading, replying and resting, at the app's own pace. Silent, like the app."}</p>
+      </div>
+    </Film>
 
     <ul class="principles" data-reveal-group>
       {
