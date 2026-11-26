@@ -1,13 +1,7 @@
-import { CodeSigningPage, CODE_SIGNING_COPY } from "../../../../components/CodeSigningPage";
-import { pageMetadata } from "../../../../lib/seo";
+import { CodeSigningPage } from "../../../../components/CodeSigningPage";
+import { staticMetadata } from "../../../../lib/pages";
 
-export const metadata = pageMetadata({
-  locale: "pt",
-  path: "/code-signing",
-  title: CODE_SIGNING_COPY.pt.title,
-  description: CODE_SIGNING_COPY.pt.description,
-  ogKey: "code-signing",
-});
+export const metadata = staticMetadata("pt", "code-signing");
 
 export default function Page() {
   return <CodeSigningPage locale="pt" />;

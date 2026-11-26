@@ -1,32 +1,52 @@
 ---
-title: Documentação
-description: Instale o Komorebi, adicione as suas contas e saiba como funcionam o correio, os contactos, o calendário e as regras, e o que é enviado para onde.
+title: Documentação do Komorebi
+nav: Visão geral
+description: Instale o Komorebi, adicione a sua conta e envie o primeiro e-mail. Depois encontre a tarefa que quer fazer.
 ---
 
-O Komorebi é um cliente de e-mail pequeno e rápido para Windows 10 e 11. É livre e de código aberto (GPL-3.0-or-later), escrito em Rust com Slint, e guarda uma cache SQLite local do seu correio IMAP. Não tem IA, não tem telemetria e não usa um motor web: o e-mail HTML é desenhado pelo seu próprio motor de renderização.
+## Início rápido [#quick-start]
 
-## Comece aqui
+<Steps>
+<Step title="Instale o Komorebi">
 
-- [Primeiros passos](/pt/docs/getting-started): transferir, confirmar e instalar o Komorebi, e o que aparece no primeiro arranque.
-- [Adicionar uma conta](/pt/docs/adding-an-account): Purelymail, Postale.io e qualquer outro servidor IMAP e SMTP.
+Transfira o instalador e execute-o. Sem direitos de administrador. [Instalar o Komorebi](/pt/docs/getting-started)
 
-## Utilizar o Komorebi
+</Step>
+<Step title="Adicione a sua conta">
 
-- [Editor de mensagens e assinaturas](/pt/docs/composer): e-mail formatado, destinatários, anexos, rascunhos, envio e assinaturas com nome.
-- [Regras](/pt/docs/rules): regras locais para o correio novo da Caixa de entrada, e Copiar como Sieve.
-- [Contactos e calendário](/pt/docs/contacts-and-calendar): o livro de endereços, o calendário, os convites, CardDAV e CalDAV.
-- [Notificações e área de notificação](/pt/docs/notifications-and-tray): notificações de correio novo, lembretes de eventos, a área de notificação e o início com o Windows.
-- [Atalhos de teclado](/pt/docs/keyboard-shortcuts): todas as teclas, geradas a partir do README do projeto.
+Escreva o endereço e a palavra-passe. [Adicionar uma conta](/pt/docs/adding-an-account)
 
-## Privacidade e segurança
+</Step>
+<Step title="Envie o primeiro e-mail">
 
-- [Privacidade e o que sai do seu computador](/pt/docs/privacy-and-network): o que é guardado, o que é enviado e para quem.
-- [Atualizações](/pt/docs/updates): como a atualização na aplicação encontra, verifica e instala uma nova versão.
-- [Fixação de certificados e cache cifrada](/pt/docs/certificates-and-encrypted-cache): servidores autoassinados e a cifra da cache de correio.
+Prima <Kbd>Ctrl+N</Kbd>, escreva e prima **Enviar**. [Escrever e formatar correio](/pt/docs/composer)
 
-## Mais
+</Step>
+</Steps>
 
-- [Compilar a partir do código](/pt/docs/building-from-source): compile o mesmo `komorebi.exe`.
-- [Perguntas frequentes](/pt/docs/faq): respostas curtas às perguntas mais comuns.
+## Quero... [#tasks]
 
-A declaração de privacidade completa está na página [Privacidade](/pt/privacy), e todas as versões estão em [Alterações](/pt/changelog).
+| Quero | Ler |
+|---|---|
+| Usar a Purelymail ou a Postale.io | [Configurar a Purelymail](/pt/docs/purelymail), [Configurar a Postale.io](/pt/docs/postale) |
+| Ligar o meu próprio servidor | [Usar o seu servidor](/pt/docs/own-server) |
+| Formatar correio e pôr uma assinatura | [Escrever e formatar](/pt/docs/composer), [Assinaturas](/pt/docs/signatures) |
+| Desfazer um envio | [Rascunhos, envio e desfazer](/pt/docs/drafts-and-sending) |
+| Organizar o correio novo sozinho | [Regras](/pt/docs/rules) |
+| Sincronizar contactos ou calendários | [Contactos](/pt/docs/contacts), [Calendário](/pt/docs/calendar) |
+| Receber notificações de correio novo | [Notificações](/pt/docs/notifications-and-tray) |
+| Saber o que sai do meu computador | [O que sai do seu computador](/pt/docs/privacy-and-network) |
+| Cifrar o correio no disco | [Cache cifrada](/pt/docs/encrypted-cache) |
+| Aprender o teclado | [Atalhos de teclado](/pt/docs/keyboard-shortcuts) |
+
+<Callout type="tip" title="Pesquisa">
+Prima <Kbd>Ctrl+K</Kbd> em qualquer página para pesquisar na documentação.
+</Callout>
+
+<NextSteps>
+
+- [Instalar o Komorebi](/pt/docs/getting-started)
+- [Perguntas frequentes](/pt/docs/faq)
+- [Alterações](/pt/changelog)
+
+</NextSteps>

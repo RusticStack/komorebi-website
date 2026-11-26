@@ -1,32 +1,52 @@
 ---
-title: Documentation
-description: Install Komorebi, add your accounts, and learn how its mail, contacts, calendar and rules work and what it sends where.
+title: Komorebi docs
+nav: Overview
+description: Install Komorebi, add your account and send your first mail. Then find the task you want to do.
 ---
 
-Komorebi is a small, fast email client for Windows 10 and 11. It is free and open source (GPL-3.0-or-later), written in Rust with Slint, and keeps a local SQLite cache of your IMAP mail. It has no AI, no telemetry and no web engine: HTML mail is drawn by its own layout engine.
+## Quick start [#quick-start]
 
-## Start here
+<Steps>
+<Step title="Install Komorebi">
 
-- [Getting started](/docs/getting-started): download, check and install Komorebi, and what the first start shows.
-- [Adding an account](/docs/adding-an-account): Purelymail, Postale.io and any other IMAP and SMTP server.
+Download the installer and run it. No admin rights needed. [Install Komorebi](/docs/getting-started)
 
-## Using Komorebi
+</Step>
+<Step title="Add your account">
 
-- [Composer and signatures](/docs/composer): formatted mail, recipients, attachments, drafts, sending and named signatures.
-- [Rules](/docs/rules): local rules for new Inbox mail, and Copy as Sieve.
-- [Contacts and calendar](/docs/contacts-and-calendar): the address book, the calendar, invitations, CardDAV and CalDAV.
-- [Notifications and tray](/docs/notifications-and-tray): new-mail notifications, event reminders, the notification area and start with Windows.
-- [Keyboard shortcuts](/docs/keyboard-shortcuts): every key, generated from the project's README.
+Type your address and password. [Add an account](/docs/adding-an-account)
 
-## Privacy and security
+</Step>
+<Step title="Send your first mail">
 
-- [Privacy and what leaves your computer](/docs/privacy-and-network): what is stored, what is sent and to whom.
-- [Updates](/docs/updates): how the in-app update finds, checks and installs a new version.
-- [Certificate pinning and the encrypted cache](/docs/certificates-and-encrypted-cache): self-signed servers and encrypting the mail cache.
+Press <Kbd>Ctrl+N</Kbd>, write, and press **Send**. [Write and format mail](/docs/composer)
 
-## More
+</Step>
+</Steps>
 
-- [Building from source](/docs/building-from-source): build the same `komorebi.exe` yourself.
-- [FAQ](/docs/faq): short answers to common questions.
+## I want to... [#tasks]
 
-The full privacy statement is on the [Privacy](/privacy) page, and every release is listed in the [Changelog](/changelog).
+| I want to | Read |
+|---|---|
+| Use Purelymail or Postale.io | [Set up Purelymail](/docs/purelymail), [Set up Postale.io](/docs/postale) |
+| Connect my own mail server | [Use your own server](/docs/own-server) |
+| Format mail and add a signature | [Write and format mail](/docs/composer), [Signatures](/docs/signatures) |
+| Undo a message I just sent | [Drafts, sending and undo](/docs/drafts-and-sending) |
+| Sort new mail by itself | [Rules](/docs/rules) |
+| Sync contacts or calendars | [Contacts](/docs/contacts), [Calendar](/docs/calendar) |
+| Get new-mail notifications | [Notifications and tray](/docs/notifications-and-tray) |
+| Know what leaves my computer | [What leaves your computer](/docs/privacy-and-network) |
+| Encrypt my mail on disk | [Encrypted cache](/docs/encrypted-cache) |
+| Learn the keyboard | [Keyboard shortcuts](/docs/keyboard-shortcuts) |
+
+<Callout type="tip" title="Search">
+Press <Kbd>Ctrl+K</Kbd> on any page to search the docs.
+</Callout>
+
+<NextSteps>
+
+- [Install Komorebi](/docs/getting-started)
+- [FAQ](/docs/faq)
+- [Changelog](/changelog)
+
+</NextSteps>

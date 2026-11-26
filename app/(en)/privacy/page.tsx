@@ -1,13 +1,7 @@
-import { PrivacyPage, PRIVACY_COPY } from "../../../components/PrivacyPage";
-import { pageMetadata } from "../../../lib/seo";
+import { PrivacyPage } from "../../../components/PrivacyPage";
+import { staticMetadata } from "../../../lib/pages";
 
-export const metadata = pageMetadata({
-  locale: "en",
-  path: "/privacy",
-  title: PRIVACY_COPY.en.title,
-  description: PRIVACY_COPY.en.description,
-  ogKey: "privacy",
-});
+export const metadata = staticMetadata("en", "privacy");
 
 export default function Page() {
   return <PrivacyPage locale="en" />;

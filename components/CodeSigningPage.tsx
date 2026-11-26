@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { localePath, type Locale } from "../lib/i18n";
 import { AUTHOR, REPO_URL } from "../lib/site";
+import { breadcrumbs } from "../lib/seo";
+import { JsonLd } from "./JsonLd";
 
 export const CODE_SIGNING_COPY = {
   en: {
@@ -27,10 +29,11 @@ export function CodeSigningPage({ locale }: { locale: Locale }) {
   const privacy = localePath(locale, "/privacy");
 
   return (
-    <div className="container page-shell narrow">
-      <main id="main" className="page-main">
+    <div className="page">
+      <main id="main" tabIndex={-1}>
+        <JsonLd data={breadcrumbs([{ name: "Komorebi", url: localePath(locale, "/") }, { name: CODE_SIGNING_COPY[locale].title, url: localePath(locale, "/code-signing") }])} />
         <article className="prose">
-          <header className="docs-header">
+          <header className="page-header">
             <h1>{CODE_SIGNING_COPY[locale].title}</h1>
             <p className="lead">{CODE_SIGNING_COPY[locale].description}</p>
           </header>

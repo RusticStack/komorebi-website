@@ -1,0 +1,47 @@
+---
+title: Encrypted cache
+description: Encrypt Komorebi's local mail cache with AES-256-GCM and a key only your Windows user can unlock.
+---
+
+Settings > Privacy > **Encrypt the mail cache on this computer** is off by default.
+
+<Steps>
+<Step title="Turn it on">
+
+A question explains the risk first.
+
+</Step>
+<Step title="Restart">
+
+The next start, or **Restart now**, converts the cache. It is crash-safe.
+
+</Step>
+</Steps>
+
+Turning it off converts the cache back the same way.
+
+<Shot name="settings-privacy" alt="Settings, Privacy: remote images, the encrypted cache and data removal" />
+
+## What it protects
+
+- Every page of the cache and its log is sealed with AES-256-GCM. A changed page is refused.
+- The key is in `cache.sqlite3.key`, protected by Windows (DPAPI) for your user only.
+- Not encrypted: copies of draft attachments and opened attachments. The setting says so.
+
+<Callout type="warning" title="If the key is lost">
+Another Windows user, a reset Windows password or a copy on another PC cannot unlock the cache. Komorebi then offers **Start a fresh cache** or **Quit**.
+</Callout>
+
+<Advanced title="What Start a fresh cache does">
+
+The locked files are set aside with the date, never deleted. You add your accounts again and mail downloads again. Unsent drafts and Outbox messages in the old cache are lost.
+
+</Advanced>
+
+<NextSteps>
+
+- [What leaves your computer](/docs/privacy-and-network)
+- [Certificate pinning](/docs/certificate-pinning)
+- [Uninstall and remove data](/docs/uninstall)
+
+</NextSteps>

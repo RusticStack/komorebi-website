@@ -1,52 +1,60 @@
 ---
 title: FAQ
-description: Short answers about price, providers, SmartScreen, privacy, languages and what Komorebi deliberately does not do.
+description: Short answers about price, providers, Gmail and Outlook.com, SmartScreen, privacy, languages and what Komorebi does not do.
 ---
 
-## Is Komorebi free?
-
+<Faq q="Is Komorebi free?">
 Yes. It is free and open source under GPL-3.0-or-later, with no ads, no paid tier and no account to create.
+</Faq>
 
-## Which email providers work?
+<Faq q="Which email providers work?">
+Any provider with IMAP and SMTP and a password or app password, over TLS or STARTTLS. Purelymail and Postale.io have built-in settings. See [Add an account](/docs/adding-an-account).
+</Faq>
 
-Any provider that offers IMAP and SMTP with a password or an app password, over TLS or STARTTLS. Purelymail and Postale.io have built-in settings, and any other server can be set up by hand. See [Adding an account](/docs/adding-an-account).
+<Faq q="Does it work with Gmail or Outlook.com?">
+Komorebi has no OAuth sign-in. Gmail can work with an app password, if your Google account offers one. Accounts that require OAuth, such as Outlook.com and Microsoft 365, do not work.
+</Faq>
 
-## Does it work with Gmail or Outlook.com?
+<Faq q="Why does SmartScreen warn about the installer?">
+The installer is not Authenticode-signed yet. Check its SHA-256 ([how](/docs/getting-started#check-the-download)), then choose More info and Run anyway. See the [code signing policy](/code-signing).
+</Faq>
 
-Komorebi has no OAuth sign-in, and Gmail and Microsoft 365 sign-in are outside the project's scope. Accounts that only allow OAuth for IMAP and SMTP will not work.
+<Faq q="Does Komorebi send anything to its developers?">
+No. There is no telemetry and no Komorebi server. The only request not to your own servers is the update check to GitHub. See [What leaves your computer](/docs/privacy-and-network).
+</Faq>
 
-## Why does Windows SmartScreen warn about the installer?
-
-The installer is not Authenticode-signed yet, so SmartScreen does not recognise it. Check the SHA-256 published with the release ([how](/docs/getting-started#check-the-download)), then choose More info and Run anyway. An application to SignPath Foundation for free code signing is in progress; see the [code signing policy](/code-signing).
-
-## Does Komorebi send anything to its developers?
-
-No. There is no telemetry, no analytics and no crash upload, and there is no Komorebi server. The only request that is not to a server you set up is the update check to GitHub. See [Privacy and what leaves your computer](/docs/privacy-and-network).
-
-## Where are my passwords?
-
+<Faq q="Where are my passwords?">
 In Windows Credential Manager, never in Komorebi's files.
+</Faq>
 
-## Can I encrypt my mail on disk?
+<Faq q="Can I encrypt my mail on disk?">
+Yes. Settings > Privacy > Encrypt the mail cache on this computer. See [Encrypted cache](/docs/encrypted-cache).
+</Faq>
 
-Yes: Settings > Privacy > Encrypt the mail cache on this computer. See [the encrypted cache](/docs/certificates-and-encrypted-cache#encrypted-cache).
-
-## Which languages does it speak?
-
+<Faq q="Which languages does it speak?">
 English and European Portuguese. It follows the Windows display language, and Settings > General > Language can pin one.
+</Faq>
 
-## Does it run on Windows on ARM, macOS or Linux?
+<Faq q="Does it run on ARM, macOS or Linux?">
+No. Releases are for Windows 10 and 11 on x64 only.
+</Faq>
 
-Releases are built for Windows 10 and 11 on x64. There are no builds for other systems.
+<Faq q="Can it read S/MIME or PGP mail?">
+No. Encrypted mail is shown as encrypted. You can save the encrypted part for a program that has the key.
+</Faq>
 
-## Can Komorebi decrypt S/MIME or PGP mail?
+<Faq q="Will it get AI features?">
+No. AI features and telemetry are non-goals of the project.
+</Faq>
 
-No. Encrypted mail is shown as encrypted, and the encrypted part can be saved as a file for a program that has the key.
+<Faq q="Where do I report a problem?">
+On [GitHub Issues](https://github.com/RusticStack/komorebi/issues). The optional diagnostics log (Settings > Privacy) holds no mail, so you can check it before you share it.
+</Faq>
 
-## Will it get AI features?
+<NextSteps>
 
-No. AI features and telemetry are explicit non-goals of the project.
+- [Install Komorebi](/docs/getting-started)
+- [Add an account](/docs/adding-an-account)
+- [About Komorebi](/about)
 
-## Where do I report a problem?
-
-On [GitHub Issues](https://github.com/RusticStack/komorebi/issues). The opt-in diagnostics log (Settings > Privacy) holds only command names, codes and timings, never mail, so it is safe to look at before you share it.
+</NextSteps>

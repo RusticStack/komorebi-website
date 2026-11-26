@@ -1,32 +1,46 @@
 ---
 title: Notifications and tray
-description: Opt-in Windows notifications for new mail and event reminders, keeping Komorebi in the notification area, and starting it with Windows.
+nav: Notifications and tray
+description: Turn on Windows notifications for new mail and reminders, keep Komorebi in the notification area, and start it with Windows.
 ---
 
-All of these are off until you turn them on, in Settings > General.
+All of these are off until you turn them on in Settings > General.
 
 <Shot name="settings-general" alt="Settings, General: theme, language and reading options" />
 
-## New-mail notifications
+| Setting | Does |
+|---|---|
+| **Notifications for new mail** | A Windows notification when mail arrives |
+| **Show the sender and subject in notifications** | Otherwise it says only "New mail" |
+| **Notifications for event reminders** | A notification when a reminder is due |
+| **Keep running in the notification area when the window closes** | Mail keeps arriving after you close the window |
+| **Start with Windows** | Starts Komorebi in the notification area when you sign in |
 
-**Notifications for new mail** shows a Windows notification when new mail arrives. Each account's page also has **Notifications for this account**, so you can leave out an account. **Show the sender and subject in notifications** decides whether a notification shows them or only "New mail".
+Each account's page has **Notifications for this account** to leave an account out.
 
-Notifications are made on this computer, from the IMAP sync and IDLE connection Komorebi already has: there is no push service, no cloud relay and no extra connection. A new account's first download never notifies, and neither does mail a [rule](/docs/rules) files away or marks read.
+## What does not notify
 
-<Callout title="The lock screen">
-Windows keeps its own notification history and shows notifications on the lock screen according to your Windows settings. If that matters to you, turn off Show the sender and subject in notifications.
+- A new account's first download.
+- Mail a [rule](/docs/rules) files away or marks read.
+
+<Callout title="Lock screen">
+Windows may show notifications on the lock screen. To keep sender and subject private, turn off **Show the sender and subject in notifications**.
 </Callout>
 
-There is also an opt-in taskbar flash when new mail arrives while the window is in the background.
+<Advanced title="How it works">
 
-## Event reminders
+- Notifications come from the sync connection Komorebi already has. No push service, no cloud relay.
+- Reminders run on one timer in the app, so they show only while Komorebi runs. One missed by more than five minutes stays a marker in the agenda.
+- **Pause notifications** in the tray icon's menu pauses both kinds. Quit from that menu too.
+- Start with Windows writes one value, `Komorebi`, under `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`, with `--minimized`. Turning it off removes it.
+- An optional taskbar flash marks new mail while the window is in the background.
 
-**Notifications for event reminders** shows a Windows notification when an event's reminder is due, with its title, start time and place, never its notes. Reminders come from one timer in the app: nothing is scheduled with Windows, so they show only while Komorebi is open or in the notification area. A reminder missed by more than five minutes, because Komorebi was closed, stays a marker in the agenda. Clicking a reminder opens the Calendar.
+</Advanced>
 
-## Notification area
+<NextSteps>
 
-**Keep running in the notification area when the window closes** keeps Komorebi in the notification area when you close the window, so mail keeps arriving. Quit from the icon's menu. The menu's **Pause notifications** pauses new-mail notifications and event reminders.
+- [Rules](/docs/rules)
+- [Meeting invitations and reminders](/docs/invitations)
+- [What leaves your computer](/docs/privacy-and-network)
 
-## Start with Windows
-
-**Start with Windows** starts Komorebi in the notification area when you sign in to Windows. Turning it on writes one value, `Komorebi`, under `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`, with the program's path and `--minimized`; turning it off removes it. The installer can also turn it on for you.
+</NextSteps>

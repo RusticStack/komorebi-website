@@ -1,37 +1,60 @@
 ---
-title: Atualizações
-description: Como o Komorebi procura uma nova versão, só a transfere quando pede, e verifica o SHA-256 e a assinatura Ed25519 antes de a instalar.
+title: Atualizações e como são verificadas
+nav: Atualizações
+description: Como o Komorebi procura uma nova versão, só a transfere quando pede, e verifica primeiro o SHA-256 e a assinatura.
 ---
 
-## Procurar
+## Procurar atualizações
 
-Definições > Acerca de > **Procurar atualizações** pergunta ao GitHub pela versão mais recente do projeto. Com **Procurar atualizações automaticamente** ativo, o Komorebi também procura no máximo uma vez por dia. Uma verificação é um pedido HTTPS a `api.github.com`, com o User-Agent `Komorebi/<versão>` e mais nada sobre si ou o seu correio. Quando existe uma versão mais recente, Definições > Acerca de indica-o, e uma barra discreta por cima da lista de mensagens diz "A versão X está disponível."
+Definições > Acerca de > **Procurar atualizações** pergunta ao GitHub pela versão mais recente. Com **Procurar atualizações automaticamente** ativo, o Komorebi procura no máximo uma vez por dia.
 
-## Transferir e instalar
+Uma verificação é um pedido HTTPS a `api.github.com`, com o User-Agent `Komorebi/<versão>`. Nada sobre si nem sobre o seu correio.
 
-Nada é transferido até premir **Transferir e instalar**. O Komorebi transfere então três ficheiros da versão a partir de `github.com` para uma pasta nova `komorebi-update-*` na sua pasta temporária:
+## Instalar uma atualização
 
-- o instalador, `komorebi-<versão>-setup.exe`, com uma barra de progresso quando o servidor indica o tamanho;
-- `komorebi-<versão>-setup.exe.sha256`, o seu hash SHA-256;
-- `komorebi-<versão>-setup.exe.sig`, uma assinatura Ed25519.
+<Steps>
+<Step title="Prima Transferir e instalar">
 
-## Como a transferência é verificada
+Nada é transferido antes disso.
 
-O instalador só é executado se as duas verificações passarem:
+</Step>
+<Step title="O Komorebi verifica os ficheiros">
 
-1. O SHA-256 coincide com o `.sha256` publicado.
-2. A assinatura Ed25519 é válida para a chave pública incluída no Komorebi. A assinatura abrange a versão e o hash em conjunto, por isso um instalador mais antigo não pode ser servido como mais recente.
+Transfere o instalador, o seu `.sha256` e o seu `.sig` para uma pasta temporária.
 
-A chave privada que faz estas assinaturas fica com o responsável pelo projeto, fora do repositório. Quando as duas verificações passam, o instalador corre sem perguntas: fecha o Komorebi, atualiza-o no mesmo sítio e volta a iniciá-lo.
+</Step>
+<Step title="A atualização corre">
+
+Só se as duas verificações passarem. Fecha o Komorebi, atualiza-o e volta a iniciá-lo.
+
+</Step>
+</Steps>
+
+## As duas verificações
+
+1. O SHA-256 do instalador coincide com o `.sha256` publicado.
+2. A assinatura Ed25519 é válida para a chave incluída no Komorebi. Abrange a versão e o hash, por isso um instalador mais antigo não passa por um mais recente.
 
 <Callout title="Diferente do Authenticode">
-Esta assinatura protege a atualização na aplicação. Não é a assinatura de código Authenticode, que é o que o Windows SmartScreen procura quando executa um instalador que transferiu. As versões ainda não têm assinatura Authenticode; veja a [política de assinatura de código](/pt/code-signing).
+Esta assinatura protege as atualizações na aplicação. O SmartScreen procura o Authenticode, que as versões ainda não têm. Veja a [política de assinatura de código](/pt/code-signing).
 </Callout>
 
-## Verificar uma versão por si
+<Advanced title="Verificar uma versão por si">
 
-Para verificar um instalador que transferiu no browser, compare o seu SHA-256 com o ficheiro `.sha256` da versão, como em [Primeiros passos](/pt/docs/getting-started#confirmar-a-transferência). Com o código-fonte, o exemplo `sign_update` do projeto também verifica a assinatura Ed25519:
+Compare o SHA-256 do instalador com o ficheiro `.sha256`, como em [Instalar o Komorebi](/pt/docs/getting-started#check-the-download). Com o código-fonte, o exemplo `sign_update` verifica a assinatura:
 
 ```powershell
 cargo run --example sign_update -- verify komorebi-0.7.0-setup.exe 0.7.0
 ```
+
+A chave privada de assinatura fica com o responsável pelo projeto, fora do repositório.
+
+</Advanced>
+
+<NextSteps>
+
+- [Política de assinatura de código](/pt/code-signing)
+- [Alterações](/pt/changelog)
+- [O que sai do seu computador](/pt/docs/privacy-and-network)
+
+</NextSteps>

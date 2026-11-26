@@ -17,6 +17,12 @@ const TYPES = {
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".webp": "image/webp",
+  ".avif": "image/avif",
+  ".jpg": "image/jpeg",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
+  ".vtt": "text/vtt; charset=utf-8",
+  ".webmanifest": "application/manifest+json",
   ".ico": "image/x-icon",
   ".woff2": "font/woff2",
 };

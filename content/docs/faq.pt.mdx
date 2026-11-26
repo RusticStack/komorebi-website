@@ -1,52 +1,61 @@
 ---
 title: Perguntas frequentes
-description: Respostas curtas sobre preço, fornecedores, SmartScreen, privacidade, idiomas e o que o Komorebi deliberadamente não faz.
+nav: Perguntas frequentes
+description: Respostas curtas sobre preço, fornecedores, Gmail e Outlook.com, SmartScreen, privacidade, idiomas e o que o Komorebi não faz.
 ---
 
-## O Komorebi é gratuito?
-
+<Faq q="O Komorebi é gratuito?">
 Sim. É livre e de código aberto, com a licença GPL-3.0-or-later, sem publicidade, sem versão paga e sem conta para criar.
+</Faq>
 
-## Que fornecedores de e-mail funcionam?
+<Faq q="Que fornecedores de e-mail funcionam?">
+Qualquer fornecedor com IMAP e SMTP e uma palavra-passe ou palavra-passe de aplicação, com TLS ou STARTTLS. A Purelymail e a Postale.io têm definições incluídas. Veja [Adicionar uma conta](/pt/docs/adding-an-account).
+</Faq>
 
-Qualquer fornecedor que ofereça IMAP e SMTP com palavra-passe ou palavra-passe de aplicação, com TLS ou STARTTLS. A Purelymail e a Postale.io têm definições incluídas, e qualquer outro servidor pode ser configurado à mão. Veja [Adicionar uma conta](/pt/docs/adding-an-account).
+<Faq q="Funciona com Gmail ou Outlook.com?">
+O Komorebi não tem início de sessão OAuth. O Gmail pode funcionar com uma palavra-passe de aplicação, se a sua conta Google a oferecer. As contas que exigem OAuth, como Outlook.com e Microsoft 365, não funcionam.
+</Faq>
 
-## Funciona com Gmail ou Outlook.com?
+<Faq q="Porque é que o SmartScreen avisa sobre o instalador?">
+O instalador ainda não tem assinatura Authenticode. Confirme o SHA-256 ([como](/pt/docs/getting-started#check-the-download)) e escolha Mais informações e Executar mesmo assim. Veja a [política de assinatura de código](/pt/code-signing).
+</Faq>
 
-O Komorebi não tem início de sessão OAuth, e o início de sessão Gmail e Microsoft 365 está fora do âmbito do projeto. As contas que só permitem OAuth para IMAP e SMTP não funcionam.
+<Faq q="O Komorebi envia alguma coisa aos programadores?">
+Não. Não há telemetria nem servidor do Komorebi. O único pedido que não vai para os seus servidores é a procura de atualizações no GitHub. Veja [O que sai do seu computador](/pt/docs/privacy-and-network).
+</Faq>
 
-## Porque é que o Windows SmartScreen avisa sobre o instalador?
-
-O instalador ainda não tem assinatura Authenticode, por isso o SmartScreen não o reconhece. Confirme o SHA-256 publicado com a versão ([como](/pt/docs/getting-started#confirmar-a-transferência)) e escolha Mais informações e Executar mesmo assim. Está em curso uma candidatura à SignPath Foundation para assinatura de código gratuita; veja a [política de assinatura de código](/pt/code-signing).
-
-## O Komorebi envia alguma coisa aos programadores?
-
-Não. Não há telemetria, nem estatísticas, nem envio de falhas, e não existe nenhum servidor do Komorebi. O único pedido que não vai para um servidor configurado por si é a verificação de atualizações no GitHub. Veja [Privacidade e o que sai do seu computador](/pt/docs/privacy-and-network).
-
-## Onde ficam as minhas palavras-passe?
-
+<Faq q="Onde ficam as minhas palavras-passe?">
 No Gestor de Credenciais do Windows, nunca nos ficheiros do Komorebi.
+</Faq>
 
-## Posso cifrar o meu correio no disco?
+<Faq q="Posso cifrar o correio no disco?">
+Sim. Definições > Privacidade > Cifrar a cache de correio neste computador. Veja [Cache cifrada](/pt/docs/encrypted-cache).
+</Faq>
 
-Sim: Definições > Privacidade > Cifrar a cache de correio neste computador. Veja [a cache cifrada](/pt/docs/certificates-and-encrypted-cache#cache-cifrada).
-
-## Que idiomas tem?
-
+<Faq q="Que idiomas tem?">
 Inglês e português europeu. Segue o idioma de apresentação do Windows, e Definições > Geral > Idioma pode fixar um.
+</Faq>
 
-## Funciona no Windows em ARM, no macOS ou no Linux?
+<Faq q="Funciona em ARM, macOS ou Linux?">
+Não. As versões são só para Windows 10 e 11 em x64.
+</Faq>
 
-As versões são compiladas para Windows 10 e 11 em x64. Não há versões para outros sistemas.
+<Faq q="Lê correio S/MIME ou PGP?">
+Não. O correio cifrado é mostrado como cifrado. Pode guardar a parte cifrada para um programa que tenha a chave.
+</Faq>
 
-## O Komorebi consegue decifrar correio S/MIME ou PGP?
+<Faq q="Vai ter funcionalidades de IA?">
+Não. As funcionalidades de IA e a telemetria ficam fora dos objetivos do projeto.
+</Faq>
 
-Não. O correio cifrado aparece como cifrado, e a parte cifrada pode ser guardada como ficheiro para um programa que tenha a chave.
+<Faq q="Onde comunico um problema?">
+No [GitHub Issues](https://github.com/RusticStack/komorebi/issues). O registo de diagnóstico opcional (Definições > Privacidade) não tem correio, por isso pode vê-lo antes de o partilhar.
+</Faq>
 
-## Vai ter funcionalidades de IA?
+<NextSteps>
 
-Não. Funcionalidades de IA e telemetria estão expressamente fora dos objetivos do projeto.
+- [Instalar o Komorebi](/pt/docs/getting-started)
+- [Adicionar uma conta](/pt/docs/adding-an-account)
+- [Sobre o Komorebi](/pt/about)
 
-## Onde comunico um problema?
-
-Nos [Issues do GitHub](https://github.com/RusticStack/komorebi/issues). O registo de diagnóstico opcional (Definições > Privacidade) só tem nomes de comandos, códigos e tempos, nunca correio, por isso pode vê-lo com segurança antes de o partilhar.
+</NextSteps>

@@ -1,0 +1,16 @@
+/* Pico Reforged, compiled by its PostCSS plugin: a custom theme from Komorebi's sky accent,
+   the extras the site uses, and a safe purge against the site's own sources. */
+@import "@rusticstack/pico-reforged";
+
+@pico {
+  theme: #0ea5e9;
+  extras: badge alert;
+  responsive-typography: false;
+  purge: safe;
+  source: none;
+}
+
+@source "../app";
+@source "../components";
+@source "../content";
+@source "../lib";

@@ -1,0 +1,49 @@
+---
+title: Configurar a Postale.io no Komorebi
+nav: Postale.io
+description: Adicione uma conta Postale.io ao Komorebi, com um endereço postale.io ou o seu próprio domínio, e como chega o correio novo.
+---
+
+O Komorebi tem as definições dos servidores da Postale.io incluídas. Só precisa do endereço e da palavra-passe.
+
+<Steps>
+<Step title="Comece a adicionar uma conta">
+
+Definições > Contas > **Adicionar conta**, ou o ecrã de boas-vindas no primeiro arranque.
+
+</Step>
+<Step title="Escreva o endereço Postale.io">
+
+Prima **Continuar**. Um endereço `postale.io` é reconhecido de imediato.
+
+</Step>
+<Step title="O seu próprio domínio?">
+
+Se o Komorebi perguntar pelo fornecedor, escolha **Postale.io**.
+
+</Step>
+<Step title="Escreva a palavra-passe">
+
+Prima **Iniciar sessão**. O Komorebi verifica a ligação, a palavra-passe e o envio.
+
+</Step>
+</Steps>
+
+## Bom saber
+
+- **Guardar uma cópia em Itens enviados** está ativo, porque a Postale.io não guarda o correio enviado no servidor.
+- O correio novo chega com a verificação regular, não de imediato. Escolha a frequência em Definições > Geral: a cada 1, 2, 5 ou 15 minutos.
+
+<Advanced title="Porque é que o correio novo não é imediato">
+
+O servidor da Postale.io só comunica alterações de marcas através de IDLE, nunca o correio entregue. Por isso, é a verificação regular que encontra o correio novo. Depois de cinco mensagens novas seguidas que o IDLE não comunicou, o Komorebi deixa de usar o IDLE nessa conta até ao arranque seguinte.
+
+</Advanced>
+
+<NextSteps>
+
+- [Notificações de correio novo](/pt/docs/notifications-and-tray)
+- [Escrever e formatar correio](/pt/docs/composer)
+- [Organizar o correio com regras](/pt/docs/rules)
+
+</NextSteps>

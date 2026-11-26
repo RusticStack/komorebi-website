@@ -1,0 +1,41 @@
+---
+title: Um cliente de e-mail sem telemetria para Windows | Komorebi
+heading: Um cliente de e-mail sem telemetria
+eyebrow: Privacidade
+description: O Komorebi não envia telemetria, estatísticas nem relatórios de falhas. Cada ligação que faz está listada, e não tem servidor próprio.
+---
+
+O Komorebi não tem telemetria para desligar. Nunca teve. Não existe nenhum servidor do Komorebi para onde enviar dados.
+
+## O que nunca envia
+
+- Estatísticas de utilização.
+- Relatórios de falhas.
+- O livro de endereços, o correio ou as definições a ninguém além dos seus servidores.
+
+## A que se liga
+
+| Para | Quando |
+|---|---|
+| Os seus servidores de correio (IMAP, SMTP) | Com a aplicação aberta, por TLS ou STARTTLS |
+| Os seus servidores CardDAV e CalDAV | Só se os configurar |
+| O DNS e a autoconfiguração do seu domínio | Só quando pede para procurar definições |
+| Os servidores de imagens de uma mensagem | Só depois de transferir as imagens dessa mensagem |
+| GitHub | Só para procurar e transferir atualizações |
+
+A lista completa está em [O que sai do seu computador](/pt/docs/privacy-and-network).
+
+## Privado por princípio
+
+- As imagens remotas ficam bloqueadas até decidir. Os píxeis de rastreio nunca são transferidos.
+- As palavras-passe ficam no Gestor de Credenciais do Windows.
+- A cache de correio pode ser [cifrada](/pt/docs/encrypted-cache).
+- Este site não usa cookies e não carrega nada de outros sites.
+
+<NextSteps>
+
+- [Imagens remotas, hiperligações e anexos](/pt/docs/remote-content)
+- [Declaração de privacidade](/pt/privacy)
+- [Comparar com o Thunderbird](/pt/thunderbird-alternative)
+
+</NextSteps>

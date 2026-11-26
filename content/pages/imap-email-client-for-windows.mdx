@@ -1,0 +1,38 @@
+---
+title: IMAP email client for Windows 10 and 11 | Komorebi
+heading: An IMAP email client for Windows
+eyebrow: Komorebi for Windows
+description: Komorebi is a native IMAP and SMTP email client for Windows 10 and 11, with a local cache, presets for Purelymail and Postale.io, and any server by hand.
+---
+
+Komorebi speaks IMAP for reading and SMTP for sending. It keeps a local SQLite cache, so a cached folder lists in under 600 ms (the project's budget).
+
+## Providers
+
+| Provider | Setup |
+|---|---|
+| Purelymail | Built in. [Set up Purelymail](/docs/purelymail) |
+| Postale.io | Built in. [Set up Postale.io](/docs/postale) |
+| Other domains | Looked up from DNS and autoconfig |
+| Your own server | By hand. [Use your own server](/docs/own-server) |
+
+## IMAP features
+
+- Several accounts, each with its own folders, and All inboxes.
+- IDLE for new mail where the server offers it, with a regular check as backup.
+- Works with servers that lack IDLE, CONDSTORE, UIDPLUS or MOVE.
+- TLS or STARTTLS only. Plaintext is refused.
+- [Certificate pinning](/docs/certificate-pinning) for self-signed servers.
+
+## Not supported
+
+- POP3 and Exchange.
+- OAuth sign-in, so Microsoft 365 and Outlook.com do not work.
+
+<NextSteps>
+
+- [Download Komorebi](/download)
+- [Add an account](/docs/adding-an-account)
+- [Free email client for Windows](/free-email-client-for-windows)
+
+</NextSteps>

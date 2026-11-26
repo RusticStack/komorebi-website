@@ -1,0 +1,49 @@
+---
+title: Set up Postale.io in Komorebi
+nav: Postale.io
+description: Add a Postale.io account to Komorebi, with a postale.io address or your own domain, and how new mail arrives.
+---
+
+Komorebi has Postale.io's server settings built in. You only need your address and password.
+
+<Steps>
+<Step title="Start adding an account">
+
+Settings > Accounts > **Add account**, or the welcome screen on the first start.
+
+</Step>
+<Step title="Type your Postale.io address">
+
+Press **Continue**. A `postale.io` address is recognised at once.
+
+</Step>
+<Step title="Your own domain?">
+
+If Komorebi asks for the provider, choose **Postale.io**.
+
+</Step>
+<Step title="Type your password">
+
+Press **Sign in**. Komorebi checks the connection, the password and sending.
+
+</Step>
+</Steps>
+
+## Good to know
+
+- **Save a copy to Sent** is on, because Postale.io does not save sent mail on the server.
+- New mail arrives with the regular check, not instantly. Set how often in Settings > General: every 1, 2, 5 or 15 minutes.
+
+<Advanced title="Why new mail is not instant">
+
+Postale.io's server reports only flag changes over IDLE, never newly delivered mail. So the regular check finds new mail. After five new messages in a row that IDLE did not report, Komorebi stops using IDLE for that account until the next start.
+
+</Advanced>
+
+<NextSteps>
+
+- [Notifications for new mail](/docs/notifications-and-tray)
+- [Write and format mail](/docs/composer)
+- [Sort mail with rules](/docs/rules)
+
+</NextSteps>

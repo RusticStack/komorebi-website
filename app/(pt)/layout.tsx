@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Shell } from "../../components/Shell";
 import { rootMetadata, rootViewport } from "../../lib/root";
+import "../globals.css";
 import "../site.css";
 
 export const metadata = rootMetadata();

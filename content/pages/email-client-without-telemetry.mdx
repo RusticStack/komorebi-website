@@ -1,0 +1,41 @@
+---
+title: An email client without telemetry for Windows | Komorebi
+heading: An email client without telemetry
+eyebrow: Privacy
+description: Komorebi sends no telemetry, analytics or crash reports. Every connection it makes is listed, and it has no server of its own.
+---
+
+Komorebi has no telemetry to turn off. It never had any. There is no Komorebi server to send data to.
+
+## What it never sends
+
+- Usage statistics or analytics.
+- Crash reports.
+- Your address book, mail or settings to anyone but your own servers.
+
+## What it does connect to
+
+| To | When |
+|---|---|
+| Your mail servers (IMAP, SMTP) | While it runs, over TLS or STARTTLS |
+| Your CardDAV and CalDAV servers | Only if you set them up |
+| Your domain's DNS and autoconfig | Only when you ask it to find settings |
+| A message's image hosts | Only after you load that message's images |
+| GitHub | Only for update checks and downloads |
+
+The full list is in [What leaves your computer](/docs/privacy-and-network).
+
+## Also private by design
+
+- Remote images are blocked until you choose. Tracking pixels never load.
+- Passwords stay in Windows Credential Manager.
+- The mail cache can be [encrypted](/docs/encrypted-cache).
+- This website sets no cookies and loads nothing from other sites.
+
+<NextSteps>
+
+- [Remote images, links and attachments](/docs/remote-content)
+- [Privacy statement](/privacy)
+- [Compare with Thunderbird](/thunderbird-alternative)
+
+</NextSteps>

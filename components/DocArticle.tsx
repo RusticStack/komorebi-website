@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "../mdx-components";
+import { faqItems } from "../lib/faq";
+import { lastModified } from "../lib/git-dates";
 import { localePath, ui, type Locale } from "../lib/i18n";
-import { breadcrumbs, pageMetadata } from "../lib/seo";
-import { SITE_REPO_URL } from "../lib/site";
-import { docPages, docsNav, source } from "../lib/source";
+import { breadcrumbs, faqPage, pageMetadata, techArticle } from "../lib/seo";
+import { DOCS_FEEDBACK_URL, SITE_REPO_URL } from "../lib/site";
+import { docPages, docsGroups, docsNav, source } from "../lib/source";
+import { formatDate } from "../lib/upstream";
 import { ArrowLeftIcon, ArrowRightIcon } from "./icons";
 import { JsonLd } from "./JsonLd";
 import { Toc, TocInline } from "./Toc";
@@ -19,16 +22,25 @@ function barePath(slugs: string[]) {
   return slugs.length ? `/docs/${slugs.join("/")}` : "/docs";
 }
 
+function ogKey(slugs: string[]) {
+  return slugs.length ? `docs-${slugs.join("-")}` : "docs";
+}
+
+export function docFile(page: { path: string }) {
+  return `content/docs/${page.path}`;
+}
+
 export function docMetadata(locale: Locale, slug: string[] | undefined): Metadata {
   const page = source.getPage(slug, locale);
   if (!page) return {};
   return pageMetadata({
     locale,
     path: barePath(page.slugs),
-    title: page.data.title,
+    title: page.slugs.length ? page.data.title : `${page.data.title}`,
     description: page.data.description ?? "",
-    ogKey: page.slugs.length ? `docs-${page.slugs.join("-")}` : "docs",
+    ogKey: ogKey(page.slugs),
     type: "article",
+    modified: lastModified(docFile(page)),
   });
 }
 
@@ -37,55 +49,79 @@ export function DocArticle({ locale, slug }: { locale: Locale; slug: string[] | 
   if (!page) notFound();
   const t = ui(locale);
   const Body = page.data.body;
+  const groups = docsGroups(locale);
   const nav = docsNav(locale);
   const index = nav.findIndex((item) => item.url === page.url);
   const previous = index > 0 ? nav[index - 1] : undefined;
   const next = index >= 0 && index < nav.length - 1 ? nav[index + 1] : undefined;
   const docsHome = localePath(locale, "/docs");
-  const file = `content/docs/${page.path}`;
+  const file = docFile(page);
   const isIndex = page.slugs.length === 0;
+  const group = groups.find((g) => g.items.some((item) => item.url === page.url));
+  const updated = lastModified(file);
+  const toc = page.data.toc.filter((item) => item.depth <= 3);
+  const isFaq = page.slugs.join("/") === "faq";
 
-  const list = (
-    <ul>
-      {nav.map((item) => (
-        <li key={item.url}>
-          <Link href={item.url} aria-current={item.url === page.url ? "page" : undefined}>
-            {item.title}
-          </Link>
-        </li>
+  const sidebar = (
+    <>
+      {groups.map((g, gi) => (
+        <section key={g.title ?? gi} aria-labelledby={g.title ? `nav-${gi}` : undefined}>
+          {g.title ? (
+            <p className="docs-nav-title" id={`nav-${gi}`}>
+              {g.title}
+            </p>
+          ) : null}
+          <ul>
+            {g.items.map((item) => (
+              <li key={item.url}>
+                <Link href={item.url} aria-current={item.url === page.url ? "page" : undefined}>
+                  {item.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
       ))}
-    </ul>
+    </>
   );
 
+  const crumbs = [
+    { name: "Komorebi", url: localePath(locale, "/") },
+    { name: t.docs, url: docsHome },
+    ...(isIndex ? [] : [{ name: page.data.title, url: page.url }]),
+  ];
+
   return (
-    <div className="container docs-shell">
+    <div className="docs-shell">
       <aside className="docs-aside">
         <nav className="docs-nav" aria-label={t.docsNav}>
-          {list}
+          {sidebar}
         </nav>
       </aside>
-      <main id="main" className="docs-main">
+      <main id="main" className="docs-main" tabIndex={-1}>
         <details className="docs-nav-fold">
-          <summary>{t.docsNav}</summary>
+          <summary>
+            <span>{t.docsNav}</span>
+            {group?.title ? <small>{group.title}</small> : null}
+          </summary>
           <nav className="docs-nav" aria-label={`${t.docsNav} (${t.menu})`}>
-            {list}
+            {sidebar}
           </nav>
         </details>
+        <JsonLd data={breadcrumbs(crumbs)} />
         <JsonLd
-          data={breadcrumbs([
-            { name: "Komorebi", url: localePath(locale, "/") },
-            { name: t.docs, url: docsHome },
-            ...(isIndex ? [] : [{ name: page.data.title, url: page.url }]),
-          ])}
+          data={techArticle({ locale, url: page.url, title: page.data.title, description: page.data.description ?? "", file, ogKey: ogKey(page.slugs) })}
         />
+        {isFaq ? <JsonLd data={faqPage(faqItems(file))} /> : null}
         <article className="prose">
-          <header className="docs-header">
+          <header className="doc-header">
             {!isIndex ? (
               <nav aria-label={t.breadcrumb} className="breadcrumb">
                 <ol>
                   <li>
                     <Link href={docsHome}>{t.docs}</Link>
                   </li>
+                  {group?.title ? <li>{group.title}</li> : null}
                   <li>
                     <span aria-current="page">{page.data.title}</span>
                   </li>
@@ -94,16 +130,11 @@ export function DocArticle({ locale, slug }: { locale: Locale; slug: string[] | 
             ) : null}
             <h1>{page.data.title}</h1>
             {page.data.description ? <p className="lead">{page.data.description}</p> : null}
-            <TocInline items={page.data.toc} label={t.onThisPage} />
+            {toc.length > 2 ? <TocInline items={toc} label={t.onThisPage} /> : null}
           </header>
-          <Body components={getMDXComponents()} />
+          <Body components={getMDXComponents(locale)} />
         </article>
-        <footer className="docs-footer">
-          <p className="docs-meta">
-            <a href={`${SITE_REPO_URL}/blob/main/${file}`} rel="noopener">
-              {t.editPage}
-            </a>
-          </p>
+        <footer className="doc-footer">
           <nav className="pager" aria-label={t.pager}>
             {previous ? (
               <Link href={previous.url} rel="prev">
@@ -124,11 +155,24 @@ export function DocArticle({ locale, slug }: { locale: Locale; slug: string[] | 
               </Link>
             ) : null}
           </nav>
+          <div className="doc-meta">
+            <p>
+              {t.helpful}{" "}
+              <a href={`${DOCS_FEEDBACK_URL}&title=${encodeURIComponent(`Docs: ${page.data.title}`)}&page=${encodeURIComponent(page.url)}`} rel="noopener">
+                {t.helpfulLink}
+              </a>
+            </p>
+            <p>
+              <a href={`${SITE_REPO_URL}/edit/main/${file}`} rel="noopener">
+                {t.editPage}
+              </a>
+              <span aria-hidden="true"> · </span>
+              {t.lastUpdated} <time dateTime={updated}>{formatDate(`${updated}T12:00:00Z`, locale)}</time>
+            </p>
+          </div>
         </footer>
       </main>
-      <div className="docs-toc-aside">
-        <Toc items={page.data.toc} label={t.onThisPage} />
-      </div>
+      <div className="docs-toc-aside">{!isIndex && toc.length > 1 ? <Toc items={toc} label={t.onThisPage} /> : null}</div>
     </div>
   );
 }

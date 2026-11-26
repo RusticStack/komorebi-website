@@ -1,5 +1,6 @@
 // Fetches what the site takes from the Komorebi repository, at build time:
 //   - the latest release (tag, date, installer name, size and download URL) from the GitHub API
+//   - the list of recent releases (for the Atom feed at /releases.xml)
 //   - CHANGELOG.md, PRIVACY.md and README.md at that release's tag
 // and writes them to .generated/ (ignored by git). When the network or the API fails, it
 // falls back to the snapshot committed in upstream/, so a build never depends on GitHub.
@@ -53,9 +54,24 @@ async function fetchRelease() {
   };
 }
 
+async function fetchReleases() {
+  const response = await get(`https://api.github.com/repos/${REPO}/releases?per_page=30`, "application/vnd.github+json");
+  const data = await response.json();
+  return data
+    .filter((entry) => !entry.draft && !entry.prerelease)
+    .map((entry) => ({
+      tag: entry.tag_name,
+      version: String(entry.tag_name).replace(/^v/, ""),
+      name: entry.name || entry.tag_name,
+      publishedAt: entry.published_at,
+      htmlUrl: entry.html_url,
+      body: String(entry.body ?? "").slice(0, 20000),
+    }));
+}
+
 function useSnapshot(reason) {
   console.warn(`upstream: using the committed snapshot (${reason})`);
-  for (const file of [...FILES, "release.json"]) {
+  for (const file of [...FILES, "release.json", "releases.json"]) {
     const source = join(snapshot, file);
     if (!existsSync(source)) throw new Error(`upstream: no snapshot of ${file} in upstream/`);
     copyFileSync(source, join(out, file));
@@ -68,6 +84,7 @@ async function main() {
   const texts = {};
   try {
     release = await fetchRelease();
+    texts["releases.json"] = `${JSON.stringify(await fetchReleases(), null, 2)}\n`;
     for (const file of FILES) {
       const response = await get(`https://raw.githubusercontent.com/${REPO}/${release.tag}/${file}`, "text/plain");
       texts[file] = await response.text();
@@ -78,11 +95,11 @@ async function main() {
   release.fetchedFrom = `https://github.com/${REPO}/tree/${release.tag}`;
   const json = `${JSON.stringify(release, null, 2)}\n`;
   writeFileSync(join(out, "release.json"), json);
-  for (const file of FILES) writeFileSync(join(out, file), texts[file]);
+  for (const file of [...FILES, "releases.json"]) writeFileSync(join(out, file), texts[file]);
   if (writeSnapshot) {
     mkdirSync(snapshot, { recursive: true });
     writeFileSync(join(snapshot, "release.json"), json);
-    for (const file of FILES) writeFileSync(join(snapshot, file), texts[file]);
+    for (const file of [...FILES, "releases.json"]) writeFileSync(join(snapshot, file), texts[file]);
   }
   const committed = existsSync(join(snapshot, "release.json"))
     ? JSON.parse(readFileSync(join(snapshot, "release.json"), "utf8")).tag

@@ -1,0 +1,48 @@
+---
+title: Usar o seu próprio servidor de correio
+nav: O seu servidor
+description: Ligue o Komorebi a qualquer servidor IMAP e SMTP, incluindo servidores próprios, um relay local e servidores com menos funcionalidades.
+---
+
+## Encontrar as definições
+
+Para um domínio sem definições incluídas, **Continuar** procura-as:
+
+1. nos registos DNS SRV do seu domínio;
+2. depois na página de autoconfiguração do domínio, por HTTPS.
+
+Só é enviado o nome do domínio, nunca o endereço nem a palavra-passe. Um servidor noutro domínio é mostrado, não preenchido.
+
+## Definir à mão
+
+Abra **Definições do servidor**. Cada servidor tem:
+
+| Definição | Opções |
+|---|---|
+| Anfitrião e porta | O nome e a porta do seu servidor |
+| Cifra | **SSL/TLS**, ou **STARTTLS** após ligar |
+| Nome de utilizador | A receção e o envio podem ser diferentes |
+
+As ligações em texto simples são recusadas. **Testar ligação** verifica cada passo e não guarda nada.
+
+## Um relay sem início de sessão
+
+Para um relay na sua própria rede, ative **Este servidor não precisa de início de sessão para enviar**. O TLS ou STARTTLS continua obrigatório.
+
+<Advanced title="Servidores que fazem menos">
+
+O Komorebi funciona sem IDLE (a verificação regular encontra o correio novo), CONDSTORE, UIDPLUS, MOVE nem pastas de uso especial. Itens enviados, Rascunhos, Itens eliminados, Arquivo e Lixo eletrónico são reconhecidos pelo nome. Onde nada estiver marcado, escolha cada pasta em Definições > Contas > a sua conta > **Pastas**. Nada é criado no servidor.
+
+</Advanced>
+
+<Callout type="warning" title="Ainda não testado num servidor próprio real">
+O suporte segue as normas IMAP e SMTP, mas ainda não foi validado num servidor próprio real. [Diga-nos o que encontrar](https://github.com/RusticStack/komorebi/issues).
+</Callout>
+
+<NextSteps>
+
+- [Fixação de certificados](/pt/docs/certificate-pinning): para servidores autoassinados
+- [Gerir várias contas](/pt/docs/accounts)
+- [O que sai do seu computador](/pt/docs/privacy-and-network)
+
+</NextSteps>

@@ -1,0 +1,55 @@
+---
+title: Contactos e CardDAV
+nav: Contactos
+description: Mantenha um livro de endereços local com grupos e, se quiser, sincronize-o com o servidor CardDAV da sua conta.
+---
+
+**Contactos**, na navegação, é um livro de endereços local: nomes, endereços, telefones, organização, cargo, notas e grupos.
+
+<Shot name="contacts" alt="A vista Contactos com o cartão de um contacto aberto" />
+
+- Pesquise na lista, ou filtre por grupo.
+- **Nova mensagem** escreve ao contacto.
+- <Kbd>Enter</Kbd> na caixa Nome guarda.
+
+O editor sugere primeiro os seus contactos quando escreve um destinatário.
+
+## Sincronizar com CardDAV
+
+A sincronização está desligada até a ativar, por conta, em Contactos > **Sincronizar**.
+
+<Steps>
+<Step title="Escolha o modo">
+
+**Só de leitura** nunca escreve no servidor. **Leitura e escrita** envia as suas alterações.
+
+</Step>
+<Step title="Encontre o servidor">
+
+**Procurar** encontra-o a partir do domínio do seu e-mail, sem credenciais. Ou escreva o endereço.
+
+</Step>
+<Step title="Inicie sessão">
+
+**Procurar livros de endereços** inicia sessão com a palavra-passe do correio, ou desative **Igual à palavra-passe do correio** para usar outra.
+
+</Step>
+</Steps>
+
+<Advanced title="Quando sincroniza e como trata conflitos">
+
+- Sincroniza quando abre Contactos, em **Sincronizar agora**, depois de uma edição e no máximo a cada 30 minutos com o Komorebi aberto.
+- Só HTTPS. As credenciais vão só para o servidor desse endereço, nunca através de um redirecionamento para outro.
+- Procura: DNS `_carddavs._tcp`, depois `https://<o seu domínio>/.well-known/carddav`.
+- Quando o mesmo campo mudou dos dois lados, fica o valor do servidor e o seu espera pela sua escolha.
+- Desligar a sincronização nunca altera o servidor.
+
+</Advanced>
+
+<NextSteps>
+
+- [Calendário e CalDAV](/pt/docs/calendar)
+- [Destinatários e anexos](/pt/docs/recipients-and-attachments)
+- [O que sai do seu computador](/pt/docs/privacy-and-network)
+
+</NextSteps>

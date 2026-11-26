@@ -1,8 +1,8 @@
 // Renders the Open Graph card of every page, in both languages, to public/og/<lang>/<key>.png
 // with resvg and the Geist font from the geist package (the face of the Komorebi wordmark).
-// Docs titles and descriptions come from the MDX frontmatter; the other pages are listed below.
+// Docs and site page titles come from the MDX frontmatter; the other pages from lib/static-pages.json.
 import { Resvg } from "@resvg/resvg-js";
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
@@ -11,39 +11,34 @@ const geist = join(root, "node_modules", "geist", "dist", "fonts", "geist-sans")
 const fontFiles = ["Geist-Regular.ttf", "Geist-SemiBold.ttf"].map((file) => join(geist, file));
 const out = join(root, "public", "og");
 
-const PAGES = {
-  en: {
-    home: {
-      title: "A small, fast email client for Windows.",
-      description: "Free and open source. No AI, no telemetry, no web engine.",
-    },
-    privacy: { title: "Privacy", description: "Komorebi collects nothing and has no server. What stays on your computer and what it sends." },
-    changelog: { title: "Changelog", description: "Every Komorebi release and what it changed." },
-    "code-signing": { title: "Code signing policy", description: "How releases are signed, who approves them and where signed builds come from." },
-  },
-  pt: {
-    home: {
-      title: "Um cliente de e-mail pequeno e rápido para Windows.",
-      description: "Livre e de código aberto. Sem IA, sem telemetria, sem motor web.",
-    },
-    privacy: { title: "Privacidade", description: "O Komorebi não recolhe nada e não tem servidor. O que fica no seu computador e o que envia." },
-    changelog: { title: "Alterações", description: "Todas as versões do Komorebi e o que mudou em cada uma." },
-    "code-signing": { title: "Política de assinatura de código", description: "Como as versões são assinadas, quem as aprova e de onde vêm as compilações assinadas." },
-  },
-};
-
+// Home, download, changelog, privacy and code signing: their copy lives in lib/static-pages.json
+const STATIC = JSON.parse(readFileSync(join(root, "lib", "static-pages.json"), "utf8"));
+const PAGES = Object.fromEntries(
+  Object.entries(STATIC).map(([lang, pages]) => [
+    lang,
+    Object.fromEntries(Object.entries(pages).map(([key, page]) => [key, { title: page.og, description: page.description }])),
+  ]),
+);
 /** title and description from the frontmatter of every docs page, by language. */
-function docsPages() {
-  const dir = join(root, "content", "docs");
+function mdxPages(folder, keyOf) {
+  const dir = join(root, "content", folder);
   const pages = { en: {}, pt: {} };
   for (const file of readdirSync(dir).filter((name) => name.endsWith(".mdx"))) {
     const lang = file.endsWith(".pt.mdx") ? "pt" : "en";
     const slug = file.replace(/(\.pt)?\.mdx$/, "");
     const front = /^---\n([\s\S]*?)\n---/.exec(readFileSync(join(dir, file), "utf8").replace(/\r\n/g, "\n"))?.[1] ?? "";
     const field = (name) => new RegExp(`^${name}:\\s*(.*)$`, "m").exec(front)?.[1]?.replace(/^"(.*)"$/, "$1") ?? "";
-    pages[lang][slug === "index" ? "docs" : `docs-${slug}`] = { title: field("title"), description: field("description") };
+    pages[lang][keyOf(slug)] = { title: field("heading") || field("title"), description: field("description"), section: folder };
   }
   return pages;
+}
+
+function docsPages() {
+  return mdxPages("docs", (slug) => (slug === "index" ? "docs" : `docs-${slug}`));
+}
+
+function sitePages() {
+  return mdxPages("pages", (slug) => `page-${slug}`);
 }
 
 function escape(text) {
@@ -83,7 +78,7 @@ function card(lang, key, { title, description }) {
     ? `<image href="data:image/png;base64,${readFileSync(join(root, "scripts", "og-assets", `inbox-light-${lang}.png`)).toString("base64")}" x="640" y="130" width="760" height="475" clip-path="url(#shot)" preserveAspectRatio="xMinYMin slice"/>
        <rect x="640.5" y="130.5" width="759" height="474" rx="16" fill="none" stroke="#d9dde3"/>`
     : "";
-  const section = key.startsWith("docs") ? (lang === "pt" ? "Documentação" : "Documentation") : "";
+  const section = key.startsWith("docs") ? (lang === "pt" ? "Documentação" : "Documentation") : key.startsWith("page-") ? (lang === "pt" ? "Komorebi para Windows" : "Komorebi for Windows") : "";
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
     <radialGradient id="glow" cx="0.85" cy="0.05" r="0.7">
@@ -116,10 +111,12 @@ function card(lang, key, { title, description }) {
 }
 
 const docs = docsPages();
+const site = sitePages();
+rmSync(out, { recursive: true, force: true });
 let count = 0;
 for (const lang of ["en", "pt"]) {
   mkdirSync(join(out, lang), { recursive: true });
-  for (const [key, page] of Object.entries({ ...PAGES[lang], ...docs[lang] })) {
+  for (const [key, page] of Object.entries({ ...PAGES[lang], ...docs[lang], ...site[lang] })) {
     const svg = card(lang, key, page);
     const png = new Resvg(svg, {
       fitTo: { mode: "width", value: 1200 },

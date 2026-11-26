@@ -7,31 +7,34 @@ import { DownloadIcon } from "./icons";
  * The installer of the latest GitHub release, looked up at build time (scripts/upstream.mjs).
  * Without that lookup the button opens the latest release page instead.
  */
-export function DownloadButton({ locale, compact = false }: { locale: Locale; compact?: boolean }) {
+export function DownloadButton({ locale, showNotes = true }: { locale: Locale; showNotes?: boolean }) {
   const { release, href, direct } = downloadTarget();
   const pt = locale === "pt";
-  const meta = release?.installer
-    ? pt
-      ? `Versão ${release.version} · instalador de ${formatMb(release.installer.size, "pt")} · Windows 10 e 11 (x64)`
-      : `Version ${release.version} · ${formatMb(release.installer.size, "en")} installer · Windows 10 and 11 (x64)`
-    : pt
-      ? "Windows 10 e 11 (x64)"
-      : "Windows 10 and 11 (x64)";
+  const facts = [
+    release ? (pt ? `Versão ${release.version}` : `Version ${release.version}`) : null,
+    release?.installer ? (pt ? `${formatMb(release.installer.size, "pt")}` : `${formatMb(release.installer.size, "en")}`) : null,
+    pt ? "Windows 10 e 11, x64" : "Windows 10 and 11, x64",
+  ].filter(Boolean) as string[];
   return (
-    <div className={compact ? "download compact" : "download"}>
-      <a className="button primary large" href={href} {...(direct ? {} : { rel: "noopener" })} data-download>
+    <div className="download">
+      <a role="button" className="download-button" href={href} {...(direct ? {} : { rel: "noopener" })} data-download>
         <DownloadIcon size={20} />
         <span>{pt ? "Transferir para Windows" : "Download for Windows"}</span>
       </a>
       <p className="download-meta">
-        {meta}
-        {direct ? (
-          <>
-            {" · "}
+        {facts.map((fact, i) => (
+          <span key={fact}>
+            {i > 0 ? <span aria-hidden="true"> · </span> : null}
+            {fact}
+          </span>
+        ))}
+        {direct && showNotes ? (
+          <span>
+            <span aria-hidden="true"> · </span>
             <a href={LATEST_RELEASE_URL} rel="noopener">
-              {pt ? "Notas da versão" : "Release notes"}
+              {pt ? "Notas da versão no GitHub" : "Release notes on GitHub"}
             </a>
-          </>
+          </span>
         ) : null}
       </p>
     </div>

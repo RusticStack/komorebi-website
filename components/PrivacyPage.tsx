@@ -1,10 +1,13 @@
 import Link from "next/link";
-import { headings, markdownToHtml, preparePrivacy } from "../lib/markdown";
+import { markdownToHtml, preparePrivacy } from "../lib/markdown";
 import { localePath, ui, type Locale } from "../lib/i18n";
 import { REPO_URL } from "../lib/site";
 import { getRelease, readUpstream } from "../lib/upstream";
+import { breadcrumbs } from "../lib/seo";
+import { JsonLd } from "./JsonLd";
 import { Toc } from "./Toc";
 
+/** Kept for the OG renderer and older imports; the page title and description come from lib/static-pages.json. */
 export const PRIVACY_COPY = {
   en: {
     title: "Privacy",
@@ -29,14 +32,14 @@ export async function PrivacyPage({ locale }: { locale: Locale }) {
     { title: pt ? "Em resumo" : "In short", url: "#summary", depth: 2 },
     { title: pt ? "Este site" : "This website", url: "#this-website", depth: 2 },
     { title: pt ? "Declaração de privacidade da aplicação" : "The app's privacy statement", url: "#statement", depth: 2 },
-    ...headings(html).filter((h) => h.depth === 2).map((h) => ({ title: h.text, url: `#${h.id}`, depth: 3 })),
   ];
 
   return (
-    <div className="container page-shell">
-      <main id="main" className="page-main">
+    <div className="page with-toc">
+      <main id="main" tabIndex={-1}>
+        <JsonLd data={breadcrumbs([{ name: "Komorebi", url: localePath(locale, "/") }, { name: t.privacy, url: localePath(locale, "/privacy") }])} />
         <article className="prose">
-          <header className="docs-header">
+          <header className="page-header">
             <h1>{PRIVACY_COPY[locale].title}</h1>
             <p className="lead">{PRIVACY_COPY[locale].description}</p>
           </header>
@@ -92,7 +95,10 @@ export async function PrivacyPage({ locale }: { locale: Locale }) {
             {updated ? (pt ? `, atualizada em ${updated}.` : `, last updated ${updated}.`) : "."}
             {pt ? " O texto completo é mantido em inglês." : ""}
           </p>
-          <div className="upstream" lang="en" dangerouslySetInnerHTML={{ __html: html.replace(/<h2 /g, "<h3 ").replace(/<\/h2>/g, "</h3>") }} />
+          <details className="advanced statement">
+            <summary>{pt ? "Ler a declaração completa (em inglês)" : "Read the full statement"}</summary>
+            <div className="upstream" lang="en" dangerouslySetInnerHTML={{ __html: html.replace(/<h2 /g, "<h3 ").replace(/<\/h2>/g, "</h3>") }} />
+          </details>
           <p className="muted small">
             <Link href={localePath(locale, "/code-signing")}>{t.codeSigning}</Link>
           </p>

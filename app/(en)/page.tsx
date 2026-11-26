@@ -1,17 +1,7 @@
 import { Home } from "../../components/Home";
-import { homeCopy } from "../../lib/home-copy";
-import { pageMetadata } from "../../lib/seo";
+import { staticMetadata } from "../../lib/pages";
 
-const c = homeCopy("en");
-
-export const metadata = pageMetadata({
-  locale: "en",
-  path: "/",
-  title: c.metaTitle,
-  description: c.metaDescription,
-  ogKey: "home",
-  absoluteTitle: true,
-});
+export const metadata = staticMetadata("en", "home");
 
 export default function Page() {
   return <Home locale="en" />;

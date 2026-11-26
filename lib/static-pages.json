@@ -1,0 +1,66 @@
+{
+  "en": {
+    "home": {
+      "path": "/",
+      "title": "Komorebi: a small, fast, free email client for Windows",
+      "og": "A small, fast email client for Windows.",
+      "description": "Komorebi is a free, open-source email client for Windows 10 and 11. IMAP and SMTP, a rich-text composer, contacts, calendar and rules. No AI, no telemetry."
+    },
+    "download": {
+      "path": "/download",
+      "title": "Download Komorebi for Windows 10 and 11",
+      "og": "Download Komorebi for Windows",
+      "description": "Download the free Komorebi installer for Windows 10 and 11 (x64). Installs for your user with no admin rights. Check the SHA-256, then run it."
+    },
+    "changelog": {
+      "path": "/changelog",
+      "title": "Changelog: every Komorebi release",
+      "og": "Changelog",
+      "description": "Every Komorebi release and what it changed, newest first, including what each version changes in your local data."
+    },
+    "privacy": {
+      "path": "/privacy",
+      "title": "Privacy: what Komorebi keeps and sends",
+      "og": "Privacy",
+      "description": "Komorebi collects nothing and has no server. What it keeps on your computer, what it sends to your own mail servers, and the privacy of this website."
+    },
+    "code-signing": {
+      "path": "/code-signing",
+      "title": "Code signing policy for Komorebi releases",
+      "og": "Code signing policy",
+      "description": "How Komorebi's Windows releases are signed, who approves each signing, where signed builds come from and what the signed program does with your data."
+    }
+  },
+  "pt": {
+    "home": {
+      "path": "/",
+      "title": "Komorebi: um cliente de e-mail pequeno, rápido e gratuito para Windows",
+      "og": "Um cliente de e-mail pequeno e rápido para Windows.",
+      "description": "O Komorebi é um cliente de e-mail livre e gratuito para Windows 10 e 11. IMAP e SMTP, editor formatado, contactos, calendário e regras. Sem IA, sem telemetria."
+    },
+    "download": {
+      "path": "/download",
+      "title": "Transferir o Komorebi para Windows 10 e 11",
+      "og": "Transferir o Komorebi para Windows",
+      "description": "Transfira o instalador gratuito do Komorebi para Windows 10 e 11 (x64). Instala-se para o seu utilizador, sem direitos de administrador."
+    },
+    "changelog": {
+      "path": "/changelog",
+      "title": "Alterações: todas as versões do Komorebi",
+      "og": "Alterações",
+      "description": "Todas as versões do Komorebi e o que mudou em cada uma, da mais recente para a mais antiga, incluindo o que cada uma altera nos dados locais."
+    },
+    "privacy": {
+      "path": "/privacy",
+      "title": "Privacidade: o que o Komorebi guarda e envia",
+      "og": "Privacidade",
+      "description": "O Komorebi não recolhe nada e não tem servidor. O que guarda no seu computador, o que envia aos seus servidores de correio e a privacidade deste site."
+    },
+    "code-signing": {
+      "path": "/code-signing",
+      "title": "Política de assinatura de código das versões do Komorebi",
+      "og": "Política de assinatura de código",
+      "description": "Como as versões do Komorebi para Windows são assinadas, quem aprova cada assinatura, de onde vêm as compilações assinadas e o que faz o programa assinado."
+    }
+  }
+}

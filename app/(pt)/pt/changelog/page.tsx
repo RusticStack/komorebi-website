@@ -1,13 +1,7 @@
-import { ChangelogPage, CHANGELOG_COPY } from "../../../../components/ChangelogPage";
-import { pageMetadata } from "../../../../lib/seo";
+import { ChangelogPage } from "../../../../components/ChangelogPage";
+import { staticMetadata } from "../../../../lib/pages";
 
-export const metadata = pageMetadata({
-  locale: "pt",
-  path: "/changelog",
-  title: CHANGELOG_COPY.pt.title,
-  description: CHANGELOG_COPY.pt.description,
-  ogKey: "changelog",
-});
+export const metadata = staticMetadata("pt", "changelog");
 
 export default function Page() {
   return <ChangelogPage locale="pt" />;

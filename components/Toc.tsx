@@ -16,7 +16,7 @@ function useActiveHeading(items: TocItem[]) {
     let frame = 0;
     const update = () => {
       frame = 0;
-      const header = document.querySelector(".site-header")?.getBoundingClientRect().height ?? 56;
+      const header = document.querySelector("[data-topbar]")?.getBoundingClientRect().height ?? 48;
       const line = header + 16;
       let current = targets[0];
       for (const target of targets) {

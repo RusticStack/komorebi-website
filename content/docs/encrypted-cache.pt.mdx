@@ -1,0 +1,47 @@
+---
+title: Cache cifrada
+description: Cifre a cache local de correio do Komorebi com AES-256-GCM e uma chave que só o seu utilizador do Windows desbloqueia.
+---
+
+Definições > Privacidade > **Cifrar a cache de correio neste computador** está desligado por predefinição.
+
+<Steps>
+<Step title="Ative-a">
+
+Uma pergunta explica primeiro o risco.
+
+</Step>
+<Step title="Reinicie">
+
+O arranque seguinte, ou **Reiniciar agora**, converte a cache. A conversão resiste a falhas.
+
+</Step>
+</Steps>
+
+Desligar a opção converte a cache de volta da mesma forma.
+
+<Shot name="settings-privacy" alt="Definições, Privacidade: imagens remotas, a cache cifrada e a remoção de dados" />
+
+## O que protege
+
+- Cada página da cache e do seu registo é selada com AES-256-GCM. Uma página alterada é recusada.
+- A chave está em `cache.sqlite3.key`, protegida pelo Windows (DPAPI) só para o seu utilizador.
+- Não cifrado: cópias dos anexos dos rascunhos e dos anexos abertos. A opção diz isso.
+
+<Callout type="warning" title="Se a chave se perder">
+Outro utilizador do Windows, uma palavra-passe do Windows reposta ou uma cópia noutro PC não desbloqueiam a cache. O Komorebi oferece então **Começar uma cache nova** ou **Sair**.
+</Callout>
+
+<Advanced title="O que faz Começar uma cache nova">
+
+Os ficheiros bloqueados são postos de parte com a data, nunca apagados. Adiciona as contas de novo e o correio é transferido de novo. Os rascunhos por enviar e as mensagens da Caixa de saída da cache antiga perdem-se.
+
+</Advanced>
+
+<NextSteps>
+
+- [O que sai do seu computador](/pt/docs/privacy-and-network)
+- [Fixação de certificados](/pt/docs/certificate-pinning)
+- [Desinstalar e remover dados](/pt/docs/uninstall)
+
+</NextSteps>

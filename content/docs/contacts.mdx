@@ -1,0 +1,55 @@
+---
+title: Contacts and CardDAV
+nav: Contacts
+description: Keep a local address book with groups, and sync it with your account's CardDAV server if you want.
+---
+
+**Contacts** in the navigation is a local address book: names, addresses, phones, organisation, job title, notes and groups.
+
+<Shot name="contacts" alt="The Contacts view with a contact card open" />
+
+- Search the list, or filter by group.
+- **New message** writes to the contact.
+- <Kbd>Enter</Kbd> in the Name box saves.
+
+The composer suggests your contacts first when you type a recipient.
+
+## Sync with CardDAV
+
+Sync is off until you turn it on, per account, in Contacts > **Sync**.
+
+<Steps>
+<Step title="Choose the mode">
+
+**Read only** never writes to the server. **Read and write** sends your changes.
+
+</Step>
+<Step title="Find the server">
+
+**Find** looks it up from your mail domain, without credentials. Or type the address.
+
+</Step>
+<Step title="Sign in">
+
+**Find address books** signs in with your mail password, or turn off **Same as the mail password** to use another.
+
+</Step>
+</Steps>
+
+<Advanced title="When it syncs and how conflicts are handled">
+
+- Sync runs when Contacts opens, on **Sync now**, after an edit, and at most every 30 minutes while Komorebi is open.
+- HTTPS only. Credentials go only to that address's server, never through a redirect elsewhere.
+- Lookup: DNS `_carddavs._tcp`, then `https://<your domain>/.well-known/carddav`.
+- When the same field changed on both sides, the server's value is kept and yours waits for your choice.
+- Turning sync off never changes the server.
+
+</Advanced>
+
+<NextSteps>
+
+- [Calendar and CalDAV](/docs/calendar)
+- [Recipients and attachments](/docs/recipients-and-attachments)
+- [What leaves your computer](/docs/privacy-and-network)
+
+</NextSteps>

@@ -5,7 +5,7 @@ import { LATEST_RELEASE_URL } from "./site";
 // Files fetched from the Komorebi repository by scripts/upstream.mjs before the build, with the
 // committed snapshot in upstream/ as the fallback when .generated/ is missing (a plain `next dev`).
 
-export function readUpstream(file: "CHANGELOG.md" | "PRIVACY.md" | "README.md" | "release.json"): string {
+export function readUpstream(file: "CHANGELOG.md" | "PRIVACY.md" | "README.md" | "release.json" | "releases.json"): string {
   for (const dir of [".generated", "upstream"]) {
     const path = join(process.cwd(), dir, file);
     if (existsSync(path)) return readFileSync(path, "utf8").replace(/\r\n/g, "\n");
@@ -26,6 +26,17 @@ export function getRelease(): Release | null {
     return JSON.parse(readUpstream("release.json")) as Release;
   } catch {
     return null;
+  }
+}
+
+export type ReleaseEntry = { tag: string; version: string; name: string; publishedAt: string; htmlUrl: string; body: string };
+
+/** Recent releases, newest first, for the Atom feed. */
+export function getReleases(): ReleaseEntry[] {
+  try {
+    return JSON.parse(readUpstream("releases.json")) as ReleaseEntry[];
+  } catch {
+    return [];
   }
 }
 

@@ -5,22 +5,25 @@
   "type": "module",
   "description": "Website and documentation for Komorebi, deployed to komorebi.rusticstack.com",
   "license": "GPL-3.0-or-later",
-  "packageManager": "pnpm@12.11.2",
+  "packageManager": "pnpm@12.15.0",
   "engines": {
     "node": ">=22.18"
   },
   "scripts": {
     "postinstall": "fumadocs-mdx",
-    "prepare:data": "node scripts/upstream.mjs && node scripts/render-og.mjs",
+    "prepare:data": "node scripts/upstream.mjs && node scripts/optimize-images.mjs && node scripts/render-og.mjs",
     "sync:upstream": "node scripts/upstream.mjs --snapshot",
-    "images": "node scripts/prepare-images.mjs ../komorebi-launch-assets",
+    "images": "node scripts/prepare-images.mjs ../komorebi-launch-assets && node scripts/optimize-images.mjs --force",
     "dev": "pnpm prepare:data && next dev",
     "build": "pnpm prepare:data && next build && node scripts/flatten-rsc.mjs",
     "preview": "node scripts/serve.mjs out",
     "check:links": "node scripts/check-links.mjs out",
+    "check:seo": "node scripts/check-seo.mjs out",
+    "check": "pnpm check:links && pnpm check:seo",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@rusticstack/pico-reforged": "2.0.1",
     "fumadocs-core": "16.17.3",
     "fumadocs-mdx": "15.4.7",
     "next": "16.4.1",
@@ -35,11 +38,13 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "geist": "^1.8.2",
+    "postcss": "8.5.6",
     "rehype-slug": "^6.0.0",
     "rehype-stringify": "^10.0.1",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
     "remark-rehype": "^11.1.2",
+    "sharp": "0.34.4",
     "typescript": "^7.0.2"
   }
 }

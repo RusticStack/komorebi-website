@@ -1,0 +1,63 @@
+---
+title: Calendário e CalDAV
+nav: Calendário
+description: Use as vistas de mês, semana, dia e agenda do calendário, crie eventos e sincronize os calendários CalDAV das suas contas.
+---
+
+**Calendário**, na navegação, abre a última vista que usou.
+
+| Vista | Mostra |
+|---|---|
+| Mês | Seis semanas, com a agenda do dia selecionado |
+| Semana, Dia | Uma grelha de horas com uma faixa de todo o dia e a hora atual |
+| Agenda | Os próximos 30 dias |
+
+<Kbd>Page Up</Kbd> e <Kbd>Page Down</Kbd> avançam pelo período mostrado. <Kbd>Home</Kbd> vai para hoje.
+
+<Shot name="calendar-week" alt="A vista de semana do calendário com eventos de exemplo nas suas horas" />
+
+## Criar um evento
+
+<Steps>
+<Step title="Prima Novo evento">
+
+Ou clique num evento existente para o editar.
+
+</Step>
+<Step title="Preencha os detalhes">
+
+Título, calendário, início e fim, repetição, lembrete, local e notas. As setas para cima e para baixo avançam a hora 15 minutos.
+
+</Step>
+<Step title="Guarde">
+
+Num evento que se repete, escolha **Só este evento** ou **Toda a série**.
+
+</Step>
+</Steps>
+
+<Shot name="calendar-edit" alt="O editor de eventos aberto num evento de exemplo" />
+
+Os eventos em "Neste PC" ficam na cache local. Um evento organizado por outra pessoa é só de leitura.
+
+## Sincronizar com CalDAV
+
+**Calendários**, na barra de comandos, lista os calendários CalDAV de cada conta. O Komorebi só procura quando prime **Procurar calendários**, e inicia sessão com o utilizador definido em Contactos > Sincronizar.
+
+<Advanced title="Detalhes da sincronização e conflitos">
+
+- Procura: DNS `_caldavs._tcp` e `/.well-known/caldav`, sem credenciais. Um servidor fora do domínio do seu e-mail só é usado depois de premir Procurar calendários de novo.
+- Sincroniza quando a página abre, em **Sincronizar agora** e no máximo a cada 15 minutos com o Komorebi aberto.
+- As listas de tarefas ficam de fora. Cada calendário pode ser desligado.
+- As alterações seguem para o servidor sobre a versão que editou. Se mudou noutro sítio, uma barra oferece **Aplicar novamente as minhas alterações** ou **Descartar**.
+- Um calendário que recusa alterações passa a só de leitura.
+
+</Advanced>
+
+<NextSteps>
+
+- [Convites e lembretes](/pt/docs/invitations)
+- [Contactos e CardDAV](/pt/docs/contacts)
+- [Notificações e área de notificação](/pt/docs/notifications-and-tray)
+
+</NextSteps>

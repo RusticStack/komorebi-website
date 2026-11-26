@@ -1,0 +1,63 @@
+---
+title: Calendar and CalDAV
+nav: Calendar
+description: Use the calendar's month, week, day and agenda views, create events, and sync your accounts' CalDAV calendars.
+---
+
+**Calendar** in the navigation opens the view you used last.
+
+| View | Shows |
+|---|---|
+| Month | Six weeks, with the selected day's agenda |
+| Week, Day | A time grid with an all-day strip and a now line |
+| Agenda | The next 30 days |
+
+<Kbd>Page Up</Kbd> and <Kbd>Page Down</Kbd> move by the period shown. <Kbd>Home</Kbd> goes to today.
+
+<Shot name="calendar-week" alt="The calendar week view with sample events in their time slots" />
+
+## Create an event
+
+<Steps>
+<Step title="Press New event">
+
+Or click an existing event to edit it.
+
+</Step>
+<Step title="Fill in the details">
+
+Title, calendar, start and end, repeat, reminder, place and notes. <Kbd>Up</Kbd> and <Kbd>Down</Kbd> step a time by 15 minutes.
+
+</Step>
+<Step title="Save">
+
+For a repeating event, choose **Only this event** or **The whole series**.
+
+</Step>
+</Steps>
+
+<Shot name="calendar-edit" alt="The event editor open on a sample event" />
+
+Events in "On this PC" stay in the local cache. An event someone else organised is read only.
+
+## Sync with CalDAV
+
+**Calendars** on the command bar lists each account's CalDAV calendars. Komorebi looks only when you press **Find calendars**, and signs in with the user set in Contacts > Sync.
+
+<Advanced title="Sync details and conflicts">
+
+- Lookup: DNS `_caldavs._tcp` and `/.well-known/caldav`, without credentials. A server outside your mail domain is used only after you press Find calendars again.
+- Syncs when the page opens, on **Sync now**, and at most every 15 minutes while Komorebi is open.
+- Task lists are left out. Each calendar can be turned off.
+- Changes go to the server over the version you edited. If it changed elsewhere, a bar offers **Apply my changes again** or **Discard**.
+- A calendar that refuses changes becomes read only.
+
+</Advanced>
+
+<NextSteps>
+
+- [Meeting invitations and reminders](/docs/invitations)
+- [Contacts and CardDAV](/docs/contacts)
+- [Notifications and tray](/docs/notifications-and-tray)
+
+</NextSteps>

@@ -1,329 +1,240 @@
 import type { FeatureIcon } from "../components/icons";
 import type { Locale } from "./i18n";
 
-type Feature = { icon: FeatureIcon; title: string; text: string; href: string };
-type Stat = { value: string; label: string };
-type Showcase = { shot: string; title: string; text: string; alt: string; href: string };
+type Feature = { icon: FeatureIcon; title: string; text: string; href: string; link: string };
+type Showcase = { shot: string; title: string; text: string; alt: string; href: string; link: string };
+type Row = { label: string; value: string };
 
 export type HomeCopy = {
-  metaTitle: string;
-  metaDescription: string;
-  eyebrow: string;
+  badge: string;
   title: string;
   lead: string;
   secondary: string;
-  smartscreenTitle: string;
+  facts: string[];
   smartscreen: string;
   smartscreenLink: string;
   heroAlt: string;
+  videoTitle: string;
+  videoLead: string;
+  videoLabel: string;
+  transcriptTitle: string;
+  transcript: string[];
   featuresTitle: string;
   featuresLead: string;
   features: Feature[];
   showcaseTitle: string;
   showcase: Showcase[];
-  numbersTitle: string;
-  numbersLead: string;
-  numbers: Stat[];
-  numbersNote: string;
-  privacyTitle: string;
-  privacyLead: string;
-  privacyItems: string[];
-  privacyLink: string;
-  trustTitle: string;
-  trust: { title: string; text: string; href: string; link: string }[];
+  whyTitle: string;
+  whyLead: string;
+  whyHas: string;
+  whyHasRows: Row[];
+  whyNot: string;
+  whyNotRows: Row[];
+  whyNote: string;
+  compareLinks: { href: string; label: string }[];
+  installTitle: string;
+  installSteps: { title: string; text: string }[];
+  installLink: string;
+  faqTitle: string;
+  faq: { q: string; a: string }[];
+  faqLink: string;
   ctaTitle: string;
   ctaText: string;
 };
 
 /** {size} is the installer's size, filled in at build time from the latest release. */
 const EN: HomeCopy = {
-  metaTitle: "Komorebi: a small, fast email client for Windows",
-  metaDescription:
-    "Komorebi is a free and open-source email client for Windows 10 and 11: IMAP and SMTP with a local cache, a rich-text composer, contacts, calendar and rules. No AI, no telemetry, no web engine.",
-  eyebrow: "Free and open source · GPL-3.0-or-later",
+  badge: "Free and open source",
   title: "A small, fast email client for Windows.",
-  lead: "Komorebi reads and writes mail without getting in the way. It keeps a local SQLite cache of your IMAP mail, draws HTML mail with its own layout engine and looks like the rest of Windows 11. No AI, no telemetry, no web engine.",
-  secondary: "Source on GitHub",
-  smartscreenTitle: "Not Authenticode-signed yet",
-  smartscreen:
-    "The installer is not code-signed yet, so Windows SmartScreen may warn the first time you run it. Check the SHA-256 published with the release, then choose More info and Run anyway.",
+  lead: "Read and write IMAP mail in a native app that looks like Windows 11. No AI, no telemetry, no web engine.",
+  secondary: "Read the docs",
+  facts: ["No administrator rights", "No account to create", "English and Português"],
+  smartscreen: "The installer is not code-signed yet, so Windows SmartScreen may warn once.",
   smartscreenLink: "How to check the download",
-  heroAlt: "Komorebi in the light theme: the folder pane, the inbox and a newsletter open in the reading pane, with its remote images blocked",
-  featuresTitle: "Everything mail needs, nothing it does not",
-  featuresLead: "One native program for Windows 10 and 11, in English and European Portuguese.",
+  heroAlt: "Komorebi in the light theme: the folder pane, the inbox and a newsletter in the reading pane, with its remote images blocked",
+  videoTitle: "Komorebi in 36 seconds",
+  videoLead: "A silent tour with captions: reading, writing, rules, contacts, the calendar and privacy.",
+  videoLabel: "Play the Komorebi tour video",
+  transcriptTitle: "Read the transcript",
+  transcript: [],
+  featuresTitle: "Everything mail needs",
+  featuresLead: "One native program for Windows 10 and 11.",
   features: [
-    {
-      icon: "reader",
-      title: "Reads mail, not trackers",
-      text: "HTML mail is drawn by Komorebi's own layout engine, with no scripts and no web engine. Remote images wait until you choose to load them, and tracking pixels never load.",
-      href: "/docs/privacy-and-network",
-    },
-    {
-      icon: "composer",
-      title: "A rich-text composer",
-      text: "Email-safe fonts and sizes, ten named colours, lists, quotes, links and simple tables, with named signatures. Mail with no formatting goes out as plain text.",
-      href: "/docs/composer",
-    },
-    {
-      icon: "recipients",
-      title: "Recipients as chips",
-      text: "Addresses turn into chips as you type, a wrong one is flagged before you send, and suggestions come from your contacts first.",
-      href: "/docs/composer#recipients",
-    },
-    {
-      icon: "contacts",
-      title: "Contacts with CardDAV",
-      text: "A local address book with groups, synced per account over CardDAV if you want it, read only or read and write.",
-      href: "/docs/contacts-and-calendar",
-    },
-    {
-      icon: "calendar",
-      title: "Calendar with CalDAV",
-      text: "Month, week, day and agenda views, an event editor, invitations you can answer and your accounts' CalDAV calendars. Reminders are opt-in.",
-      href: "/docs/contacts-and-calendar#calendar",
-    },
-    {
-      icon: "rules",
-      title: "Rules, and Copy as Sieve",
-      text: "Simple local rules for new Inbox mail: move, delete, mark read or important. Copy them as a Sieve script for your provider's filters.",
-      href: "/docs/rules",
-    },
-    {
-      icon: "tabs",
-      title: "Tabs and windows",
-      text: "Open messages in tabs or in windows of their own to read side by side. Open tabs come back at the next start.",
-      href: "/docs/keyboard-shortcuts",
-    },
-    {
-      icon: "server",
-      title: "Your provider or your own server",
-      text: "Presets for Purelymail and Postale.io, any IMAP and SMTP server by hand, certificate pinning for self-signed servers and SMTP without sign-in for a local relay.",
-      href: "/docs/adding-an-account",
-    },
-    {
-      icon: "bell",
-      title: "Notifications and tray",
-      text: "Windows notifications for new mail and event reminders, a notification-area icon and start with Windows. All off until you turn them on.",
-      href: "/docs/notifications-and-tray",
-    },
+    { icon: "reader", title: "Reads mail, not trackers", text: "Its own HTML engine, no scripts. Remote images wait for you.", href: "/docs/remote-content", link: "How remote content is handled" },
+    { icon: "composer", title: "Rich-text composer", text: "Fonts, colours, lists, quotes, links and tables.", href: "/docs/composer", link: "Writing and formatting mail" },
+    { icon: "recipients", title: "Recipients as chips", text: "A wrong address is flagged before you send.", href: "/docs/recipients-and-attachments", link: "Recipients and attachments" },
+    { icon: "contacts", title: "Contacts with CardDAV", text: "A local address book, synced if you want.", href: "/docs/contacts", link: "Contacts and CardDAV" },
+    { icon: "calendar", title: "Calendar with CalDAV", text: "Month, week, day and agenda views. Answer invitations.", href: "/docs/calendar", link: "The calendar" },
+    { icon: "rules", title: "Rules and Sieve", text: "Move, delete or mark new mail. Copy rules as Sieve.", href: "/docs/rules", link: "Rules" },
+    { icon: "tabs", title: "Tabs and windows", text: "Read messages side by side. Tabs come back next time.", href: "/docs/keyboard-shortcuts", link: "Keyboard shortcuts" },
+    { icon: "server", title: "Any IMAP server", text: "Presets for Purelymail and Postale.io, or your own server.", href: "/docs/adding-an-account", link: "Adding an account" },
+    { icon: "bell", title: "Notifications, opt-in", text: "New mail, reminders and a tray icon. All off by default.", href: "/docs/notifications-and-tray", link: "Notifications and tray" },
   ],
   showcaseTitle: "A closer look",
   showcase: [
     {
       shot: "compose-table",
       title: "Write formatted mail",
-      text: "Bold, italic, colours, both kinds of lists, quotes, links and a table, in a composer that sends a plain-text part with every formatted message.",
+      text: "Formatted mail always goes out with a plain-text part, so every recipient can read it.",
       alt: "The composer with bold, italic, a colour, a link, a bulleted and a numbered list, a quote and a 3 by 3 table",
       href: "/docs/composer",
+      link: "More about the composer",
     },
     {
       shot: "calendar-month",
       title: "Your calendar beside your mail",
-      text: "A local calendar on this PC and your CalDAV calendars, in month, week, day and agenda views. Changes go to the server only over the version you edited.",
+      text: "A local calendar and your CalDAV calendars, in month, week, day and agenda views.",
       alt: "The calendar month view with sample events and the selected day's agenda beside it",
-      href: "/docs/contacts-and-calendar#calendar",
+      href: "/docs/calendar",
+      link: "More about the calendar",
     },
     {
       shot: "rules",
-      title: "Rules that stay on your computer",
-      text: "Each account has an ordered list of rules for new Inbox mail. An activity list shows what they did, and no rule ever sends mail.",
+      title: "Rules that stay on your PC",
+      text: "Ordered rules for new Inbox mail, with an activity list. No rule ever sends mail.",
       alt: "Settings, Rules: four mail rules for the account, one paused, with recent activity",
       href: "/docs/rules",
-    },
-    {
-      shot: "cert-prompt",
-      title: "Pin your own server's certificate",
-      text: "For a self-signed or private-CA server, review the SHA-256 fingerprint and trust that certificate, its key or its issuing CA. A changed certificate is refused before any password is sent.",
-      alt: "The Trust this certificate? prompt with the SHA-256 fingerprint and certificate details of a made-up server",
-      href: "/docs/certificates-and-encrypted-cache",
+      link: "More about rules",
     },
   ],
-  numbersTitle: "Small and quick, by design",
-  numbersLead: "The project holds itself to written budgets, checked with the app's own timing switch on a seeded cache.",
-  numbers: [
-    { value: "< 200 ms", label: "budget from start to the first window; about 40 to 60 ms measured on a quiet machine" },
-    { value: "< 600 ms", label: "budget to list a cached folder" },
-    { value: "{size}", label: "installer of the latest release" },
-    { value: "0", label: "telemetry, analytics or crash reports sent anywhere" },
+  whyTitle: "Why Komorebi",
+  whyLead: "Facts you can check, and what Komorebi does not do.",
+  whyHas: "What you get",
+  whyHasRows: [
+    { label: "Telemetry", value: "None. No analytics, no crash upload, no Komorebi server." },
+    { label: "Size", value: "A {size} installer. The program is one file under 20 MB." },
+    { label: "Start-up", value: "Budget: first window in under 200 ms. About 40 to 60 ms measured on a quiet PC." },
+    { label: "HTML mail", value: "Drawn by its own layout engine. No scripts, no web engine." },
+    { label: "Price", value: "Free. GPL-3.0-or-later. No account to create." },
   ],
-  numbersNote: "Timings depend on your computer and disk; a first start after installing can be slower.",
-  privacyTitle: "What leaves your computer",
-  privacyLead: "There is no Komorebi server. The app connects only to:",
-  privacyItems: [
-    "your mail servers (IMAP and SMTP, always over TLS or STARTTLS), and the CardDAV and CalDAV servers you set up;",
-    "your mail domain's DNS and autoconfig page, only when you press Continue or Find settings for a domain without built-in settings;",
-    "the image hosts of a message, only after you choose to load its images;",
-    "api.github.com and github.com, only when you check for updates or download one.",
+  whyNot: "What it does not do",
+  whyNotRows: [
+    { label: "OAuth sign-in", value: "Not supported, so Gmail and Microsoft 365 accounts that require it do not work." },
+    { label: "Exchange", value: "Not supported. Komorebi speaks IMAP and SMTP." },
+    { label: "PGP and S/MIME", value: "Encrypted mail is shown as encrypted, not decrypted." },
+    { label: "Other systems", value: "Windows 10 and 11 on x64 only." },
   ],
-  privacyLink: "Read the privacy statement",
-  trustTitle: "Open about how it is built",
-  trust: [
-    {
-      title: "Verified updates",
-      text: "The in-app update installs a new version only if its SHA-256 matches and its Ed25519 signature verifies against a key built into Komorebi.",
-      href: "/docs/updates",
-      link: "How updates are verified",
-    },
-    {
-      title: "Code signing",
-      text: "Releases are not Authenticode-signed yet. An application to SignPath Foundation for free code signing is in progress.",
-      href: "/code-signing",
-      link: "Code signing policy",
-    },
-    {
-      title: "Source you can build",
-      text: "Rust and Slint, GPL-3.0-or-later. Clone the repository and build the same single komorebi.exe with Cargo.",
-      href: "/docs/building-from-source",
-      link: "Build from source",
-    },
+  whyNote: "Timings depend on your computer and disk. The first start after installing can be slower.",
+  compareLinks: [
+    { href: "/outlook-alternative", label: "Compared with Outlook" },
+    { href: "/thunderbird-alternative", label: "Compared with Thunderbird" },
+    { href: "/em-client-alternative", label: "Compared with eM Client" },
   ],
+  installTitle: "Install in three steps",
+  installSteps: [
+    { title: "Download", text: "Get the installer for Windows 10 or 11." },
+    { title: "Run it", text: "It installs for your user. No admin rights needed." },
+    { title: "Add your account", text: "Type your address and password. Done." },
+  ],
+  installLink: "Full install guide",
+  faqTitle: "Questions",
+  faq: [
+    { q: "Is Komorebi free?", a: "Yes. It is free and open source under GPL-3.0-or-later, with no ads and no paid tier." },
+    { q: "Does it work with Gmail or Outlook.com?", a: "Komorebi has no OAuth sign-in. Gmail can work with an app password, if your Google account offers one. Accounts that require OAuth, such as Outlook.com and Microsoft 365, do not work." },
+    { q: "Does Komorebi send anything to its developers?", a: "No. There is no telemetry and no Komorebi server. The only other request is the update check to GitHub." },
+    { q: "Why does SmartScreen warn about the installer?", a: "It is not Authenticode-signed yet. Check the SHA-256 from the release, then choose More info and Run anyway." },
+    { q: "Where are my passwords?", a: "In Windows Credential Manager, never in Komorebi's files." },
+  ],
+  faqLink: "All questions",
   ctaTitle: "Try Komorebi",
-  ctaText: "Installs for your Windows user, with no administrator rights, and uninstalls from Settings > Apps.",
+  ctaText: "Installs for your Windows user and uninstalls from Settings > Apps.",
 };
 
 const PT: HomeCopy = {
-  metaTitle: "Komorebi: um cliente de e-mail pequeno e rápido para Windows",
-  metaDescription:
-    "O Komorebi é um cliente de e-mail livre e de código aberto para Windows 10 e 11: IMAP e SMTP com cache local, editor de texto formatado, contactos, calendário e regras. Sem IA, sem telemetria, sem motor web.",
-  eyebrow: "Livre e de código aberto · GPL-3.0-or-later",
+  badge: "Livre e de código aberto",
   title: "Um cliente de e-mail pequeno e rápido para Windows.",
-  lead: "O Komorebi lê e escreve e-mail sem se meter no caminho. Guarda uma cache SQLite local do seu correio IMAP, desenha o e-mail HTML com um motor de renderização próprio e tem o aspeto do resto do Windows 11. Sem IA, sem telemetria, sem motor web.",
-  secondary: "Código no GitHub",
-  smartscreenTitle: "Ainda sem assinatura Authenticode",
-  smartscreen:
-    "O instalador ainda não tem assinatura de código, por isso o Windows SmartScreen pode mostrar um aviso na primeira execução. Confirme o SHA-256 publicado com a versão e escolha Mais informações e Executar mesmo assim.",
+  lead: "Leia e escreva correio IMAP numa aplicação nativa com o aspeto do Windows 11. Sem IA, sem telemetria, sem motor web.",
+  secondary: "Ler a documentação",
+  facts: ["Sem direitos de administrador", "Sem conta para criar", "Inglês e português"],
+  smartscreen: "O instalador ainda não tem assinatura de código, por isso o Windows SmartScreen pode avisar uma vez.",
   smartscreenLink: "Como confirmar a transferência",
-  heroAlt: "O Komorebi no tema claro: o painel de pastas, a caixa de entrada e uma newsletter aberta no painel de leitura, com as imagens remotas bloqueadas",
-  featuresTitle: "Tudo o que o e-mail precisa, nada do que não precisa",
-  featuresLead: "Um único programa nativo para Windows 10 e 11, em inglês e português europeu.",
+  heroAlt: "O Komorebi no tema claro: o painel de pastas, a caixa de entrada e uma newsletter no painel de leitura, com as imagens remotas bloqueadas",
+  videoTitle: "O Komorebi em 36 segundos",
+  videoLead: "Uma visita sem som, com legendas: leitura, escrita, regras, contactos, calendário e privacidade.",
+  videoLabel: "Reproduzir o vídeo de apresentação do Komorebi",
+  transcriptTitle: "Ler a transcrição",
+  transcript: [],
+  featuresTitle: "Tudo o que o e-mail precisa",
+  featuresLead: "Um único programa nativo para Windows 10 e 11.",
   features: [
-    {
-      icon: "reader",
-      title: "Lê o correio, não os rastreadores",
-      text: "O e-mail HTML é desenhado pelo motor de renderização do próprio Komorebi, sem scripts e sem motor web. As imagens remotas esperam até decidir transferi-las, e os píxeis de rastreio nunca são transferidos.",
-      href: "/docs/privacy-and-network",
-    },
-    {
-      icon: "composer",
-      title: "Editor de texto formatado",
-      text: "Tipos de letra e tamanhos seguros para e-mail, dez cores com nome, listas, citações, hiperligações e tabelas simples, com assinaturas com nome. Uma mensagem sem formatação segue como texto simples.",
-      href: "/docs/composer",
-    },
-    {
-      icon: "recipients",
-      title: "Destinatários em etiquetas",
-      text: "Os endereços passam a etiquetas enquanto escreve, um endereço errado é assinalado antes de enviar e as sugestões vêm primeiro dos seus contactos.",
-      href: "/docs/composer#destinatários",
-    },
-    {
-      icon: "contacts",
-      title: "Contactos com CardDAV",
-      text: "Um livro de endereços local com grupos, sincronizado por conta através de CardDAV se quiser, só de leitura ou de leitura e escrita.",
-      href: "/docs/contacts-and-calendar",
-    },
-    {
-      icon: "calendar",
-      title: "Calendário com CalDAV",
-      text: "Vistas de mês, semana, dia e agenda, um editor de eventos, convites a que pode responder e os calendários CalDAV das suas contas. Os lembretes são opcionais.",
-      href: "/docs/contacts-and-calendar#calendário",
-    },
-    {
-      icon: "rules",
-      title: "Regras e Copiar como Sieve",
-      text: "Regras locais simples para o correio novo da Caixa de entrada: mover, eliminar, marcar como lida ou importante. Copie-as como script Sieve para os filtros do seu fornecedor.",
-      href: "/docs/rules",
-    },
-    {
-      icon: "tabs",
-      title: "Separadores e janelas",
-      text: "Abra mensagens em separadores ou em janelas próprias para as ler lado a lado. Os separadores abertos voltam no arranque seguinte.",
-      href: "/docs/keyboard-shortcuts",
-    },
-    {
-      icon: "server",
-      title: "O seu fornecedor ou o seu servidor",
-      text: "Predefinições para Purelymail e Postale.io, qualquer servidor IMAP e SMTP configurado à mão, fixação de certificados para servidores autoassinados e SMTP sem início de sessão para um relay local.",
-      href: "/docs/adding-an-account",
-    },
-    {
-      icon: "bell",
-      title: "Notificações e área de notificação",
-      text: "Notificações do Windows para correio novo e lembretes de eventos, um ícone na área de notificação e início com o Windows. Tudo desligado até o ativar.",
-      href: "/docs/notifications-and-tray",
-    },
+    { icon: "reader", title: "Lê o correio, não os rastreadores", text: "Motor HTML próprio, sem scripts. As imagens remotas esperam por si.", href: "/docs/remote-content", link: "Como o conteúdo remoto é tratado" },
+    { icon: "composer", title: "Editor de texto formatado", text: "Tipos de letra, cores, listas, citações, hiperligações e tabelas.", href: "/docs/composer", link: "Escrever e formatar correio" },
+    { icon: "recipients", title: "Destinatários em etiquetas", text: "Um endereço errado é assinalado antes de enviar.", href: "/docs/recipients-and-attachments", link: "Destinatários e anexos" },
+    { icon: "contacts", title: "Contactos com CardDAV", text: "Um livro de endereços local, sincronizado se quiser.", href: "/docs/contacts", link: "Contactos e CardDAV" },
+    { icon: "calendar", title: "Calendário com CalDAV", text: "Vistas de mês, semana, dia e agenda. Responda a convites.", href: "/docs/calendar", link: "O calendário" },
+    { icon: "rules", title: "Regras e Sieve", text: "Mova, elimine ou marque o correio novo. Copie as regras como Sieve.", href: "/docs/rules", link: "Regras" },
+    { icon: "tabs", title: "Separadores e janelas", text: "Leia mensagens lado a lado. Os separadores voltam na vez seguinte.", href: "/docs/keyboard-shortcuts", link: "Atalhos de teclado" },
+    { icon: "server", title: "Qualquer servidor IMAP", text: "Predefinições para Purelymail e Postale.io, ou o seu servidor.", href: "/docs/adding-an-account", link: "Adicionar uma conta" },
+    { icon: "bell", title: "Notificações, se quiser", text: "Correio novo, lembretes e um ícone na área de notificação. Tudo desligado de início.", href: "/docs/notifications-and-tray", link: "Notificações e área de notificação" },
   ],
   showcaseTitle: "Mais de perto",
   showcase: [
     {
       shot: "compose-table",
       title: "Escreva e-mail formatado",
-      text: "Negrito, itálico, cores, os dois tipos de lista, citações, hiperligações e uma tabela, num editor que envia uma parte em texto simples com cada mensagem formatada.",
+      text: "O correio formatado segue sempre com uma parte em texto simples, para todos o poderem ler.",
       alt: "O editor de mensagens com negrito, itálico, uma cor, uma hiperligação, uma lista com marcas e uma numerada, uma citação e uma tabela de 3 por 3",
       href: "/docs/composer",
+      link: "Mais sobre o editor",
     },
     {
       shot: "calendar-month",
       title: "O calendário ao lado do correio",
-      text: "Um calendário local neste PC e os seus calendários CalDAV, em vistas de mês, semana, dia e agenda. As alterações só seguem para o servidor sobre a versão que editou.",
+      text: "Um calendário local e os seus calendários CalDAV, em vistas de mês, semana, dia e agenda.",
       alt: "A vista de mês do calendário com eventos de exemplo e a agenda do dia selecionado ao lado",
-      href: "/docs/contacts-and-calendar#calendário",
+      href: "/docs/calendar",
+      link: "Mais sobre o calendário",
     },
     {
       shot: "rules",
-      title: "Regras que ficam no seu computador",
-      text: "Cada conta tem uma lista ordenada de regras para o correio novo da Caixa de entrada. Uma lista de atividade mostra o que fizeram, e nenhuma regra envia correio.",
+      title: "Regras que ficam no seu PC",
+      text: "Regras ordenadas para o correio novo da Caixa de entrada, com uma lista de atividade. Nenhuma regra envia correio.",
       alt: "Definições, Regras: quatro regras de correio da conta, uma em pausa, com a atividade recente",
       href: "/docs/rules",
-    },
-    {
-      shot: "cert-prompt",
-      title: "Fixe o certificado do seu servidor",
-      text: "Para um servidor autoassinado ou com AC privada, reveja a impressão digital SHA-256 e confie nesse certificado, na sua chave ou na AC emissora. Um certificado alterado é recusado antes de qualquer palavra-passe ser enviada.",
-      alt: "A pergunta Confiar neste certificado? com a impressão digital SHA-256 e os detalhes do certificado de um servidor fictício",
-      href: "/docs/certificates-and-encrypted-cache",
+      link: "Mais sobre as regras",
     },
   ],
-  numbersTitle: "Pequeno e rápido, por princípio",
-  numbersLead: "O projeto segue metas escritas, verificadas com a opção de medição de tempos da própria aplicação numa cache de teste.",
-  numbers: [
-    { value: "< 200 ms", label: "meta do arranque até à primeira janela; cerca de 40 a 60 ms medidos num computador sem carga" },
-    { value: "< 600 ms", label: "meta para listar uma pasta em cache" },
-    { value: "{size}", label: "instalador da versão mais recente" },
-    { value: "0", label: "envios de telemetria, estatísticas ou relatórios de falhas" },
+  whyTitle: "Porquê o Komorebi",
+  whyLead: "Factos que pode confirmar, e o que o Komorebi não faz.",
+  whyHas: "O que tem",
+  whyHasRows: [
+    { label: "Telemetria", value: "Nenhuma. Sem estatísticas, sem envio de falhas, sem servidor do Komorebi." },
+    { label: "Tamanho", value: "Um instalador de {size}. O programa é um único ficheiro com menos de 20 MB." },
+    { label: "Arranque", value: "Meta: primeira janela em menos de 200 ms. Cerca de 40 a 60 ms medidos num PC sem carga." },
+    { label: "E-mail HTML", value: "Desenhado por um motor próprio. Sem scripts, sem motor web." },
+    { label: "Preço", value: "Gratuito. GPL-3.0-or-later. Sem conta para criar." },
   ],
-  numbersNote: "Os tempos dependem do computador e do disco; o primeiro arranque depois de instalar pode ser mais lento.",
-  privacyTitle: "O que sai do seu computador",
-  privacyLead: "Não existe nenhum servidor do Komorebi. A aplicação só liga a:",
-  privacyItems: [
-    "os seus servidores de correio (IMAP e SMTP, sempre com TLS ou STARTTLS) e os servidores CardDAV e CalDAV que configurar;",
-    "o DNS e a página de autoconfiguração do domínio do seu e-mail, só quando prime Continuar ou Procurar definições para um domínio sem definições incluídas;",
-    "os servidores de imagens de uma mensagem, só depois de decidir transferir as imagens;",
-    "api.github.com e github.com, só quando procura atualizações ou transfere uma.",
+  whyNot: "O que não faz",
+  whyNotRows: [
+    { label: "Início de sessão OAuth", value: "Não suportado, por isso as contas Gmail e Microsoft 365 que o exigem não funcionam." },
+    { label: "Exchange", value: "Não suportado. O Komorebi usa IMAP e SMTP." },
+    { label: "PGP e S/MIME", value: "O correio cifrado é mostrado como cifrado, não é decifrado." },
+    { label: "Outros sistemas", value: "Só Windows 10 e 11 em x64." },
   ],
-  privacyLink: "Ler a declaração de privacidade",
-  trustTitle: "Transparente sobre a forma como é feito",
-  trust: [
-    {
-      title: "Atualizações verificadas",
-      text: "A atualização na aplicação só instala uma nova versão se o SHA-256 coincidir e a assinatura Ed25519 for válida para uma chave incluída no Komorebi.",
-      href: "/docs/updates",
-      link: "Como as atualizações são verificadas",
-    },
-    {
-      title: "Assinatura de código",
-      text: "As versões ainda não têm assinatura Authenticode. Está em curso uma candidatura à SignPath Foundation para assinatura de código gratuita.",
-      href: "/code-signing",
-      link: "Política de assinatura de código",
-    },
-    {
-      title: "Código que pode compilar",
-      text: "Rust e Slint, GPL-3.0-or-later. Clone o repositório e compile o mesmo komorebi.exe com o Cargo.",
-      href: "/docs/building-from-source",
-      link: "Compilar a partir do código",
-    },
+  whyNote: "Os tempos dependem do computador e do disco. O primeiro arranque depois de instalar pode ser mais lento.",
+  compareLinks: [
+    { href: "/outlook-alternative", label: "Comparado com o Outlook" },
+    { href: "/thunderbird-alternative", label: "Comparado com o Thunderbird" },
+    { href: "/em-client-alternative", label: "Comparado com o eM Client" },
   ],
+  installTitle: "Instale em três passos",
+  installSteps: [
+    { title: "Transfira", text: "Obtenha o instalador para Windows 10 ou 11." },
+    { title: "Execute-o", text: "Instala-se para o seu utilizador. Sem direitos de administrador." },
+    { title: "Adicione a sua conta", text: "Escreva o endereço e a palavra-passe. Pronto." },
+  ],
+  installLink: "Guia de instalação completo",
+  faqTitle: "Perguntas",
+  faq: [
+    { q: "O Komorebi é gratuito?", a: "Sim. É livre e de código aberto, com a licença GPL-3.0-or-later, sem publicidade e sem versão paga." },
+    { q: "Funciona com Gmail ou Outlook.com?", a: "O Komorebi não tem início de sessão OAuth. O Gmail pode funcionar com uma palavra-passe de aplicação, se a sua conta Google a oferecer. As contas que exigem OAuth, como Outlook.com e Microsoft 365, não funcionam." },
+    { q: "O Komorebi envia alguma coisa aos programadores?", a: "Não. Não há telemetria nem servidor do Komorebi. O único outro pedido é a procura de atualizações no GitHub." },
+    { q: "Porque é que o SmartScreen avisa sobre o instalador?", a: "Ainda não tem assinatura Authenticode. Confirme o SHA-256 da versão e escolha Mais informações e Executar mesmo assim." },
+    { q: "Onde ficam as palavras-passe?", a: "No Gestor de Credenciais do Windows, nunca nos ficheiros do Komorebi." },
+  ],
+  faqLink: "Todas as perguntas",
   ctaTitle: "Experimente o Komorebi",
-  ctaText: "Instala-se para o seu utilizador do Windows, sem direitos de administrador, e desinstala-se em Definições > Aplicações.",
+  ctaText: "Instala-se para o seu utilizador do Windows e desinstala-se em Definições > Aplicações.",
 };
 
 export function homeCopy(locale: Locale): HomeCopy {

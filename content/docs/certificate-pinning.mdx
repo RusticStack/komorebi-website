@@ -1,0 +1,54 @@
+---
+title: Certificate pinning
+description: Trust a self-signed or private-CA mail server by its certificate, its key or its issuing CA, and what happens when it changes.
+---
+
+Komorebi checks every server certificate with Windows. A password is sent only after that check passes, or the certificate matches the one you pinned. STARTTLS is never optional.
+
+## Trust your own server
+
+<Steps>
+<Step title="Press Review certificate">
+
+It shows when a check fails on an untrusted certificate. Komorebi reads the certificate without sending credentials.
+
+</Step>
+<Step title="Compare the fingerprint">
+
+Check the SHA-256 fingerprint against the one your server reports.
+
+</Step>
+<Step title="Choose what to trust">
+
+Nothing is saved until you confirm.
+
+</Step>
+</Steps>
+
+<Shot name="cert-prompt" alt="The Trust this certificate? prompt with the SHA-256 fingerprint and certificate details of a made-up server" />
+
+| Option | Passes a renewal? |
+|---|---|
+| **This exact certificate** | No, you review the new one |
+| **This server key** | Yes, if the key stays the same |
+| **The issuing CA** | Yes, any certificate from that CA for the host |
+
+## When the certificate changes
+
+A pinned server with a different certificate is refused before any password is sent. The account offers **Review certificate**, with the old fingerprint beside the new one.
+
+<Advanced title="Where pins live and how to clear them">
+
+- A pin is saved per server (host, port and role) in the local cache.
+- A pin never makes Windows' own trusted roots acceptable for that server.
+- Changing the host, port or security clears the pin. **Forget certificate** on the account's page removes it.
+
+</Advanced>
+
+<NextSteps>
+
+- [Use your own mail server](/docs/own-server)
+- [Encrypted cache](/docs/encrypted-cache)
+- [What leaves your computer](/docs/privacy-and-network)
+
+</NextSteps>

@@ -1,0 +1,49 @@
+---
+title: What is Komorebi? A small email client for Windows
+heading: What is Komorebi?
+eyebrow: About
+description: Komorebi is a free, open-source email client for Windows 10 and 11, built in Rust. What it does, what it leaves out, and who makes it.
+---
+
+Komorebi is a desktop email client for Windows 10 and 11. It reads and writes IMAP mail, and does that one job without getting in the way.
+
+<Shot name="inbox-personal" alt="Komorebi with a personal inbox open, a message in the reading pane" />
+
+## What it does
+
+- Reads and writes mail over IMAP and SMTP, with a local cache.
+- Writes formatted mail with signatures, attachments and drafts.
+- Keeps contacts and a calendar, synced over CardDAV and CalDAV if you want.
+- Sorts new mail with local rules.
+- Speaks English and European Portuguese.
+
+## What it leaves out
+
+| Left out | Why |
+|---|---|
+| AI features | A non-goal of the project |
+| Telemetry | Nothing is sent to the project, ever |
+| A web engine | HTML mail is drawn by Komorebi's own layout engine |
+| A cloud account | Your mail goes only to your own mail servers |
+
+## How it is built
+
+- Written in Rust, with the Slint toolkit in its Fluent style.
+- One program file under 20 MB. The installer is about 9 MB.
+- Written budgets: a window in under 200 ms, a cached folder in under 600 ms.
+
+## The name
+
+Komorebi is Japanese for sunlight filtering through leaves.
+
+## Who makes it
+
+Komorebi is made by Mário Silva and published by [RusticStack](https://rusticstack.com). It is free and open source under GPL-3.0-or-later. The source is on [GitHub](https://github.com/RusticStack/komorebi).
+
+<NextSteps>
+
+- [Download Komorebi](/download)
+- [Install Komorebi](/docs/getting-started)
+- [Privacy](/privacy)
+
+</NextSteps>

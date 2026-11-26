@@ -1,0 +1,54 @@
+---
+title: Fixação de certificados
+description: Confie num servidor de correio autoassinado ou com AC privada pelo certificado, pela chave ou pela AC emissora, e o que acontece quando muda.
+---
+
+O Komorebi verifica todos os certificados de servidor com o Windows. A palavra-passe só é enviada depois de essa verificação passar, ou de o certificado coincidir com o que fixou. O STARTTLS nunca é opcional.
+
+## Confiar no seu servidor
+
+<Steps>
+<Step title="Prima Rever certificado">
+
+Aparece quando uma verificação falha num certificado não fidedigno. O Komorebi lê o certificado sem enviar credenciais.
+
+</Step>
+<Step title="Compare a impressão digital">
+
+Confirme a impressão digital SHA-256 com a que o seu servidor indica.
+
+</Step>
+<Step title="Escolha em que confiar">
+
+Nada é guardado até confirmar.
+
+</Step>
+</Steps>
+
+<Shot name="cert-prompt" alt="A pergunta Confiar neste certificado? com a impressão digital SHA-256 e os detalhes do certificado de um servidor fictício" />
+
+| Opção | Passa uma renovação? |
+|---|---|
+| **Este certificado exato** | Não, revê o novo |
+| **Esta chave do servidor** | Sim, se a chave se mantiver |
+| **A AC emissora** | Sim, qualquer certificado dessa AC para o anfitrião |
+
+## Quando o certificado muda
+
+Um servidor fixado com outro certificado é recusado antes de qualquer palavra-passe ser enviada. A conta oferece **Rever certificado**, com a impressão digital antiga ao lado da nova.
+
+<Advanced title="Onde ficam as fixações e como as apagar">
+
+- Uma fixação é guardada por servidor (anfitrião, porta e função) na cache local.
+- Uma fixação nunca torna aceitáveis para esse servidor as raízes de confiança do próprio Windows.
+- Alterar o anfitrião, a porta ou a segurança apaga a fixação. **Esquecer certificado**, na página da conta, remove-a.
+
+</Advanced>
+
+<NextSteps>
+
+- [Usar o seu servidor](/pt/docs/own-server)
+- [Cache cifrada](/pt/docs/encrypted-cache)
+- [O que sai do seu computador](/pt/docs/privacy-and-network)
+
+</NextSteps>

@@ -1,0 +1,41 @@
+---
+title: Remote images, links and attachments
+nav: Remote content
+description: How Komorebi draws HTML mail without scripts, blocks remote images until you choose, and handles links and attachments.
+---
+
+## HTML mail
+
+Komorebi draws HTML mail with its own layout engine. It has no script engine and no network code.
+
+- Scripts never run.
+- Remote stylesheets, fonts and tracking pixels never load.
+
+## Remote images
+
+Remote images are blocked until you choose. A bar above the message counts them and warns: loading them tells the sender when you opened it, and your IP address.
+
+| Button | Does |
+|---|---|
+| **Load images** | Loads them for this message |
+| **Always load from this sender** | Adds that exact address to a list |
+
+Review the list in Settings > Privacy.
+
+## Links
+
+A link opens in your browser only after a prompt that shows the full address.
+
+## Attachments
+
+- Attachments never open by themselves.
+- Programs and scripts can only be saved.
+- Saved files get Windows' Mark of the Web, so SmartScreen and Office treat them with care.
+
+<NextSteps>
+
+- [What leaves your computer](/docs/privacy-and-network)
+- [Certificate pinning](/docs/certificate-pinning)
+- [FAQ](/docs/faq)
+
+</NextSteps>

@@ -1,15 +1,16 @@
 ---
-title: Building from source
+title: Build from source
+nav: Build from source
 description: Build komorebi.exe yourself on Windows with Rust and the Visual Studio Build Tools, and run the project's checks.
 ---
 
-Komorebi is written in Rust with [Slint](https://slint.dev) (Fluent style, software renderer). Other main crates are `rusqlite`, `imap`, `lettre`, `mail-parser` and `keyring-core` with the Windows Credential Manager store.
+Komorebi is Rust with [Slint](https://slint.dev) (Fluent style, software renderer).
 
-## Requirements
+## What you need
 
 - Windows 10 or 11, x64.
-- [Rust](https://rustup.rs). rustup picks the toolchain pinned in `rust-toolchain.toml`.
-- The Visual Studio Build Tools with the **Desktop development with C++** workload: the MSVC linker, the Windows SDK and its `rc.exe`, which embeds the icon, version information and manifest.
+- [Rust](https://rustup.rs). rustup picks the toolchain from `rust-toolchain.toml`.
+- Visual Studio Build Tools with **Desktop development with C++**.
 
 ## Build and run
 
@@ -20,9 +21,9 @@ cargo build --release --locked
 .\target\release\komorebi.exe
 ```
 
-`komorebi.exe` is a single file with the C runtime linked in, so you can copy it anywhere. Its data lives in `%LOCALAPPDATA%\komorebi`, as the installed app's does.
+`komorebi.exe` is one file. Copy it anywhere. Its data lives in `%LOCALAPPDATA%\komorebi`.
 
-## Checks
+## Run the checks
 
 The same checks CI runs:
 
@@ -34,11 +35,9 @@ pwsh scripts/check-pins.ps1
 cargo deny --locked check licenses advisories
 ```
 
-After a release build, `target\release\komorebi.exe` must be at most 20,500,000 bytes, and its version information shows the Cargo version.
+<Advanced title="A boot check without your mail">
 
-## A boot check without your mail
-
-Komorebi can render its window to a file and exit, against a throwaway cache filled with made-up messages, with no network and no access to your passwords:
+Komorebi can render its window to a file and exit, on a throwaway cache with made-up messages, offline and without your passwords:
 
 ```powershell
 cargo run --release --locked --example seed -- $env:TEMP\seed.sqlite3 2000
@@ -48,8 +47,18 @@ $env:KOMOREBI_SNAPSHOT_CHECK = 1; $env:KOMOREBI_TIMING = 1
 (Start-Process target\release\komorebi.exe -NoNewWindow -Wait -PassThru).ExitCode
 ```
 
-The exit code is 0 when the message list and the reader are not blank. `KOMOREBI_TIMING` prints the launch timings; the project's budget is 200 ms to the first frame. The screenshots on this site were made the same way.
+Exit code 0 means the list and reader are not blank. `KOMOREBI_TIMING` prints launch timings. The screenshots on this site were made this way. A release build must stay at most 20,500,000 bytes.
 
-## Contributing
+</Advanced>
 
-Read [CONTRIBUTING.md](https://github.com/RusticStack/komorebi/blob/main/CONTRIBUTING.md) and the [scope and non-goals](https://github.com/RusticStack/komorebi/blob/main/docs/SCOPE.md) first. The README's "Translations" section explains how to add a language.
+## Contribute
+
+Read [CONTRIBUTING.md](https://github.com/RusticStack/komorebi/blob/main/CONTRIBUTING.md) and the [scope and non-goals](https://github.com/RusticStack/komorebi/blob/main/docs/SCOPE.md) first.
+
+<NextSteps>
+
+- [Report a problem](https://github.com/RusticStack/komorebi/issues)
+- [Changelog](/changelog)
+- [About Komorebi](/about)
+
+</NextSteps>

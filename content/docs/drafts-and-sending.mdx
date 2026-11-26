@@ -1,0 +1,42 @@
+---
+title: Drafts, sending and undo
+nav: Drafts and sending
+description: How drafts save themselves, how to undo a send, and what happens when a message cannot be sent.
+---
+
+## Drafts
+
+- Saved on this PC two seconds after you stop typing, and when the composer closes.
+- Copied to the server's Drafts folder at most every 30 seconds. Each copy replaces the last.
+- **Drafts** in the navigation lists them.
+
+A draft from another device opens read only. Press **Edit** to continue it here. **Discard** asks first and removes the server copy too.
+
+## Undo send
+
+**Send** puts the message in the Outbox for 5 seconds, with **Undo**. Change the delay in Settings > General: off, 5, 10, 20 or 30 seconds.
+
+A copy of exactly what was sent goes to Sent.
+
+## Before you send
+
+A bar asks once when:
+
+- the subject is empty, or
+- your text mentions an attachment but none is attached.
+
+## When sending fails
+
+| What happened | What Komorebi does |
+|---|---|
+| No connection, or "try later" | Keeps it in the Outbox and retries a few times |
+| The server refused it | Marks it failed, says why, offers **Edit**, **Retry**, **Discard** |
+| The connection broke mid-send | Marks it as maybe sent. Never sends it again by itself |
+
+<NextSteps>
+
+- [Rules](/docs/rules)
+- [Keyboard shortcuts](/docs/keyboard-shortcuts)
+- [Notifications and tray](/docs/notifications-and-tray)
+
+</NextSteps>

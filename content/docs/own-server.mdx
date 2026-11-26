@@ -1,0 +1,48 @@
+---
+title: Use your own mail server
+nav: Your own server
+description: Connect Komorebi to any IMAP and SMTP server, including self-hosted ones, a local relay and servers with fewer features.
+---
+
+## Find the settings
+
+For a domain without built-in settings, **Continue** looks them up:
+
+1. your domain's DNS SRV records;
+2. then your domain's autoconfig page over HTTPS.
+
+Only the domain name is sent, never your address or password. A server on another domain is shown, not filled in.
+
+## Set them by hand
+
+Open **Server settings**. Each server has:
+
+| Setting | Options |
+|---|---|
+| Host and port | Your server's name and port |
+| Encryption | **SSL/TLS**, or **STARTTLS** after connecting |
+| User name | Incoming and sending can differ |
+
+Plaintext connections are refused. **Test connection** checks each step and saves nothing.
+
+## A relay without sign-in
+
+For a relay on your own network, turn on **This server does not need a sign-in for sending**. TLS or STARTTLS is still required.
+
+<Advanced title="Servers that do less">
+
+Komorebi works without IDLE (the regular check finds new mail), CONDSTORE, UIDPLUS, MOVE or special-use folders. Sent, Drafts, Trash, Archive and Junk are found by name. Where nothing is marked, pick each folder in Settings > Accounts > your account > **Folders**. Nothing is created on the server.
+
+</Advanced>
+
+<Callout type="warning" title="Not yet tested on a real self-hosted server">
+Support follows the IMAP and SMTP standards, but has not been validated against a real self-hosted server yet. [Report what you find](https://github.com/RusticStack/komorebi/issues).
+</Callout>
+
+<NextSteps>
+
+- [Certificate pinning](/docs/certificate-pinning): for self-signed servers
+- [Manage several accounts](/docs/accounts)
+- [What leaves your computer](/docs/privacy-and-network)
+
+</NextSteps>
